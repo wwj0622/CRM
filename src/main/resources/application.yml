@@ -1,0 +1,22 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/ 
+      suffix: .jsp
+  http:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/shiro  
+    username: root
+    password: root
+  
+server:
+  address: 127.0.0.1
+  port: 80
+mybatis:
+  mapper-locations: classpath:com/topscit/springboot1/mapper/*.xml
+
