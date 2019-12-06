@@ -14,10 +14,11 @@
     <result column="premark" property="premark" jdbcType="VARCHAR" />
     <result column="pupdate_time" property="pupdateTime" jdbcType="TIMESTAMP" />
     <result column="pcreate_time" property="pcreateTime" jdbcType="TIMESTAMP" />
+    <result column="plogo" property="plogo" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     pid, pname, pexplain, punit, ptid, pcount, pdanger, pstate, pprice, premark, pupdate_time, 
-    pcreate_time
+    pcreate_time, plogo
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -33,13 +34,13 @@
     insert into parts (pid, pname, pexplain, 
       punit, ptid, pcount, 
       pdanger, pstate, pprice, 
-      premark, pupdate_time, pcreate_time
-      )
+      premark, pupdate_time, pcreate_time, 
+      plogo)
     values (#{pid,jdbcType=VARCHAR}, #{pname,jdbcType=VARCHAR}, #{pexplain,jdbcType=VARCHAR}, 
       #{punit,jdbcType=VARCHAR}, #{ptid,jdbcType=VARCHAR}, #{pcount,jdbcType=VARCHAR}, 
       #{pdanger,jdbcType=VARCHAR}, #{pstate,jdbcType=VARCHAR}, #{pprice,jdbcType=VARCHAR}, 
-      #{premark,jdbcType=VARCHAR}, #{pupdateTime,jdbcType=TIMESTAMP}, #{pcreateTime,jdbcType=TIMESTAMP}
-      )
+      #{premark,jdbcType=VARCHAR}, #{pupdateTime,jdbcType=TIMESTAMP}, #{pcreateTime,jdbcType=TIMESTAMP}, 
+      #{plogo,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Parts" >
     insert into parts
@@ -80,6 +81,9 @@
       <if test="pcreateTime != null" >
         pcreate_time,
       </if>
+      <if test="plogo != null" >
+        plogo,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -117,6 +121,9 @@
       </if>
       <if test="pcreateTime != null" >
         #{pcreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="plogo != null" >
+        #{plogo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,6 +163,9 @@
       <if test="pcreateTime != null" >
         pcreate_time = #{pcreateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="plogo != null" >
+        plogo = #{plogo,jdbcType=VARCHAR},
+      </if>
     </set>
     where pid = #{pid,jdbcType=VARCHAR}
   </update>
@@ -171,7 +181,8 @@
       pprice = #{pprice,jdbcType=VARCHAR},
       premark = #{premark,jdbcType=VARCHAR},
       pupdate_time = #{pupdateTime,jdbcType=TIMESTAMP},
-      pcreate_time = #{pcreateTime,jdbcType=TIMESTAMP}
+      pcreate_time = #{pcreateTime,jdbcType=TIMESTAMP},
+      plogo = #{plogo,jdbcType=VARCHAR}
     where pid = #{pid,jdbcType=VARCHAR}
   </update>
 </mapper>

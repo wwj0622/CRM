@@ -17,6 +17,8 @@ public class User {
 
     private String locked;
 
+    private String ulogo;
+
     public String getId() {
         return id;
     }
@@ -79,5 +81,13 @@ public class User {
 
     public void setLocked(String locked) {
         this.locked = locked == null ? null : locked.trim();
+    }
+
+    public String getUlogo() {
+        return ulogo;
+    }
+
+    public void setUlogo(String ulogo) {
+        this.ulogo = ulogo == null ? null : ulogo.trim();
     }
 }

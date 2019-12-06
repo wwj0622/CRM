@@ -23,7 +23,35 @@ public class Supplier {
 
     private Date screateTime;
 
-    public String getSid() {
+    private String slogo;
+    
+    
+
+    public Supplier() {
+		super();
+	}
+    
+    
+
+	public Supplier(String sid, String sname, String sphone, String saddress, String semail, String saccount,
+			String sstate, String sremark, Date supdateTime, Date screateTime, String slogo) {
+		super();
+		this.sid = sid;
+		this.sname = sname;
+		this.sphone = sphone;
+		this.saddress = saddress;
+		this.semail = semail;
+		this.saccount = saccount;
+		this.sstate = sstate;
+		this.sremark = sremark;
+		this.supdateTime = supdateTime;
+		this.screateTime = screateTime;
+		this.slogo = slogo;
+	}
+
+
+
+	public String getSid() {
         return sid;
     }
 
@@ -101,5 +129,13 @@ public class Supplier {
 
     public void setScreateTime(Date screateTime) {
         this.screateTime = screateTime;
+    }
+
+    public String getSlogo() {
+        return slogo;
+    }
+
+    public void setSlogo(String slogo) {
+        this.slogo = slogo == null ? null : slogo.trim();
     }
 }

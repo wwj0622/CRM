@@ -10,9 +10,10 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="idcard" property="idcard" jdbcType="VARCHAR" />
     <result column="locked" property="locked" jdbcType="CHAR" />
+    <result column="ulogo" property="ulogo" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, usercode, username, password, salt, phone, idcard, locked
+    id, usercode, username, password, salt, phone, idcard, locked, ulogo
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -27,10 +28,10 @@
   <insert id="insert" parameterType="com.topscit.springboot1.bean.User" >
     insert into sys_user (id, usercode, username, 
       password, salt, phone, 
-      idcard, locked)
+      idcard, locked, ulogo)
     values (#{id,jdbcType=VARCHAR}, #{usercode,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{idcard,jdbcType=VARCHAR}, #{locked,jdbcType=CHAR})
+      #{idcard,jdbcType=VARCHAR}, #{locked,jdbcType=CHAR}, #{ulogo,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.User" >
     insert into sys_user
@@ -59,6 +60,9 @@
       <if test="locked != null" >
         locked,
       </if>
+      <if test="ulogo != null" >
+        ulogo,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -84,6 +88,9 @@
       </if>
       <if test="locked != null" >
         #{locked,jdbcType=CHAR},
+      </if>
+      <if test="ulogo != null" >
+        #{ulogo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -111,6 +118,9 @@
       <if test="locked != null" >
         locked = #{locked,jdbcType=CHAR},
       </if>
+      <if test="ulogo != null" >
+        ulogo = #{ulogo,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -122,7 +132,8 @@
       salt = #{salt,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       idcard = #{idcard,jdbcType=VARCHAR},
-      locked = #{locked,jdbcType=CHAR}
+      locked = #{locked,jdbcType=CHAR},
+      ulogo = #{ulogo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

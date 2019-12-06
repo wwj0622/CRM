@@ -12,9 +12,11 @@
     <result column="sremark" property="sremark" jdbcType="VARCHAR" />
     <result column="supdate_time" property="supdateTime" jdbcType="TIMESTAMP" />
     <result column="screate_time" property="screateTime" jdbcType="TIMESTAMP" />
+    <result column="slogo" property="slogo" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    sid, sname, sphone, saddress, semail, saccount, sstate, sremark, supdate_time, screate_time
+    sid, sname, sphone, saddress, semail, saccount, sstate, sremark, supdate_time, screate_time, 
+    slogo
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -30,11 +32,11 @@
     insert into supplier (sid, sname, sphone, 
       saddress, semail, saccount, 
       sstate, sremark, supdate_time, 
-      screate_time)
+      screate_time, slogo)
     values (#{sid,jdbcType=VARCHAR}, #{sname,jdbcType=VARCHAR}, #{sphone,jdbcType=VARCHAR}, 
       #{saddress,jdbcType=VARCHAR}, #{semail,jdbcType=VARCHAR}, #{saccount,jdbcType=VARCHAR}, 
       #{sstate,jdbcType=VARCHAR}, #{sremark,jdbcType=VARCHAR}, #{supdateTime,jdbcType=TIMESTAMP}, 
-      #{screateTime,jdbcType=TIMESTAMP})
+      #{screateTime,jdbcType=TIMESTAMP}, #{slogo,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Supplier" >
     insert into supplier
@@ -69,6 +71,9 @@
       <if test="screateTime != null" >
         screate_time,
       </if>
+      <if test="slogo != null" >
+        slogo,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="sid != null" >
@@ -100,6 +105,9 @@
       </if>
       <if test="screateTime != null" >
         #{screateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="slogo != null" >
+        #{slogo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -133,6 +141,9 @@
       <if test="screateTime != null" >
         screate_time = #{screateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="slogo != null" >
+        slogo = #{slogo,jdbcType=VARCHAR},
+      </if>
     </set>
     where sid = #{sid,jdbcType=VARCHAR}
   </update>
@@ -146,7 +157,14 @@
       sstate = #{sstate,jdbcType=VARCHAR},
       sremark = #{sremark,jdbcType=VARCHAR},
       supdate_time = #{supdateTime,jdbcType=TIMESTAMP},
-      screate_time = #{screateTime,jdbcType=TIMESTAMP}
+      screate_time = #{screateTime,jdbcType=TIMESTAMP},
+      slogo = #{slogo,jdbcType=VARCHAR}
     where sid = #{sid,jdbcType=VARCHAR}
   </update>
+  
+   <select id="getAllSupplier" resultMap="BaseResultMap" >
+  	select * from supplier
+  </select>
+  
+  
 </mapper>

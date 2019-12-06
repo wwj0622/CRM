@@ -1,5 +1,7 @@
 package com.topscit.springboot1.dao;
 
+import java.util.List;
+
 import com.topscit.springboot1.bean.Supplier;
 
 public interface SupplierMapper {
@@ -14,4 +16,7 @@ public interface SupplierMapper {
     int updateByPrimaryKeySelective(Supplier record);
 
     int updateByPrimaryKey(Supplier record);
+    
+    
+    public List<Supplier> getAllSupplier();
 }

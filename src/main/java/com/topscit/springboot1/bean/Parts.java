@@ -27,6 +27,8 @@ public class Parts {
 
     private Date pcreateTime;
 
+    private String plogo;
+
     public String getPid() {
         return pid;
     }
@@ -121,5 +123,13 @@ public class Parts {
 
     public void setPcreateTime(Date pcreateTime) {
         this.pcreateTime = pcreateTime;
+    }
+
+    public String getPlogo() {
+        return plogo;
+    }
+
+    public void setPlogo(String plogo) {
+        this.plogo = plogo == null ? null : plogo.trim();
     }
 }

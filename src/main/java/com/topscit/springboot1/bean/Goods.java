@@ -13,6 +13,8 @@ public class Goods {
 
     private String gcount;
 
+    private String glogo;
+
     public String getGid() {
         return gid;
     }
@@ -59,5 +61,13 @@ public class Goods {
 
     public void setGcount(String gcount) {
         this.gcount = gcount == null ? null : gcount.trim();
+    }
+
+    public String getGlogo() {
+        return glogo;
+    }
+
+    public void setGlogo(String glogo) {
+        this.glogo = glogo == null ? null : glogo.trim();
     }
 }
