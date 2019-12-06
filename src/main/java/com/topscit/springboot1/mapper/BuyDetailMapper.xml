@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.BuyDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.BuyDetail" >
+    <id column="bdid" property="bdid" jdbcType="VARCHAR" />
+    <result column="bid" property="bid" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="bdcount" property="bdcount" jdbcType="VARCHAR" />
+    <result column="bdprice" property="bdprice" jdbcType="VARCHAR" />
+    <result column="bdstate" property="bdstate" jdbcType="VARCHAR" />
+    <result column="bdman" property="bdman" jdbcType="VARCHAR" />
+    <result column="bdremark" property="bdremark" jdbcType="VARCHAR" />
+    <result column="bdupdate_time" property="bdupdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    bdid, bid, pid, bdcount, bdprice, bdstate, bdman, bdremark, bdupdate_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from buy_detail
+    where bdid = #{bdid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from buy_detail
+    where bdid = #{bdid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.BuyDetail" >
+    insert into buy_detail (bdid, bid, pid, 
+      bdcount, bdprice, bdstate, 
+      bdman, bdremark, bdupdate_time
+      )
+    values (#{bdid,jdbcType=VARCHAR}, #{bid,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, 
+      #{bdcount,jdbcType=VARCHAR}, #{bdprice,jdbcType=VARCHAR}, #{bdstate,jdbcType=VARCHAR}, 
+      #{bdman,jdbcType=VARCHAR}, #{bdremark,jdbcType=VARCHAR}, #{bdupdateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.BuyDetail" >
+    insert into buy_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bdid != null" >
+        bdid,
+      </if>
+      <if test="bid != null" >
+        bid,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="bdcount != null" >
+        bdcount,
+      </if>
+      <if test="bdprice != null" >
+        bdprice,
+      </if>
+      <if test="bdstate != null" >
+        bdstate,
+      </if>
+      <if test="bdman != null" >
+        bdman,
+      </if>
+      <if test="bdremark != null" >
+        bdremark,
+      </if>
+      <if test="bdupdateTime != null" >
+        bdupdate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bdid != null" >
+        #{bdid,jdbcType=VARCHAR},
+      </if>
+      <if test="bid != null" >
+        #{bid,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="bdcount != null" >
+        #{bdcount,jdbcType=VARCHAR},
+      </if>
+      <if test="bdprice != null" >
+        #{bdprice,jdbcType=VARCHAR},
+      </if>
+      <if test="bdstate != null" >
+        #{bdstate,jdbcType=VARCHAR},
+      </if>
+      <if test="bdman != null" >
+        #{bdman,jdbcType=VARCHAR},
+      </if>
+      <if test="bdremark != null" >
+        #{bdremark,jdbcType=VARCHAR},
+      </if>
+      <if test="bdupdateTime != null" >
+        #{bdupdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.BuyDetail" >
+    update buy_detail
+    <set >
+      <if test="bid != null" >
+        bid = #{bid,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="bdcount != null" >
+        bdcount = #{bdcount,jdbcType=VARCHAR},
+      </if>
+      <if test="bdprice != null" >
+        bdprice = #{bdprice,jdbcType=VARCHAR},
+      </if>
+      <if test="bdstate != null" >
+        bdstate = #{bdstate,jdbcType=VARCHAR},
+      </if>
+      <if test="bdman != null" >
+        bdman = #{bdman,jdbcType=VARCHAR},
+      </if>
+      <if test="bdremark != null" >
+        bdremark = #{bdremark,jdbcType=VARCHAR},
+      </if>
+      <if test="bdupdateTime != null" >
+        bdupdate_time = #{bdupdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where bdid = #{bdid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.BuyDetail" >
+    update buy_detail
+    set bid = #{bid,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=VARCHAR},
+      bdcount = #{bdcount,jdbcType=VARCHAR},
+      bdprice = #{bdprice,jdbcType=VARCHAR},
+      bdstate = #{bdstate,jdbcType=VARCHAR},
+      bdman = #{bdman,jdbcType=VARCHAR},
+      bdremark = #{bdremark,jdbcType=VARCHAR},
+      bdupdate_time = #{bdupdateTime,jdbcType=TIMESTAMP}
+    where bdid = #{bdid,jdbcType=VARCHAR}
+  </update>
+</mapper>

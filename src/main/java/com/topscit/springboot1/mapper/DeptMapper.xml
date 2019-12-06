@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.DeptMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Dept" >
+    <id column="did" property="did" jdbcType="VARCHAR" />
+    <result column="dname" property="dname" jdbcType="VARCHAR" />
+    <result column="dremark" property="dremark" jdbcType="VARCHAR" />
+    <result column="dupdate_time" property="dupdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    did, dname, dremark, dupdate_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from dept
+    where did = #{did,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dept
+    where did = #{did,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Dept" >
+    insert into dept (did, dname, dremark, 
+      dupdate_time)
+    values (#{did,jdbcType=VARCHAR}, #{dname,jdbcType=VARCHAR}, #{dremark,jdbcType=VARCHAR}, 
+      #{dupdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Dept" >
+    insert into dept
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="did != null" >
+        did,
+      </if>
+      <if test="dname != null" >
+        dname,
+      </if>
+      <if test="dremark != null" >
+        dremark,
+      </if>
+      <if test="dupdateTime != null" >
+        dupdate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="did != null" >
+        #{did,jdbcType=VARCHAR},
+      </if>
+      <if test="dname != null" >
+        #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="dremark != null" >
+        #{dremark,jdbcType=VARCHAR},
+      </if>
+      <if test="dupdateTime != null" >
+        #{dupdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Dept" >
+    update dept
+    <set >
+      <if test="dname != null" >
+        dname = #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="dremark != null" >
+        dremark = #{dremark,jdbcType=VARCHAR},
+      </if>
+      <if test="dupdateTime != null" >
+        dupdate_time = #{dupdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where did = #{did,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Dept" >
+    update dept
+    set dname = #{dname,jdbcType=VARCHAR},
+      dremark = #{dremark,jdbcType=VARCHAR},
+      dupdate_time = #{dupdateTime,jdbcType=TIMESTAMP}
+    where did = #{did,jdbcType=VARCHAR}
+  </update>
+</mapper>

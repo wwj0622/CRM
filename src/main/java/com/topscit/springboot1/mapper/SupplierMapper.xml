@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.SupplierMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Supplier" >
+    <id column="sid" property="sid" jdbcType="VARCHAR" />
+    <result column="sname" property="sname" jdbcType="VARCHAR" />
+    <result column="sphone" property="sphone" jdbcType="VARCHAR" />
+    <result column="saddress" property="saddress" jdbcType="VARCHAR" />
+    <result column="semail" property="semail" jdbcType="VARCHAR" />
+    <result column="saccount" property="saccount" jdbcType="VARCHAR" />
+    <result column="sstate" property="sstate" jdbcType="VARCHAR" />
+    <result column="sremark" property="sremark" jdbcType="VARCHAR" />
+    <result column="supdate_time" property="supdateTime" jdbcType="TIMESTAMP" />
+    <result column="screate_time" property="screateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sid, sname, sphone, saddress, semail, saccount, sstate, sremark, supdate_time, screate_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from supplier
+    where sid = #{sid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from supplier
+    where sid = #{sid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Supplier" >
+    insert into supplier (sid, sname, sphone, 
+      saddress, semail, saccount, 
+      sstate, sremark, supdate_time, 
+      screate_time)
+    values (#{sid,jdbcType=VARCHAR}, #{sname,jdbcType=VARCHAR}, #{sphone,jdbcType=VARCHAR}, 
+      #{saddress,jdbcType=VARCHAR}, #{semail,jdbcType=VARCHAR}, #{saccount,jdbcType=VARCHAR}, 
+      #{sstate,jdbcType=VARCHAR}, #{sremark,jdbcType=VARCHAR}, #{supdateTime,jdbcType=TIMESTAMP}, 
+      #{screateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Supplier" >
+    insert into supplier
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="sname != null" >
+        sname,
+      </if>
+      <if test="sphone != null" >
+        sphone,
+      </if>
+      <if test="saddress != null" >
+        saddress,
+      </if>
+      <if test="semail != null" >
+        semail,
+      </if>
+      <if test="saccount != null" >
+        saccount,
+      </if>
+      <if test="sstate != null" >
+        sstate,
+      </if>
+      <if test="sremark != null" >
+        sremark,
+      </if>
+      <if test="supdateTime != null" >
+        supdate_time,
+      </if>
+      <if test="screateTime != null" >
+        screate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        #{sid,jdbcType=VARCHAR},
+      </if>
+      <if test="sname != null" >
+        #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="sphone != null" >
+        #{sphone,jdbcType=VARCHAR},
+      </if>
+      <if test="saddress != null" >
+        #{saddress,jdbcType=VARCHAR},
+      </if>
+      <if test="semail != null" >
+        #{semail,jdbcType=VARCHAR},
+      </if>
+      <if test="saccount != null" >
+        #{saccount,jdbcType=VARCHAR},
+      </if>
+      <if test="sstate != null" >
+        #{sstate,jdbcType=VARCHAR},
+      </if>
+      <if test="sremark != null" >
+        #{sremark,jdbcType=VARCHAR},
+      </if>
+      <if test="supdateTime != null" >
+        #{supdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="screateTime != null" >
+        #{screateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Supplier" >
+    update supplier
+    <set >
+      <if test="sname != null" >
+        sname = #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="sphone != null" >
+        sphone = #{sphone,jdbcType=VARCHAR},
+      </if>
+      <if test="saddress != null" >
+        saddress = #{saddress,jdbcType=VARCHAR},
+      </if>
+      <if test="semail != null" >
+        semail = #{semail,jdbcType=VARCHAR},
+      </if>
+      <if test="saccount != null" >
+        saccount = #{saccount,jdbcType=VARCHAR},
+      </if>
+      <if test="sstate != null" >
+        sstate = #{sstate,jdbcType=VARCHAR},
+      </if>
+      <if test="sremark != null" >
+        sremark = #{sremark,jdbcType=VARCHAR},
+      </if>
+      <if test="supdateTime != null" >
+        supdate_time = #{supdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="screateTime != null" >
+        screate_time = #{screateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Supplier" >
+    update supplier
+    set sname = #{sname,jdbcType=VARCHAR},
+      sphone = #{sphone,jdbcType=VARCHAR},
+      saddress = #{saddress,jdbcType=VARCHAR},
+      semail = #{semail,jdbcType=VARCHAR},
+      saccount = #{saccount,jdbcType=VARCHAR},
+      sstate = #{sstate,jdbcType=VARCHAR},
+      sremark = #{sremark,jdbcType=VARCHAR},
+      supdate_time = #{supdateTime,jdbcType=TIMESTAMP},
+      screate_time = #{screateTime,jdbcType=TIMESTAMP}
+    where sid = #{sid,jdbcType=VARCHAR}
+  </update>
+</mapper>

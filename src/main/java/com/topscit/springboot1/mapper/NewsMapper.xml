@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.NewsMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.News" >
+    <id column="nid" property="nid" jdbcType="VARCHAR" />
+    <result column="tid" property="tid" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="nstate" property="nstate" jdbcType="VARCHAR" />
+    <result column="ntime" property="ntime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    nid, tid, id, nstate, ntime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from news
+    where nid = #{nid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from news
+    where nid = #{nid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.News" >
+    insert into news (nid, tid, id, 
+      nstate, ntime)
+    values (#{nid,jdbcType=VARCHAR}, #{tid,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, 
+      #{nstate,jdbcType=VARCHAR}, #{ntime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.News" >
+    insert into news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="nid != null" >
+        nid,
+      </if>
+      <if test="tid != null" >
+        tid,
+      </if>
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="nstate != null" >
+        nstate,
+      </if>
+      <if test="ntime != null" >
+        ntime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="nid != null" >
+        #{nid,jdbcType=VARCHAR},
+      </if>
+      <if test="tid != null" >
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="nstate != null" >
+        #{nstate,jdbcType=VARCHAR},
+      </if>
+      <if test="ntime != null" >
+        #{ntime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.News" >
+    update news
+    <set >
+      <if test="tid != null" >
+        tid = #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        id = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="nstate != null" >
+        nstate = #{nstate,jdbcType=VARCHAR},
+      </if>
+      <if test="ntime != null" >
+        ntime = #{ntime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where nid = #{nid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.News" >
+    update news
+    set tid = #{tid,jdbcType=VARCHAR},
+      id = #{id,jdbcType=VARCHAR},
+      nstate = #{nstate,jdbcType=VARCHAR},
+      ntime = #{ntime,jdbcType=TIMESTAMP}
+    where nid = #{nid,jdbcType=VARCHAR}
+  </update>
+</mapper>

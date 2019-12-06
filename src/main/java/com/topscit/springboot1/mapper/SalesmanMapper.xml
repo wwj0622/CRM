@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.SalesmanMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Salesman" >
+    <id column="smid" property="smid" jdbcType="VARCHAR" />
+    <result column="smname" property="smname" jdbcType="VARCHAR" />
+    <result column="smphone" property="smphone" jdbcType="VARCHAR" />
+    <result column="smemail" property="smemail" jdbcType="VARCHAR" />
+    <result column="smaddress" property="smaddress" jdbcType="VARCHAR" />
+    <result column="smremark" property="smremark" jdbcType="VARCHAR" />
+    <result column="did" property="did" jdbcType="VARCHAR" />
+    <result column="wid" property="wid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    smid, smname, smphone, smemail, smaddress, smremark, did, wid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from salesman
+    where smid = #{smid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from salesman
+    where smid = #{smid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Salesman" >
+    insert into salesman (smid, smname, smphone, 
+      smemail, smaddress, smremark, 
+      did, wid)
+    values (#{smid,jdbcType=VARCHAR}, #{smname,jdbcType=VARCHAR}, #{smphone,jdbcType=VARCHAR}, 
+      #{smemail,jdbcType=VARCHAR}, #{smaddress,jdbcType=VARCHAR}, #{smremark,jdbcType=VARCHAR}, 
+      #{did,jdbcType=VARCHAR}, #{wid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Salesman" >
+    insert into salesman
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="smid != null" >
+        smid,
+      </if>
+      <if test="smname != null" >
+        smname,
+      </if>
+      <if test="smphone != null" >
+        smphone,
+      </if>
+      <if test="smemail != null" >
+        smemail,
+      </if>
+      <if test="smaddress != null" >
+        smaddress,
+      </if>
+      <if test="smremark != null" >
+        smremark,
+      </if>
+      <if test="did != null" >
+        did,
+      </if>
+      <if test="wid != null" >
+        wid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="smid != null" >
+        #{smid,jdbcType=VARCHAR},
+      </if>
+      <if test="smname != null" >
+        #{smname,jdbcType=VARCHAR},
+      </if>
+      <if test="smphone != null" >
+        #{smphone,jdbcType=VARCHAR},
+      </if>
+      <if test="smemail != null" >
+        #{smemail,jdbcType=VARCHAR},
+      </if>
+      <if test="smaddress != null" >
+        #{smaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="smremark != null" >
+        #{smremark,jdbcType=VARCHAR},
+      </if>
+      <if test="did != null" >
+        #{did,jdbcType=VARCHAR},
+      </if>
+      <if test="wid != null" >
+        #{wid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Salesman" >
+    update salesman
+    <set >
+      <if test="smname != null" >
+        smname = #{smname,jdbcType=VARCHAR},
+      </if>
+      <if test="smphone != null" >
+        smphone = #{smphone,jdbcType=VARCHAR},
+      </if>
+      <if test="smemail != null" >
+        smemail = #{smemail,jdbcType=VARCHAR},
+      </if>
+      <if test="smaddress != null" >
+        smaddress = #{smaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="smremark != null" >
+        smremark = #{smremark,jdbcType=VARCHAR},
+      </if>
+      <if test="did != null" >
+        did = #{did,jdbcType=VARCHAR},
+      </if>
+      <if test="wid != null" >
+        wid = #{wid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where smid = #{smid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Salesman" >
+    update salesman
+    set smname = #{smname,jdbcType=VARCHAR},
+      smphone = #{smphone,jdbcType=VARCHAR},
+      smemail = #{smemail,jdbcType=VARCHAR},
+      smaddress = #{smaddress,jdbcType=VARCHAR},
+      smremark = #{smremark,jdbcType=VARCHAR},
+      did = #{did,jdbcType=VARCHAR},
+      wid = #{wid,jdbcType=VARCHAR}
+    where smid = #{smid,jdbcType=VARCHAR}
+  </update>
+</mapper>

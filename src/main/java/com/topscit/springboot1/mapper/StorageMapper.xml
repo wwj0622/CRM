@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.StorageMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Storage" >
+    <id column="stid" property="stid" jdbcType="VARCHAR" />
+    <result column="stname" property="stname" jdbcType="VARCHAR" />
+    <result column="stremark" property="stremark" jdbcType="VARCHAR" />
+    <result column="stupdate_time" property="stupdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    stid, stname, stremark, stupdate_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from storage
+    where stid = #{stid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from storage
+    where stid = #{stid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Storage" >
+    insert into storage (stid, stname, stremark, 
+      stupdate_time)
+    values (#{stid,jdbcType=VARCHAR}, #{stname,jdbcType=VARCHAR}, #{stremark,jdbcType=VARCHAR}, 
+      #{stupdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Storage" >
+    insert into storage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stid != null" >
+        stid,
+      </if>
+      <if test="stname != null" >
+        stname,
+      </if>
+      <if test="stremark != null" >
+        stremark,
+      </if>
+      <if test="stupdateTime != null" >
+        stupdate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stid != null" >
+        #{stid,jdbcType=VARCHAR},
+      </if>
+      <if test="stname != null" >
+        #{stname,jdbcType=VARCHAR},
+      </if>
+      <if test="stremark != null" >
+        #{stremark,jdbcType=VARCHAR},
+      </if>
+      <if test="stupdateTime != null" >
+        #{stupdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Storage" >
+    update storage
+    <set >
+      <if test="stname != null" >
+        stname = #{stname,jdbcType=VARCHAR},
+      </if>
+      <if test="stremark != null" >
+        stremark = #{stremark,jdbcType=VARCHAR},
+      </if>
+      <if test="stupdateTime != null" >
+        stupdate_time = #{stupdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where stid = #{stid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Storage" >
+    update storage
+    set stname = #{stname,jdbcType=VARCHAR},
+      stremark = #{stremark,jdbcType=VARCHAR},
+      stupdate_time = #{stupdateTime,jdbcType=TIMESTAMP}
+    where stid = #{stid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.PartsMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Parts" >
+    <id column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="pname" property="pname" jdbcType="VARCHAR" />
+    <result column="pexplain" property="pexplain" jdbcType="VARCHAR" />
+    <result column="punit" property="punit" jdbcType="VARCHAR" />
+    <result column="ptid" property="ptid" jdbcType="VARCHAR" />
+    <result column="pcount" property="pcount" jdbcType="VARCHAR" />
+    <result column="pdanger" property="pdanger" jdbcType="VARCHAR" />
+    <result column="pstate" property="pstate" jdbcType="VARCHAR" />
+    <result column="pprice" property="pprice" jdbcType="VARCHAR" />
+    <result column="premark" property="premark" jdbcType="VARCHAR" />
+    <result column="pupdate_time" property="pupdateTime" jdbcType="TIMESTAMP" />
+    <result column="pcreate_time" property="pcreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pid, pname, pexplain, punit, ptid, pcount, pdanger, pstate, pprice, premark, pupdate_time, 
+    pcreate_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from parts
+    where pid = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from parts
+    where pid = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Parts" >
+    insert into parts (pid, pname, pexplain, 
+      punit, ptid, pcount, 
+      pdanger, pstate, pprice, 
+      premark, pupdate_time, pcreate_time
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{pname,jdbcType=VARCHAR}, #{pexplain,jdbcType=VARCHAR}, 
+      #{punit,jdbcType=VARCHAR}, #{ptid,jdbcType=VARCHAR}, #{pcount,jdbcType=VARCHAR}, 
+      #{pdanger,jdbcType=VARCHAR}, #{pstate,jdbcType=VARCHAR}, #{pprice,jdbcType=VARCHAR}, 
+      #{premark,jdbcType=VARCHAR}, #{pupdateTime,jdbcType=TIMESTAMP}, #{pcreateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Parts" >
+    insert into parts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="pname != null" >
+        pname,
+      </if>
+      <if test="pexplain != null" >
+        pexplain,
+      </if>
+      <if test="punit != null" >
+        punit,
+      </if>
+      <if test="ptid != null" >
+        ptid,
+      </if>
+      <if test="pcount != null" >
+        pcount,
+      </if>
+      <if test="pdanger != null" >
+        pdanger,
+      </if>
+      <if test="pstate != null" >
+        pstate,
+      </if>
+      <if test="pprice != null" >
+        pprice,
+      </if>
+      <if test="premark != null" >
+        premark,
+      </if>
+      <if test="pupdateTime != null" >
+        pupdate_time,
+      </if>
+      <if test="pcreateTime != null" >
+        pcreate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="pname != null" >
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="pexplain != null" >
+        #{pexplain,jdbcType=VARCHAR},
+      </if>
+      <if test="punit != null" >
+        #{punit,jdbcType=VARCHAR},
+      </if>
+      <if test="ptid != null" >
+        #{ptid,jdbcType=VARCHAR},
+      </if>
+      <if test="pcount != null" >
+        #{pcount,jdbcType=VARCHAR},
+      </if>
+      <if test="pdanger != null" >
+        #{pdanger,jdbcType=VARCHAR},
+      </if>
+      <if test="pstate != null" >
+        #{pstate,jdbcType=VARCHAR},
+      </if>
+      <if test="pprice != null" >
+        #{pprice,jdbcType=VARCHAR},
+      </if>
+      <if test="premark != null" >
+        #{premark,jdbcType=VARCHAR},
+      </if>
+      <if test="pupdateTime != null" >
+        #{pupdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pcreateTime != null" >
+        #{pcreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Parts" >
+    update parts
+    <set >
+      <if test="pname != null" >
+        pname = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="pexplain != null" >
+        pexplain = #{pexplain,jdbcType=VARCHAR},
+      </if>
+      <if test="punit != null" >
+        punit = #{punit,jdbcType=VARCHAR},
+      </if>
+      <if test="ptid != null" >
+        ptid = #{ptid,jdbcType=VARCHAR},
+      </if>
+      <if test="pcount != null" >
+        pcount = #{pcount,jdbcType=VARCHAR},
+      </if>
+      <if test="pdanger != null" >
+        pdanger = #{pdanger,jdbcType=VARCHAR},
+      </if>
+      <if test="pstate != null" >
+        pstate = #{pstate,jdbcType=VARCHAR},
+      </if>
+      <if test="pprice != null" >
+        pprice = #{pprice,jdbcType=VARCHAR},
+      </if>
+      <if test="premark != null" >
+        premark = #{premark,jdbcType=VARCHAR},
+      </if>
+      <if test="pupdateTime != null" >
+        pupdate_time = #{pupdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pcreateTime != null" >
+        pcreate_time = #{pcreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Parts" >
+    update parts
+    set pname = #{pname,jdbcType=VARCHAR},
+      pexplain = #{pexplain,jdbcType=VARCHAR},
+      punit = #{punit,jdbcType=VARCHAR},
+      ptid = #{ptid,jdbcType=VARCHAR},
+      pcount = #{pcount,jdbcType=VARCHAR},
+      pdanger = #{pdanger,jdbcType=VARCHAR},
+      pstate = #{pstate,jdbcType=VARCHAR},
+      pprice = #{pprice,jdbcType=VARCHAR},
+      premark = #{premark,jdbcType=VARCHAR},
+      pupdate_time = #{pupdateTime,jdbcType=TIMESTAMP},
+      pcreate_time = #{pcreateTime,jdbcType=TIMESTAMP}
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

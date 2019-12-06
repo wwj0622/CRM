@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.TaskMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Task" >
+    <id column="tid" property="tid" jdbcType="VARCHAR" />
+    <result column="tcontent" property="tcontent" jdbcType="VARCHAR" />
+    <result column="tstate" property="tstate" jdbcType="VARCHAR" />
+    <result column="ttime" property="ttime" jdbcType="TIMESTAMP" />
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tid, tcontent, tstate, ttime, id, userid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from task
+    where tid = #{tid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from task
+    where tid = #{tid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Task" >
+    insert into task (tid, tcontent, tstate, 
+      ttime, id, userid
+      )
+    values (#{tid,jdbcType=VARCHAR}, #{tcontent,jdbcType=VARCHAR}, #{tstate,jdbcType=VARCHAR}, 
+      #{ttime,jdbcType=TIMESTAMP}, #{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Task" >
+    insert into task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tid != null" >
+        tid,
+      </if>
+      <if test="tcontent != null" >
+        tcontent,
+      </if>
+      <if test="tstate != null" >
+        tstate,
+      </if>
+      <if test="ttime != null" >
+        ttime,
+      </if>
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tid != null" >
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="tcontent != null" >
+        #{tcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="tstate != null" >
+        #{tstate,jdbcType=VARCHAR},
+      </if>
+      <if test="ttime != null" >
+        #{ttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Task" >
+    update task
+    <set >
+      <if test="tcontent != null" >
+        tcontent = #{tcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="tstate != null" >
+        tstate = #{tstate,jdbcType=VARCHAR},
+      </if>
+      <if test="ttime != null" >
+        ttime = #{ttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="id != null" >
+        id = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tid = #{tid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Task" >
+    update task
+    set tcontent = #{tcontent,jdbcType=VARCHAR},
+      tstate = #{tstate,jdbcType=VARCHAR},
+      ttime = #{ttime,jdbcType=TIMESTAMP},
+      id = #{id,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR}
+    where tid = #{tid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.WorkMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Work" >
+    <id column="wid" property="wid" jdbcType="VARCHAR" />
+    <result column="wname" property="wname" jdbcType="VARCHAR" />
+    <result column="did" property="did" jdbcType="VARCHAR" />
+    <result column="wremark" property="wremark" jdbcType="VARCHAR" />
+    <result column="wupdate_time" property="wupdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    wid, wname, did, wremark, wupdate_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from work
+    where wid = #{wid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from work
+    where wid = #{wid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Work" >
+    insert into work (wid, wname, did, 
+      wremark, wupdate_time)
+    values (#{wid,jdbcType=VARCHAR}, #{wname,jdbcType=VARCHAR}, #{did,jdbcType=VARCHAR}, 
+      #{wremark,jdbcType=VARCHAR}, #{wupdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Work" >
+    insert into work
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="wid != null" >
+        wid,
+      </if>
+      <if test="wname != null" >
+        wname,
+      </if>
+      <if test="did != null" >
+        did,
+      </if>
+      <if test="wremark != null" >
+        wremark,
+      </if>
+      <if test="wupdateTime != null" >
+        wupdate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="wid != null" >
+        #{wid,jdbcType=VARCHAR},
+      </if>
+      <if test="wname != null" >
+        #{wname,jdbcType=VARCHAR},
+      </if>
+      <if test="did != null" >
+        #{did,jdbcType=VARCHAR},
+      </if>
+      <if test="wremark != null" >
+        #{wremark,jdbcType=VARCHAR},
+      </if>
+      <if test="wupdateTime != null" >
+        #{wupdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Work" >
+    update work
+    <set >
+      <if test="wname != null" >
+        wname = #{wname,jdbcType=VARCHAR},
+      </if>
+      <if test="did != null" >
+        did = #{did,jdbcType=VARCHAR},
+      </if>
+      <if test="wremark != null" >
+        wremark = #{wremark,jdbcType=VARCHAR},
+      </if>
+      <if test="wupdateTime != null" >
+        wupdate_time = #{wupdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where wid = #{wid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Work" >
+    update work
+    set wname = #{wname,jdbcType=VARCHAR},
+      did = #{did,jdbcType=VARCHAR},
+      wremark = #{wremark,jdbcType=VARCHAR},
+      wupdate_time = #{wupdateTime,jdbcType=TIMESTAMP}
+    where wid = #{wid,jdbcType=VARCHAR}
+  </update>
+</mapper>

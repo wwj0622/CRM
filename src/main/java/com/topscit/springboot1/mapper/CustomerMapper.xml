@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.CustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Customer" >
+    <id column="cid" property="cid" jdbcType="VARCHAR" />
+    <result column="cname" property="cname" jdbcType="VARCHAR" />
+    <result column="cproterty" property="cproterty" jdbcType="VARCHAR" />
+    <result column="cstate" property="cstate" jdbcType="VARCHAR" />
+    <result column="caccount" property="caccount" jdbcType="VARCHAR" />
+    <result column="cemail" property="cemail" jdbcType="VARCHAR" />
+    <result column="cphone" property="cphone" jdbcType="VARCHAR" />
+    <result column="caddress" property="caddress" jdbcType="VARCHAR" />
+    <result column="bremark" property="bremark" jdbcType="VARCHAR" />
+    <result column="smid" property="smid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cid, cname, cproterty, cstate, caccount, cemail, cphone, caddress, bremark, smid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from customer
+    where cid = #{cid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from customer
+    where cid = #{cid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Customer" >
+    insert into customer (cid, cname, cproterty, 
+      cstate, caccount, cemail, 
+      cphone, caddress, bremark, 
+      smid)
+    values (#{cid,jdbcType=VARCHAR}, #{cname,jdbcType=VARCHAR}, #{cproterty,jdbcType=VARCHAR}, 
+      #{cstate,jdbcType=VARCHAR}, #{caccount,jdbcType=VARCHAR}, #{cemail,jdbcType=VARCHAR}, 
+      #{cphone,jdbcType=VARCHAR}, #{caddress,jdbcType=VARCHAR}, #{bremark,jdbcType=VARCHAR}, 
+      #{smid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Customer" >
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="cname != null" >
+        cname,
+      </if>
+      <if test="cproterty != null" >
+        cproterty,
+      </if>
+      <if test="cstate != null" >
+        cstate,
+      </if>
+      <if test="caccount != null" >
+        caccount,
+      </if>
+      <if test="cemail != null" >
+        cemail,
+      </if>
+      <if test="cphone != null" >
+        cphone,
+      </if>
+      <if test="caddress != null" >
+        caddress,
+      </if>
+      <if test="bremark != null" >
+        bremark,
+      </if>
+      <if test="smid != null" >
+        smid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        #{cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cname != null" >
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="cproterty != null" >
+        #{cproterty,jdbcType=VARCHAR},
+      </if>
+      <if test="cstate != null" >
+        #{cstate,jdbcType=VARCHAR},
+      </if>
+      <if test="caccount != null" >
+        #{caccount,jdbcType=VARCHAR},
+      </if>
+      <if test="cemail != null" >
+        #{cemail,jdbcType=VARCHAR},
+      </if>
+      <if test="cphone != null" >
+        #{cphone,jdbcType=VARCHAR},
+      </if>
+      <if test="caddress != null" >
+        #{caddress,jdbcType=VARCHAR},
+      </if>
+      <if test="bremark != null" >
+        #{bremark,jdbcType=VARCHAR},
+      </if>
+      <if test="smid != null" >
+        #{smid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Customer" >
+    update customer
+    <set >
+      <if test="cname != null" >
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="cproterty != null" >
+        cproterty = #{cproterty,jdbcType=VARCHAR},
+      </if>
+      <if test="cstate != null" >
+        cstate = #{cstate,jdbcType=VARCHAR},
+      </if>
+      <if test="caccount != null" >
+        caccount = #{caccount,jdbcType=VARCHAR},
+      </if>
+      <if test="cemail != null" >
+        cemail = #{cemail,jdbcType=VARCHAR},
+      </if>
+      <if test="cphone != null" >
+        cphone = #{cphone,jdbcType=VARCHAR},
+      </if>
+      <if test="caddress != null" >
+        caddress = #{caddress,jdbcType=VARCHAR},
+      </if>
+      <if test="bremark != null" >
+        bremark = #{bremark,jdbcType=VARCHAR},
+      </if>
+      <if test="smid != null" >
+        smid = #{smid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Customer" >
+    update customer
+    set cname = #{cname,jdbcType=VARCHAR},
+      cproterty = #{cproterty,jdbcType=VARCHAR},
+      cstate = #{cstate,jdbcType=VARCHAR},
+      caccount = #{caccount,jdbcType=VARCHAR},
+      cemail = #{cemail,jdbcType=VARCHAR},
+      cphone = #{cphone,jdbcType=VARCHAR},
+      caddress = #{caddress,jdbcType=VARCHAR},
+      bremark = #{bremark,jdbcType=VARCHAR},
+      smid = #{smid,jdbcType=VARCHAR}
+    where cid = #{cid,jdbcType=VARCHAR}
+  </update>
+</mapper>
