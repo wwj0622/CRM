@@ -13,6 +13,9 @@
   <sql id="Base_Column_List" >
     gid, gname, goriginal, gprice, ptid, gcount, glogo
   </sql>
+  <select id="selectListGoods" resultType="com.topscit.springboot1.bean.Goods">
+  	select * from goods
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

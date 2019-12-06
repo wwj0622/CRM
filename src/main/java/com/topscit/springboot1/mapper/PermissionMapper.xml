@@ -15,6 +15,38 @@
   <sql id="Base_Column_List" >
     id, name, type, url, percode, parentid, parentids, sortstring, available
   </sql>
+  
+  <select id="select" resultMap="pp">
+  
+    SELECT sp.*,spp.*,spp.`name` sppname,spp.url sppurl FROM sys_user_role sur
+	INNER JOIN sys_role sr ON sur.sys_role_id = sr.id 
+	INNER JOIN sys_role_permission srp on sr.id = srp.sys_role_id 
+	INNER JOIN sys_permission sp ON sp.id = srp.sys_permission_id
+    LEFT JOIN  sys_permission spp ON sp.id = spp.parentid
+	WHERE   sp.parentid = 1 AND sur.sys_user_id =#{id};
+  
+  </select>
+  
+  <resultMap type="com.topscit.springboot1.bean.Permission" id="pp">
+       <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="percode" property="percode" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid" jdbcType="BIGINT" />
+    <result column="parentids" property="parentids" jdbcType="VARCHAR" />
+    <result column="sortstring" property="sortstring" jdbcType="VARCHAR" />
+    <result column="available" property="available" jdbcType="CHAR" />
+    
+    <collection property="miss" ofType="com.topscit.springboot1.bean.Permission" column="id">
+       <result column="sppname" property="name" jdbcType="VARCHAR" />
+       <result column="sppurl" property="url" jdbcType="VARCHAR" />
+    </collection>
+  
+  </resultMap>
+  
+  
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

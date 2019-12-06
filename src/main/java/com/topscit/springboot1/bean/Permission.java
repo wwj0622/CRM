@@ -1,5 +1,7 @@
 package com.topscit.springboot1.bean;
 
+import java.util.List;
+
 public class Permission {
     private Long id;
 
@@ -18,8 +20,19 @@ public class Permission {
     private String sortstring;
 
     private String available;
+    
+    private List<Permission> miss;
+    
+    
+    public List<Permission> getMiss() {
+		return miss;
+	}
 
-    public Long getId() {
+	public void setMiss(List<Permission> miss) {
+		this.miss = miss;
+	}
+
+	public Long getId() {
         return id;
     }
 
