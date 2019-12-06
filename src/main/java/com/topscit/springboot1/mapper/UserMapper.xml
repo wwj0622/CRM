@@ -11,9 +11,15 @@
     <result column="idcard" property="idcard" jdbcType="VARCHAR" />
     <result column="locked" property="locked" jdbcType="CHAR" />
   </resultMap>
+
   <sql id="Base_Column_List" >
     id, usercode, username, password, salt, phone, idcard, locked
   </sql>
+  
+  <select id="select" resultMap="BaseResultMap">
+    select * from sys_user where usercode=#{name}
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

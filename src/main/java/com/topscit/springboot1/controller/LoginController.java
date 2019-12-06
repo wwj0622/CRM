@@ -11,15 +11,21 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.topscit.springboot1.bean.User;
 
 @Controller
 public class LoginController {
 	
 	@RequestMapping("/login")
-	public String Login(String uname,String upass,HttpServletRequest req,Map<String, Object> data)
+	@ResponseBody
+	public String Login(@RequestBody User user,HttpServletRequest req,Map<String, Object> data)
 	{
-	    UsernamePasswordToken token = new UsernamePasswordToken(uname,upass);
+		
+	    UsernamePasswordToken token = new UsernamePasswordToken(user.getUsercode(),user.getPassword());
 		
 		Subject subject = SecurityUtils.getSubject();
 	    
@@ -37,10 +43,12 @@ public class LoginController {
 		}
 		if(subject.isAuthenticated())
 		{
-			return "redirect:/index.jsp";
+			System.out.println("进入");
+			return "forward:/permiss";
 		}
 		else
 		{
+			System.out.println("aaaa");
 			return "redirect:/Login.jsp";
 		}
 		

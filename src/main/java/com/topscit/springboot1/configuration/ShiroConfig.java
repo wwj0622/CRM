@@ -63,18 +63,20 @@ public class ShiroConfig {
 	{
 		ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
 		factoryBean.setSecurityManager(securityManager());
-		factoryBean.setLoginUrl("/login.jsp");
-		factoryBean.setSuccessUrl("/user/center");
+		factoryBean.setLoginUrl("/Login.jsp");
+		factoryBean.setSuccessUrl("/permiss");
 		factoryBean.setUnauthorizedUrl("/unauthorized.jsp");
 
 		Map<String,String> hashMap = new HashMap<String, String>();
 		hashMap.put("/js/**", "anon");
-		hashMap.put("/css/**", "anon");
-		hashMap.put("/img/**", "anon");
-		hashMap.put("/upload/**", "anon");
+		hashMap.put("/lib/**", "anon");
+		hashMap.put("/static/**", "anon");
+		hashMap.put("/temp/**", "anon");
 		hashMap.put("/login", "anon");
-		hashMap.put("/logo", "logout");
-		hashMap.put("/**", "anon");
+		hashMap.put("/Login.jsp", "anon");
+		hashMap.put("/logout", "logout");
+		
+		hashMap.put("/**", "authc");
 	
 		factoryBean.setFilterChainDefinitionMap(hashMap);
 		return factoryBean;

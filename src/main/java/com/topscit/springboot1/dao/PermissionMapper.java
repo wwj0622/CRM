@@ -1,5 +1,7 @@
 package com.topscit.springboot1.dao;
 
+import java.util.List;
+
 import com.topscit.springboot1.bean.Permission;
 
 public interface PermissionMapper {
@@ -14,4 +16,6 @@ public interface PermissionMapper {
     int updateByPrimaryKeySelective(Permission record);
 
     int updateByPrimaryKey(Permission record);
+    
+    List<Permission> select(String id);
 }
