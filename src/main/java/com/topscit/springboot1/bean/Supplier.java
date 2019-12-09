@@ -2,6 +2,10 @@ package com.topscit.springboot1.bean;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Supplier {
     private String sid;
 
@@ -19,8 +23,10 @@ public class Supplier {
 
     private String sremark;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date supdateTime;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date screateTime;
 
     private String slogo;
@@ -138,4 +144,15 @@ public class Supplier {
     public void setSlogo(String slogo) {
         this.slogo = slogo == null ? null : slogo.trim();
     }
+
+
+
+	@Override
+	public String toString() {
+		return "Supplier [sid=" + sid + ", sname=" + sname + ", sphone=" + sphone + ", saddress=" + saddress
+				+ ", semail=" + semail + ", saccount=" + saccount + ", sstate=" + sstate + ", sremark=" + sremark
+				+ ", supdateTime=" + supdateTime + ", screateTime=" + screateTime + ", slogo=" + slogo + "]";
+	}
+    
+    
 }
