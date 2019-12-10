@@ -19,4 +19,6 @@ public interface SupplierMapper {
     
     
     public List<Supplier> getAllSupplier();
+    
+    public List<Supplier> getSupplierBy(String name);
 }

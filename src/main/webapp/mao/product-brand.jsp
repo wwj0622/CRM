@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
     String path = request.getContextPath();
     String basepath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -41,15 +43,17 @@
 		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">
 		-
 		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
-		<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="" name="">
-		<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+		<input type="text"  v-model="inputContent" class="input-text" style="width:250px" placeholder="输入供应商名称" id="" name="">
+		<button type="submit" @click="search" class="btn btn-success radius" id="" name="">
+		<i class="Hui-iconfont">&#xe665;</i> 搜索
+		</button>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
 		<span class="l">
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
 			</a> 
-			<a href="javascript:;" onclick="member_add('添加用户','member-add.html','','510')" class="btn btn-primary radius">
+			<a href="javascript:;" onclick="member_add('添加用户','mao/member-add.jsp','','510')" class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i> 添加用户
 			</a>
 		</span> 
@@ -65,18 +69,45 @@
 					<th width="100">供货商银行账户</th>
 					<th width="60">供货商邮箱</th>
 					<th>供货商地址</th>
+					<th width="60">供货商说明</th>
 					<th width="40">最近操作时间</th>
 					<th width="100">操作</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="text-c" v-for='(supplier,i) in supplierList'>
+			<!-- 
+			 <c:forEach items="${pageInfo.list }" var="supplier"  >
+				<tr class="text-c">
 					<td><input name="" type="checkbox" value=""></td>
-					<td class="text-l"><img :src="supplier.slogo"> {{supplier.sname}}</td>
+					<td class="text-l"><img src="${supplier.slogo }"> ${supplier.sname }</td>
+					<td>${supplier.sphone }</td>
+					<td>${supplier.saccount }</td>
+					<td>${supplier.semail}</td>
+					<td class="text-l">${supplier.saddress}</td>
+					<td>
+						<fmt:formatDate type="both" dateStyle="medium" timeStyle="medium" value="${supplier.supdateTime}" />
+					</td>
+					<td class="f-14 product-brand-manage">
+						<a style="text-decoration:none" onClick="product_brand_edit('品牌编辑','codeing.html','1')" href="javascript:;" title="编辑">
+							<i class="Hui-iconfont">&#xe6df;</i>
+						</a> 
+						<a style="text-decoration:none" class="ml-5" onClick="active_del(this,'10001')" href="javascript:;" title="删除">
+							<i class="Hui-iconfont">&#xe6e2;</i>
+						</a>
+					</td>
+				</tr>
+			</c:forEach>
+			 -->
+			 
+			 
+			<tr class="text-c" v-for='(supplier,i) in supplierList'>
+					<td><input name="" type="checkbox" value=""></td>
+					<td class="text-l"><img > {{supplier.sname}}</td>
 					<td>{{supplier.sphone}}</td>
 					<td>{{supplier.saccount}}</td>
 					<td>{{supplier.semail}}</td>
 					<td class="text-l">{{supplier.saddress}}</td>
+					<td>{{supplier.sremark}}</td>
 					<td>{{supplier.supdateTime}}</td>
 					<td class="f-14 product-brand-manage">
 						<a style="text-decoration:none" onClick="product_brand_edit('品牌编辑','codeing.html','1')" href="javascript:;" title="编辑">
@@ -87,11 +118,85 @@
 						</a>
 					</td>
 				</tr>
+			 <tr>
+			 <!-- 
+		    	 <td colspan="4">
+		    	 	<a href="supplier/selectSupplier" >首页</a>
+		    	 	
+		    	 	<c:if test="{{pageInfo.hasPreviousPage}}">
+		    	 		<a href="supplier/selectSupplier?pn={{pageInfo.prePage}}" >上一页</a>
+		    	 	</c:if>
+		    	 	<c:if test="{{pageInfo.hasNextPage}}">
+		    	 		<a href="supplier/selectSupplier?pn={{pageInfo.nextPage}}" >下一页</a>
+		    	 	</c:if>
+		    	 	
+		    	 	<a href="supplier/selectSupplier?pn={{pageInfo.pages{}" >尾页</a>
+		    	 </td> -->
+		    	 <td colspan="4">
+	                <a href="javascript:;" @click="jump(1)">首页</a>
+	                <a href="javascript:;" @click="jump(pageInfo.prePage)">上页</a>
+	                <a href="javascript:;" @click="jump(pageInfo.nextPage)">下页</a>
+	                <a href="javascript:;" @click="jump(pageInfo.pages)">尾页</a>
+            	</td>
+		   	 </tr>
 			</tbody>
 		</table>
 	</div>
 </div>
+<script type="text/javascript">
+var v =  new Vue({
+	el:'#app',
+	data:{
+		supplierList:[],
+		pageInfo:[],
+		inputContent:''
+	},
+	methods:{
+		jump(page){
+		 	var _this = this;
+	        $.ajax({
+	            type: "GET",
+	            url: "/supplier/getAllSupplier",
+	            data: {pn:page},
+	            dataType: "json",
+	            success: function (response) {
+	            	_this.supplierList = response.data.list;
+	            	_this.pageInfo = response.data;
+	            },
+	        });
+         },
+         search(){
+        	var _this = this;
+ 	        $.ajax({
+ 	            type: "GET",
+ 	            url: "/supplier/getAllSupplier",
+ 	            data: {name:_this.inputContent},
+ 	            dataType: "json",
+ 	            success: function (response) {
+ 	            	_this.supplierList = response.data.list;
+ 	            	_this.pageInfo = response.data;
+ 	            	console.log(_this.inputContent)
+ 	            },
+ 	        });
+         }
+	},
+	created(){  
+        var _this = this;
+        $.ajax({
+            type: "GET",
+            url: "/supplier/getAllSupplier",
+            data: null,
+            dataType: "json",
+            success: function (response) {
+            	_this.supplierList = response.data.list;
+            	_this.pageInfo = response.data;
+            },
+        });
+       }
 
+});
+
+</script>
 
 
 <!--_footer 作为公共模版分离出去-->
@@ -102,9 +207,9 @@
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script> 
-<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+<!--
 $(function(){
 	$('.table-sort').dataTable({
 		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
@@ -116,6 +221,7 @@ $(function(){
 	});
 	
 });
+-->
 /*用户-添加*/
 function member_add(title,url,w,h){
 	layer_show(title,url,w,h);
@@ -190,30 +296,7 @@ function member_del(obj,id){
 }
 </script> 
 
-<script type="text/javascript">
-var v =  new Vue({
-	el:'#app',
-	data:{
-		supplierList:[]
-	},
-	methods:{
-		 
-	},
-	created(){  
-        var _this = this;
-        $.ajax({
-            type: "GET",
-            url: "/supplier/getAllSupplier",
-            data: null,
-            dataType: "json",
-            success: function (response) {
-            	_this.supplierList = response.data;
-            },
-        });
-       }
-});
 
-</script>
 
 </body>
 </html>
