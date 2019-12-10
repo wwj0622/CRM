@@ -1,5 +1,7 @@
 package com.topscit.springboot1.dao;
 
+import java.util.List;
+
 import com.topscit.springboot1.bean.User;
 
 public interface UserMapper {
@@ -14,6 +16,13 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
-    
-    User select(String name);
+
+	User select(String name);
+	
+	User selectUser(String id);
+	
+	List<User> AllUser();
+	
+	List<User> AllDeleteUser();
+	
 }

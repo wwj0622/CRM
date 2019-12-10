@@ -16,6 +16,8 @@
     id, name, type, url, percode, parentid, parentids, sortstring, available
   </sql>
   
+
+  
   <select id="select" resultMap="pp">
   
     SELECT sp.*,spp.*,spp.`name` sppname,spp.url sppurl FROM sys_user_role sur
@@ -23,7 +25,7 @@
 	INNER JOIN sys_role_permission srp on sr.id = srp.sys_role_id 
 	INNER JOIN sys_permission sp ON sp.id = srp.sys_permission_id
     LEFT JOIN  sys_permission spp ON sp.id = spp.parentid
-	WHERE   sp.parentid = 1 AND sur.sys_user_id =#{id};
+	WHERE sp.parentid = 1 AND sur.sys_user_id =#{id} ORDER BY sp.sortstring;
   
   </select>
   

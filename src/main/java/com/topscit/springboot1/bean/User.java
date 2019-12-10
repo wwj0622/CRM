@@ -1,5 +1,9 @@
 package com.topscit.springboot1.bean;
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class User {
     private String id;
 
@@ -13,13 +17,31 @@ public class User {
 
     private String phone;
 
+    private String ulogo;
+
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date operationtime;
+
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date jointime;
+
     private String idcard;
 
     private String locked;
+    
+    private String roleid;
+    
+    
 
-    private String ulogo;
+    public String getRoleid() {
+		return roleid;
+	}
 
-    public String getId() {
+	public void setRoleid(String roleid) {
+		this.roleid = roleid;
+	}
+
+	public String getId() {
         return id;
     }
 
@@ -67,6 +89,30 @@ public class User {
         this.phone = phone == null ? null : phone.trim();
     }
 
+    public String getUlogo() {
+        return ulogo;
+    }
+
+    public void setUlogo(String ulogo) {
+        this.ulogo = ulogo == null ? null : ulogo.trim();
+    }
+
+    public Date getOperationtime() {
+        return operationtime;
+    }
+
+    public void setOperationtime(Date operationtime) {
+        this.operationtime = operationtime;
+    }
+
+    public Date getJointime() {
+        return jointime;
+    }
+
+    public void setJointime(Date jointime) {
+        this.jointime = jointime;
+    }
+
     public String getIdcard() {
         return idcard;
     }
@@ -81,13 +127,5 @@ public class User {
 
     public void setLocked(String locked) {
         this.locked = locked == null ? null : locked.trim();
-    }
-
-    public String getUlogo() {
-        return ulogo;
-    }
-
-    public void setUlogo(String ulogo) {
-        this.ulogo = ulogo == null ? null : ulogo.trim();
     }
 }

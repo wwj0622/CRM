@@ -43,7 +43,6 @@ public class LoginController {
 		}
 		if(subject.isAuthenticated())
 		{
-			System.out.println("进入");
 			return "forward:/permiss";
 		}
 		else

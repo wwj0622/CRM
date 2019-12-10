@@ -1,19 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.topscit.springboot1.dao.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.User" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="usercode" property="usercode" jdbcType="VARCHAR" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="salt" property="salt" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
-    <result column="locked" property="locked" jdbcType="CHAR" />
-    <result column="ulogo" property="ulogo" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topscit.springboot1.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.User">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="usercode" jdbcType="VARCHAR" property="usercode" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+    <result column="locked" jdbcType="CHAR" property="locked" />
+    <result column="ulogo" jdbcType="VARCHAR" property="ulogo" />
   </resultMap>
+  
+  <select id="AllUser" resultMap="BaseResultMap">
+    select * from sys_user  where locked!='3'
+  </select>
+  
+   <select id="AllDeleteUser" resultMap="BaseResultMap">
+      select * from sys_user  where locked='3'
+  </select>
 
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, usercode, username, password, salt, phone, idcard, locked, ulogo
   </sql>
   
@@ -21,17 +29,21 @@
     select * from sys_user where usercode=#{name}
   </select>
   
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectUser" resultMap="BaseResultMap">
+    select * from sys_user where id=#{id}
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from sys_user
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from sys_user
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.topscit.springboot1.bean.User" >
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.User">
     insert into sys_user (id, usercode, username, 
       password, salt, phone, 
       idcard, locked, ulogo)
@@ -39,107 +51,106 @@
       #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{idcard,jdbcType=VARCHAR}, #{locked,jdbcType=CHAR}, #{ulogo,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.User" >
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.User">
     insert into sys_user
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="usercode != null" >
+      <if test="usercode != null">
         usercode,
       </if>
-      <if test="username != null" >
+      <if test="username != null">
         username,
       </if>
-      <if test="password != null" >
+      <if test="password != null">
         password,
       </if>
-      <if test="salt != null" >
+      <if test="salt != null">
         salt,
       </if>
-      <if test="phone != null" >
+      <if test="phone != null">
         phone,
       </if>
-      <if test="idcard != null" >
+      <if test="idcard != null">
         idcard,
       </if>
-      <if test="locked != null" >
+      <if test="locked != null">
         locked,
       </if>
-      <if test="ulogo != null" >
+      <if test="ulogo != null">
         ulogo,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="usercode != null" >
+      <if test="usercode != null">
         #{usercode,jdbcType=VARCHAR},
       </if>
-      <if test="username != null" >
+      <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
+      <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="salt != null" >
+      <if test="salt != null">
         #{salt,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null" >
+      <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="idcard != null" >
+      <if test="idcard != null">
         #{idcard,jdbcType=VARCHAR},
       </if>
-      <if test="locked != null" >
+      <if test="locked != null">
         #{locked,jdbcType=CHAR},
       </if>
-      <if test="ulogo != null" >
+      <if test="ulogo != null">
         #{ulogo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.User" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.User">
     update sys_user
-    <set >
-      <if test="usercode != null" >
+    <set>
+      <if test="usercode != null">
         usercode = #{usercode,jdbcType=VARCHAR},
       </if>
-      <if test="username != null" >
+      <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
+      <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="salt != null" >
+      <if test="salt != null">
         salt = #{salt,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null" >
+      <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="idcard != null" >
+      <if test="idcard != null">
         idcard = #{idcard,jdbcType=VARCHAR},
       </if>
-      <if test="locked != null" >
+      <if test="locked != null">
         locked = #{locked,jdbcType=CHAR},
       </if>
-      <if test="ulogo != null" >
+      <if test="ulogo != null">
         ulogo = #{ulogo,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.User" >
+  
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.User">
     update sys_user
-    set usercode = #{usercode,jdbcType=VARCHAR},
-      username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      salt = #{salt,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      idcard = #{idcard,jdbcType=VARCHAR},
-      locked = #{locked,jdbcType=CHAR},
-      ulogo = #{ulogo,jdbcType=VARCHAR}
+    set 
+      locked = #{locked}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  
+ 
+  
+
 </mapper>

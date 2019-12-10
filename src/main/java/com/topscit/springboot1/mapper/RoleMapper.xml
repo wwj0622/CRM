@@ -6,15 +6,29 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="available" property="available" jdbcType="CHAR" />
   </resultMap>
+  
+  
+  <insert id="insertRole">
+    
+  
+  </insert>
+  
+  <select id="selectRole" resultMap="BaseResultMap">
+     select * from sys_role
+  </select>
+  
   <sql id="Base_Column_List" >
     id, name, available
   </sql>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from sys_role
-    where id = #{id,jdbcType=VARCHAR}
+    select * from sys_role where id = #{id,jdbcType=VARCHAR}
   </select>
+  
+  <select id="selectRolename" resultMap="BaseResultMap">
+       select * from sys_role where id = #{id} 
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sys_role
     where id = #{id,jdbcType=VARCHAR}

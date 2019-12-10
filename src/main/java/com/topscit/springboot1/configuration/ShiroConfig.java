@@ -76,7 +76,7 @@ public class ShiroConfig {
 		hashMap.put("/Login.jsp", "anon");
 		hashMap.put("/logout", "logout");
 		
-		hashMap.put("/**", "authc");
+		hashMap.put("/**", "anon");
 	
 		factoryBean.setFilterChainDefinitionMap(hashMap);
 		return factoryBean;

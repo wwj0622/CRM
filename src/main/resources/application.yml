@@ -12,7 +12,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/shiro  
     username: root
-    password: "000000"
+    password: root
   
 server:
   address: 127.0.0.1
