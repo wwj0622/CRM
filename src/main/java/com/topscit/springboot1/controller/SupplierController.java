@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageInfo;
 import com.topscit.springboot1.bean.ResultBean;
 import com.topscit.springboot1.bean.Supplier;
 import com.topscit.springboot1.service.SupplierService;
+import com.topscit.springboot1.util.uploadFile;
 
 
 @Controller
@@ -26,13 +29,12 @@ public class SupplierController {
 	@RequestMapping("/getAllSupplier")
 	@ResponseBody
 	public ResultBean getAllSupplier(
-			@RequestParam(value = "name",required = false)String name,
 			@RequestParam(defaultValue="1")int pn,
 			@RequestParam(defaultValue="5")int size,
 			Map<String, Object> data)
 	{
 		
-		PageInfo<Supplier> supplierBy = supplierService.getSupplierBy(name, pn, size);
+		PageInfo<Supplier> supplierBy = supplierService.selectSupplierList(pn, size);
 		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", supplierBy);
 		return resultBean;
 	}
@@ -48,34 +50,64 @@ public class SupplierController {
 //		return "forward:/mao/product-brand.jsp";
 //	}
 	
-	//分页模糊查询
+	//模糊查询
 	@RequestMapping("/getSupplierByName")
-	public ResultBean getSupplierByName(
-			String sname,
-			@RequestParam(defaultValue="1")int pn,
-			@RequestParam(defaultValue="5")int size,
-			Map<String, Object> data)
+	@ResponseBody
+	public ResultBean getSupplierByName(String name)
 	{
-		PageInfo<Supplier> supplierBy = supplierService.getSupplierBy(sname, pn, size);
-		
-		data.put("pageInfo", supplierBy);
+		System.out.println(name);
+		List<Supplier> supplierBy = supplierService.getSupplierBy(name);
 		System.out.println(supplierBy);
-		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", data);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", supplierBy);
 		return resultBean;
 	}
 	
 	//添加Supplier
 	@RequestMapping("/addSupplier")
-	@ResponseBody
-	public ResultBean addSupplier(Supplier supplier){
-		System.out.println(supplier);
+	public String addSupplier(Supplier supplier,MultipartFile fm,HttpServletRequest req){
+		
+		String path = uploadFile.upload(fm, req);
+		supplier.setSlogo(path);
 		boolean addSupplier = supplierService.addSupplier(supplier);
-		if(addSupplier)
+		return "redirect:/mao/product-brand.jsp";
+	}
+	
+	//删除供货商
+	@RequestMapping("/delSupplier")
+	@ResponseBody
+	public ResultBean delSupplier(String[] sids){
+		boolean deleteSupplier = false;
+		for(int i=0;i < sids.length;i++){
+			deleteSupplier = supplierService.deleteSupplier(sids[i]);
+		}
+		if(deleteSupplier)
 		{
-			return new ResultBean(ResultBean.STATA_SUCCESS, "添加成功");
+			return new ResultBean(ResultBean.STATA_SUCCESS, "删除成功");
 		}
 		else{
-			return new ResultBean(ResultBean.STATA_FIAIL, "添加失败");
+			return new ResultBean(ResultBean.STATA_FIAIL, "删除失败");
 		}
+	}
+	
+	//根据id查询
+	@RequestMapping("/getSupplierById")
+	@ResponseBody
+	public ResultBean getSupplierById(String sid){
+		Supplier supplierById = supplierService.getSupplierById(sid);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", supplierById);
+		return resultBean;
+	}
+	
+	//修改Supplier
+	@RequestMapping("/updateSupplier")
+	public String updateSupplier(Supplier supplier,MultipartFile fm,HttpServletRequest req){
+		
+		String originalFilename = fm.getOriginalFilename();
+		if(!originalFilename.equals("")){
+			String path = uploadFile.upload(fm, req);
+			supplier.setSlogo(path);
+		}
+		boolean updateSupplier = supplierService.updateSupplier(supplier);
+		return "redirect:/mao/product-brand.jsp";
 	}
 }
