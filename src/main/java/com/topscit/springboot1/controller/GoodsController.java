@@ -32,10 +32,18 @@ public class GoodsController {
 	
 	@RequestMapping("/goodslist1")
 	@ResponseBody
-	public PageInfo<Goods> selectListGoodsByPn1(@RequestParam(defaultValue = "1")int pn, @RequestParam(defaultValue = "8")int size){
+	public PageInfo<Goods> selectListGoodsByPn1(@RequestParam(defaultValue = "1")int pn, @RequestParam(defaultValue = "8")int size,String content){
 //		System.out.println(pn);
-		PageInfo<Goods> selectListGoodsByPn = goodsService.selectListGoodsByPn(pn, size);
-		return selectListGoodsByPn;
+		if(content == null){
+			PageInfo<Goods> selectListGoodsByPn = goodsService.selectListGoodsByPn(pn, size);
+			return selectListGoodsByPn;
+		}else{
+			System.out.println(content);
+			PageInfo<Goods> selectListGoodsByLimit = goodsService.selectListGoodsByLimit(content, pn, size);
+			System.out.println(selectListGoodsByLimit);
+			return selectListGoodsByLimit;
+		}
+		
 	}
 	
 	@RequestMapping("/del")

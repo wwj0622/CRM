@@ -33,4 +33,12 @@ public class GoodsServiecImpl implements GoodsService{
 		
 	}
 
+	@Override
+	public PageInfo<Goods> selectListGoodsByLimit(String gname, int pn, int size) {
+		PageHelper.startPage(pn, size);
+		List<Goods> list = goodsMapper.selectListGoodsLimit(gname);
+		PageInfo<Goods> pageInfo = new PageInfo<Goods>(list);
+		return pageInfo;
+	}
+
 }
