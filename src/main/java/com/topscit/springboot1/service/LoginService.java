@@ -37,4 +37,13 @@ public interface LoginService {
 	 
 	User selectID(User user);
 	
+	User IdUser(String id);
+	
+	Role RoleName(String id);
+	
+	boolean deletePower(String id);
+	
+	boolean updatePower(User user);
+	
+	
 }

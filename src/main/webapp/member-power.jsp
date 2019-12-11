@@ -43,11 +43,12 @@
 <body>
 <article class="page-container"  id="add">
 	<form action="" method="post" class="form form-horizontal" id="form-member-add">
-        
+        <input type="hidden" id="uid" value="${id}">
+	    
 	    <div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户ID：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text"  class="input-text" disabled value="" placeholder="" id="username" name="username">
+				<input type="text"  class="input-text" disabled :value="user.id" placeholder="" id="username" name="username">
 			</div>
 		</div>
 
@@ -55,37 +56,60 @@
 		<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
 				<div class="formControls col-xs-8 col-sm-9">
-					<input type="text" disabled class="input-text" value="" placeholder="" id="username" name="username">
+					<input type="text" disabled class="input-text" :value="user.usercode" placeholder="" id="username" name="username">
 				</div>
 		</div>
 
 		<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3">用户权限：</label>
 				<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-					<select class="select" size="1" name="city" @change="hq($event)">
-						<option  v-for="(r,i) in role"  :value="r.id">{{r.name}}</option>
+					<select class="select" size="1" name="city" :id="rid" v-model="user.roleid">
+						<option v-for="(r,i) in role" :value="r.id"  >{{r.name}}</option>
 					</select>
-					</span> </div>
-			</div>
+					</span> 
+				</div>
+		</div>
 
+
+
+
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="sex" type="radio" id="sex-1" checked>
+					<label for="sex-1">男</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" id="sex-2" name="sex">
+					<label for="sex-2">女</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" id="sex-3" name="sex">
+					<label for="sex-3">保密</label>
+				</div>
+			</div>
+		</div>
+	
 
 		<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>身份证：</label>
 				<div class="formControls col-xs-8 col-sm-9">
-					<input type="text" class="input-text" value="" v-model="User.idcard" placeholder="" id="username" name="username">
+					<input type="text" class="input-text"   v-model="user.idcard" placeholder="" id="username" name="username">
 				</div>
 		</div>
 
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机号：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" v-model="User.phone" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" v-model="user.phone" placeholder="" id="username" name="username">
 			</div>
 		</div>
 	
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<input class="btn btn-primary radius" type="button"  value="确认修改">
+				<input class="btn btn-primary radius" type="button" @click="updateuser" value="提交">
 			</div>
 		</div>
 	</form>
@@ -151,29 +175,74 @@ $(function(){
 	el:'#add',
 	data () {
 		return {
+		user:{
+			id:'',
+			usercode:'',
+			password:'',
+			phone:'',
+			idcard:'',
+			roleid:''
+			},
 			
 			role:[],
-			
+		    id:'',
+		    rid:'',
+		    aid:''
 			
 			
 		}
 	},
 	methods: {
- 
+		 a(){
+			  var uid= document.getElementById('uid').value;
+	           this.aid=uid;
+		   },
+		 b(){
+			   this_a=this;
+				axios.get("/selectRole",null)
+				.then(res => {
+					console.log(res);
+					this_a.role=res.data;
+				})
+				.catch(err => {
+					console.error(err); 
+				})
+		   },
+		 c(){
+			   this_a=this;
+			   var uid= document.getElementById('uid').value;
+	           axios.post("/IdUser",{id:uid})
+			   .then(res => {
+				   console.log(res);
+				   this_a.user= res.data.user;
+				   this_a.user.roleid=res.data.roleName.id;
+				  
+			   })
+			   .catch(err => {
+				   console.error(err); 
+			   })
+		   },
+		   updateuser:function(){
+				this_a=this;
+				axios.post("/updatepower",this_a.user)
+				.then(res => {
+					console.log(res);
+					alert('修改成功');
+					layer.close(layer.index);
+					window.parent.location.reload();
+				})
+				.catch(err => {
+					console.error(err); 
+				})
+
+		   }
          
 		
 	},
-	created () {
-		this_a=this;
-		axios.get("/selectRole",null)
-		.then(res => {
-			console.log(res);
-			this_a.role=res.data;
-		})
-		.catch(err => {
-			console.error(err); 
-		})
-
+	created (){
+		this.b();
+		this.c();
+	
 	}
 	
 

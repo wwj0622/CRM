@@ -23,6 +23,8 @@ public interface RoleMapper {
     
     int insertRole(User user);
     
+    Role RoleName(String id);
+    
     Role selectRolename(String id);
     
     

@@ -50,9 +50,10 @@
 				<th width="100">用户名</th>
 				<th width="40">性别</th>
 				<th width="90">手机</th>
-				<th width="150">邮箱</th>
-				<th width="">地址</th>
+				<th width="80">邮箱</th>
+				<th width="80">地址</th>
 				<th width="130">加入时间</th>
+				<th width="">操作时间</th>
 				<th width="70">状态</th>
 				<th width="100">操作</th>
 			</tr>
@@ -67,6 +68,7 @@
 				<td>admin@mail.com</td>
 				<td class="text-l">{{u.idcard}}</td>
 				<td>{{u.jointime}}</td>
+				<td>{{u.operationtime}}</td>
 				<td class="td-status"><span class="label label-danger radius">{{u.locked == 3?'已删除': '未删除' }}</span></td>
 				<td class="td-manage"><a style="text-decoration:none" href="javascript:;" @click="member_huanyuan(this,u.id)" title="还原"><i class="Hui-iconfont">&#xe66b;</i></a> <a title="删除" href="javascript:;" onclick="member_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 			</tr>

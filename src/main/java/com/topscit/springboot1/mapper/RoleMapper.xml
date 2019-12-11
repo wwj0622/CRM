@@ -13,6 +13,13 @@
   
   </insert>
   
+  <select id="RoleName" resultMap="BaseResultMap">
+    select sr.id from sys_user su INNER JOIN sys_user_role sur ON
+	su.id=sur.sys_user_id  INNER JOIN sys_role sr ON sur.sys_role_id=sr.id
+	where  su.id=#{id}
+  </select>
+  
+  
   <select id="selectRole" resultMap="BaseResultMap">
      select * from sys_role
   </select>
@@ -29,9 +36,9 @@
        select * from sys_role where id = #{id} 
   </select>
   
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey"  >
     delete from sys_role
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id}
   </delete>
   <insert id="insert" parameterType="com.topscit.springboot1.bean.Role" >
     insert into sys_role (id, name, available

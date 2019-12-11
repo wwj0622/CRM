@@ -3,8 +3,10 @@ package com.topscit.springboot1.dao;
 import com.topscit.springboot1.bean.userRole;
 
 public interface userRoleMapper {
-    int deleteByPrimaryKey(Integer id);
-
+    int deleteByPrimaryKey(String id);
+    
+    int deletePower(String id);
+    
     int insert(userRole record);
 
     int insertSelective(userRole record);
@@ -14,6 +16,9 @@ public interface userRoleMapper {
     int updateByPrimaryKeySelective(userRole record);
 
     int updateByPrimaryKey(userRole record);
+    
+    
+
     
     
 }

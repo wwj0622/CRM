@@ -46,7 +46,7 @@ public class UserController {
 		Role role = loginService.selectR(user.getRoleid());
 	
 		user.setUsername(role.getName());
-		user.setJointime(new Date());
+		
 		Boolean addUser = loginService.addUser(user);
 		userRole userRole = new userRole();
 		userRole.setSysRoleId(user.getRoleid());
@@ -171,7 +171,7 @@ public class UserController {
 		User user = new User();
 		user.setId(id);
 		user.setLocked("1");
-		
+		user.setOperationtime(new Date());
 		boolean stopUser = loginService.StopUser(user);
 		
 		HashMap<String, Object> hashMap = new HashMap<String,Object>();
@@ -187,7 +187,7 @@ public class UserController {
 		User user = new User();
 		user.setId(id);
 		user.setLocked("0");
-		
+		user.setOperationtime(new Date());
 		boolean stopUser = loginService.StopUser(user);
 		
 		HashMap<String, Object> hashMap = new HashMap<String,Object>();
@@ -203,6 +203,7 @@ public class UserController {
 		User user = new User();
 		user.setId(id);
 		user.setLocked("3");
+		user.setOperationtime(new Date());
 		boolean deleteUser = loginService.deleteUser(user);
 		HashMap<String, Object> hashMap = new HashMap<String,Object>();
 		hashMap.put("String", deleteUser);
@@ -226,6 +227,47 @@ public class UserController {
 		
 		return hashMap;
 		
+	}
+	
+	@RequestMapping("/edit")
+	public String editUser(String id,Map<String, Object> data)
+	{
+		data.put("id", id);
+		return "forward:/member-power.jsp";
+	}
+	
+	@RequestMapping("/IdUser")
+	@ResponseBody
+	public HashMap<String, Object> SelectIdUser(@RequestBody HashMap<String, String> data)
+	{	
+		User idUser = loginService.IdUser(data.get("id"));
+		Role roleName = loginService.RoleName(data.get("id"));
+		
+		HashMap<String, Object> hashMap = new HashMap<String,Object>();
+		hashMap.put("user", idUser);
+		hashMap.put("roleName", roleName);		
+		
+		return hashMap;
+	}
+	
+	@RequestMapping("/updatepower")
+	@ResponseBody
+	public HashMap<String, Object> UpdatePower(@RequestBody User user)
+	{ 
+		boolean deletePower = loginService.deletePower(user.getId());		
+		Boolean addUser = loginService.updatePower(user);
+	
+		userRole userRole = new userRole();
+		userRole.setSysRoleId(user.getRoleid());
+		userRole.setSysUserId(user.getId());
+		
+		boolean insertRole = loginService.insertRole(userRole);
+		
+		HashMap<String, Object> hashMap = new HashMap<String,Object>();
+		hashMap.put("insertRole", insertRole);
+		hashMap.put("String", addUser);
+		
+		return  hashMap;
 	}
 	
 	

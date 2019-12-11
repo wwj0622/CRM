@@ -169,6 +169,8 @@ $(function(){
 				{
 					alert('密码修改成功');
 					document.getElementById('form').reset();
+					layer.close(layer.index);
+					window.parent.location.reload();
 				}
 
 			})

@@ -5,7 +5,7 @@ import java.util.List;
 import com.topscit.springboot1.bean.User;
 
 public interface UserMapper {
-    int deleteByPrimaryKey(String id);
+	int deleteByPrimaryKey(String id);
 
     int insert(User record);
 
@@ -24,5 +24,4 @@ public interface UserMapper {
 	List<User> AllUser();
 	
 	List<User> AllDeleteUser();
-	
 }

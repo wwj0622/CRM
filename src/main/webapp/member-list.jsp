@@ -51,8 +51,9 @@
 				<th width="40">性别</th>
 				<th width="90">手机</th>
 				<th width="150">邮箱</th>
-				<th width="">身份证</th>
+				<th width="150">身份证</th>
 				<th width="130">加入时间</th>
+				<th width="">操作时间</th>
 				<th width="70">状态</th>
 				<th width="100">操作</th>
 			</tr>
@@ -67,8 +68,9 @@
 				<td>admin@mail.com</td>
 				<td class="text-l">{{u.idcard}}</td>
 				<td>{{u.jointime}}</td>
+				<td>{{u.operationtime}}</td>
 				<td class="td-status"><span class="label label-success radius">{{u.locked == 0? '已启用':'未启用' }}</span></td>
-				<td class="td-manage"><a style="text-decoration:none" @click="member_stop(this,u.id,u.locked)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a title="编辑" href="javascript:;" @click="member_edit('编辑','member-power.jsp',u.id,'','510')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="change_password('修改密码','change-password.html','10001','600','270')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> <a title="删除" href="javascript:;" @click="member_del(this,u.id)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+				<td class="td-manage"><a style="text-decoration:none" @click="member_stop(this,u.id,u.locked)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a title="编辑" href="javascript:;" @click="member_edit('编辑','/edit?id='+u.id,'','','510')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="change_password('修改密码','change-password.html','10001','600','270')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> <a title="删除" href="javascript:;" @click="member_del(this,u.id)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 			</tr>
 		</tbody>
 	</table>
@@ -254,6 +256,9 @@ new Vue({
 					},
 				});		
 			});
+		},
+		member_edit(title,url,id,w,h){
+			layer_show(title,url,w,h);
 		}
 	  },
 	  created () {

@@ -1,5 +1,6 @@
 package com.topscit.springboot1.serviceImpl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -60,10 +61,14 @@ public class LoginServiceImpl implements LoginService{
 		String randomStr = Md5Util.getRandomStr(3);
 	    
 		String md5 = Md5Util.md5(user.getPassword(), randomStr);
+	
+		Date date = new Date();
 		
 		user.setPassword(md5);
 		user.setSalt(randomStr);
 		user.setLocked("0");
+		user.setJointime(new Date());
+		System.out.println();
 		int insertSelective = userMapper.insertSelective(user);		
 		
 		return true;
@@ -97,7 +102,6 @@ public class LoginServiceImpl implements LoginService{
 	public Role selectR(String id) {
 
 		Role selectByPrimaryKey = roleMapper.selectRolename(id);
-		System.out.println("Service"+selectByPrimaryKey);
 		
 		return selectByPrimaryKey;
 	}
@@ -162,7 +166,8 @@ public class LoginServiceImpl implements LoginService{
 	@Override
 	public boolean StopUser(User user) {
 
-		int stopUser = userMapper.updateByPrimaryKey(user);
+		user.setOperationtime(new Date());
+		int stopUser = userMapper.updateByPrimaryKeySelective(user);
 		
 		if(stopUser==1)
 		{
@@ -178,7 +183,7 @@ public class LoginServiceImpl implements LoginService{
 	@Override
 	public boolean deleteUser(User user) {
 
-		int stopUser = userMapper.updateByPrimaryKey(user);
+		int stopUser = userMapper.updateByPrimaryKeySelective(user);
 		
 		if(stopUser==1)
 		{
@@ -199,6 +204,54 @@ public class LoginServiceImpl implements LoginService{
 			
 	     return allUser;
 	}
+
+	@Override
+	public User IdUser(String id) {
+        
+		User user = userMapper.selectByPrimaryKey(id);
+		
+		return user;
+	}
+
+	@Override
+	public Role RoleName(String id) {
+
+		Role roleName = roleMapper.RoleName(id);
+		
+		return roleName;
+	}
+
+	@Override
+	public boolean deletePower(String id) {
+
+		int deleteByPrimaryKey = userRoleMapper.deleteByPrimaryKey(id);
+		
+		if(deleteByPrimaryKey==1)
+		{
+			return true;
+		}
+		else
+		{
+		return false;
+    	}
+	}
+
+	@Override
+	public boolean updatePower(User user) {
+        user.setId(user.getId());
+        int updateByPrimaryKeySelective = userMapper.updateByPrimaryKeySelective(user);	
+        
+    	if(updateByPrimaryKeySelective==1)
+		{
+			return true;
+		}
+		else
+		{
+		return false;
+    	}
+	}
+	
+	
 
 	
 	
