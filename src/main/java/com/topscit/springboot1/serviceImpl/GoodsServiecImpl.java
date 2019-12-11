@@ -25,4 +25,12 @@ public class GoodsServiecImpl implements GoodsService{
 		return pageInfo;
 	}
 
+	@Override
+	public void delGoodsById(String[] gids) {
+		for (int i = 0; i < gids.length; i++) {
+			goodsMapper.deleteByPrimaryKey(gids[i].toString());
+		}
+		
+	}
+
 }
