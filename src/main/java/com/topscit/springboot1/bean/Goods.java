@@ -70,4 +70,11 @@ public class Goods {
     public void setGlogo(String glogo) {
         this.glogo = glogo == null ? null : glogo.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Goods [gid=" + gid + ", gname=" + gname + ", goriginal=" + goriginal + ", gprice=" + gprice + ", ptid="
+				+ ptid + ", gcount=" + gcount + ", glogo=" + glogo + "]";
+	}
+    
 }
