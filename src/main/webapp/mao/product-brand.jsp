@@ -39,18 +39,15 @@
 
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container" id="app">
-	<div class="text-c"> 日期范围：
-		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">
-		-
-		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
+	<div class="text-c"> 
 		<input type="text"  v-model="inputContent" class="input-text" style="width:250px" placeholder="输入供应商名称" id="" name="">
-		<button type="submit" @click="search" class="btn btn-success radius" id="" name="">
+		<button  @click="search" class="btn btn-success radius" id="" name="">
 		<i class="Hui-iconfont">&#xe665;</i> 搜索
 		</button>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
 		<span class="l">
-			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+			<a href="javascript:;" @click="delAllSupllier" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
 			</a> 
 			<a href="javascript:;" onclick="member_add('添加用户','mao/member-add.jsp','','510')" class="btn btn-primary radius">
@@ -63,7 +60,7 @@
 	<table class="table table-border table-bordered table-bg table-sort">
 			<thead>
 				<tr class="text-c">
-					<th width="25"><input type="checkbox" name="" value=""></th>
+					<th width="25"></th>
 					<th width="70">供货商名称</th>
 					<th width="100">供货商电话号码</th>
 					<th width="100">供货商银行账户</th>
@@ -75,34 +72,10 @@
 				</tr>
 			</thead>
 			<tbody>
-			<!-- 
-			 <c:forEach items="${pageInfo.list }" var="supplier"  >
-				<tr class="text-c">
-					<td><input name="" type="checkbox" value=""></td>
-					<td class="text-l"><img src="${supplier.slogo }"> ${supplier.sname }</td>
-					<td>${supplier.sphone }</td>
-					<td>${supplier.saccount }</td>
-					<td>${supplier.semail}</td>
-					<td class="text-l">${supplier.saddress}</td>
-					<td>
-						<fmt:formatDate type="both" dateStyle="medium" timeStyle="medium" value="${supplier.supdateTime}" />
-					</td>
-					<td class="f-14 product-brand-manage">
-						<a style="text-decoration:none" onClick="product_brand_edit('品牌编辑','codeing.html','1')" href="javascript:;" title="编辑">
-							<i class="Hui-iconfont">&#xe6df;</i>
-						</a> 
-						<a style="text-decoration:none" class="ml-5" onClick="active_del(this,'10001')" href="javascript:;" title="删除">
-							<i class="Hui-iconfont">&#xe6e2;</i>
-						</a>
-					</td>
-				</tr>
-			</c:forEach>
-			 -->
-			 
 			 
 			<tr class="text-c" v-for='(supplier,i) in supplierList'>
-					<td><input name="" type="checkbox" value=""></td>
-					<td class="text-l"><img > {{supplier.sname}}</td>
+					<td><input name=""  v-model="checkedSupplier" type="checkbox" :value="supplier.sid"></td>
+					<td class="text-l"><img width="30" height="30" :src="supplier.slogo"> {{supplier.sname}}</td>
 					<td>{{supplier.sphone}}</td>
 					<td>{{supplier.saccount}}</td>
 					<td>{{supplier.semail}}</td>
@@ -110,28 +83,15 @@
 					<td>{{supplier.sremark}}</td>
 					<td>{{supplier.supdateTime}}</td>
 					<td class="f-14 product-brand-manage">
-						<a style="text-decoration:none" onClick="product_brand_edit('品牌编辑','codeing.html','1')" href="javascript:;" title="编辑">
+						<a style="text-decoration:none" @click="member_edit('编辑','mao/member-edit.jsp?sid='+supplier.sid,'4','','510')" href="javascript:;" title="编辑">
 							<i class="Hui-iconfont">&#xe6df;</i>
 						</a> 
-						<a style="text-decoration:none" class="ml-5" onClick="active_del(this,'10001')" href="javascript:;" title="删除">
+						<a style="text-decoration:none" class="ml-5" @click="member_del(this,supplier.sid)" href="javascript:;" title="删除">
 							<i class="Hui-iconfont">&#xe6e2;</i>
 						</a>
 					</td>
 				</tr>
 			 <tr>
-			 <!-- 
-		    	 <td colspan="4">
-		    	 	<a href="supplier/selectSupplier" >首页</a>
-		    	 	
-		    	 	<c:if test="{{pageInfo.hasPreviousPage}}">
-		    	 		<a href="supplier/selectSupplier?pn={{pageInfo.prePage}}" >上一页</a>
-		    	 	</c:if>
-		    	 	<c:if test="{{pageInfo.hasNextPage}}">
-		    	 		<a href="supplier/selectSupplier?pn={{pageInfo.nextPage}}" >下一页</a>
-		    	 	</c:if>
-		    	 	
-		    	 	<a href="supplier/selectSupplier?pn={{pageInfo.pages{}" >尾页</a>
-		    	 </td> -->
 		    	 <td colspan="4">
 	                <a href="javascript:;" @click="jump(1)">首页</a>
 	                <a href="javascript:;" @click="jump(pageInfo.prePage)">上页</a>
@@ -149,7 +109,8 @@ var v =  new Vue({
 	data:{
 		supplierList:[],
 		pageInfo:[],
-		inputContent:''
+		inputContent:'',
+		checkedSupplier:[]
 	},
 	methods:{
 		jump(page){
@@ -167,17 +128,55 @@ var v =  new Vue({
          },
          search(){
         	var _this = this;
+        	console.log(_this.inputContent);
  	        $.ajax({
  	            type: "GET",
- 	            url: "/supplier/getAllSupplier",
+ 	            url: "/supplier/getSupplierByName",
  	            data: {name:_this.inputContent},
  	            dataType: "json",
  	            success: function (response) {
- 	            	_this.supplierList = response.data.list;
- 	            	_this.pageInfo = response.data;
- 	            	console.log(_this.inputContent)
+ 	            	_this.supplierList = response.data;
+ 	            	
  	            },
  	        });
+         },
+         member_del(obj,id){
+        	var _this = this;
+   			$.ajax({
+   				type: "GET",
+   	            url: "/supplier/delSupplier",
+   	            data: {sids:id},
+   	            dataType: "json",
+   				success: function(data){
+   					$(obj).parents("tr").remove();
+   					layer.msg('已删除!',{icon:1,time:1000});
+   					location.href="mao/product-brand.jsp";
+   				},
+   				error:function(data) {
+   					console.log(data.msg);
+   				},
+   			});		
+         },
+         delAllSupllier(){
+        	 console.log(this.checkedSupplier);
+        	 var _this = this;
+    			$.ajax({
+    				type: "GET",
+    	            url: "/supplier/delSupplier",
+    	            data: {sids:_this.checkedSupplier},
+    	            dataType: "json",
+    	            traditional: true,
+    				success: function(data){
+    					layer.msg('已删除!',{icon:1,time:1000});
+    					window.parent.location.reload();
+    				},
+    				error:function(data) {
+    					console.log(data.msg);
+    				},
+    			});		
+         },
+         member_edit(title,url,id,w,h){
+        	 layer_show(title,url,w,h);
          }
 	},
 	created(){  
@@ -206,7 +205,6 @@ var v =  new Vue({
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script> 
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 <!--
@@ -277,23 +275,7 @@ function member_edit(title,url,id,w,h){
 function change_password(title,url,id,w,h){
 	layer_show(title,url,w,h);	
 }
-/*用户-删除*/
-function member_del(obj,id){
-	layer.confirm('确认要删除吗？',function(index){
-		$.ajax({
-			type: 'POST',
-			url: '',
-			dataType: 'json',
-			success: function(data){
-				$(obj).parents("tr").remove();
-				layer.msg('已删除!',{icon:1,time:1000});
-			},
-			error:function(data) {
-				console.log(data.msg);
-			},
-		});		
-	});
-}
+
 </script> 
 
 

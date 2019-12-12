@@ -16,6 +16,9 @@
   <select id="selectListGoods" resultType="com.topscit.springboot1.bean.Goods">
   	select * from goods
   </select>
+  <select id="selectListGoodsLimit" resultType="com.topscit.springboot1.bean.Goods">
+  	select * from goods where gname like concat('%',#{gname},'%')
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

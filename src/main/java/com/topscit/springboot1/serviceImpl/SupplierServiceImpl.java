@@ -29,6 +29,9 @@ public class SupplierServiceImpl implements SupplierService{
 		supplier.setSid(System.currentTimeMillis()+"user");
 		Date date = new Date();
 		supplier.setScreateTime(date);
+		supplier.setSupdateTime(date);
+		String state = "1";
+		supplier.setSstate(state);
 		
 		int insertSelective = supplierMapper.insertSelective(supplier);
 		if(insertSelective == 1)
@@ -53,16 +56,28 @@ public class SupplierServiceImpl implements SupplierService{
 //		return null;
 //	}
 
+	//修改Supllier
 	@Override
 	public boolean updateSupplier(Supplier supplier) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		int selective = supplierMapper.updateByPrimaryKeySelective(supplier);
+		if(selective == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}	}
 
 	@Override
-	public boolean deleteSupplier(Integer id) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteSupplier(String id) {
+		int deleteByPrimaryKey = supplierMapper.deleteByPrimaryKey(id);
+		if(deleteByPrimaryKey == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	@Override
@@ -77,12 +92,15 @@ public class SupplierServiceImpl implements SupplierService{
 	}
 
 	@Override
-	public PageInfo<Supplier> getSupplierBy(String name,int pn,int size) {
-		SupplierMapper mapper = st.getMapper(SupplierMapper.class);
-		PageHelper.startPage(pn,size);
-		List<Supplier> supplierBy = mapper.getSupplierBy(name);
-		PageInfo<Supplier> pageInfo = new PageInfo<Supplier>(supplierBy);
-		return pageInfo;
+	public List<Supplier> getSupplierBy(String sName) {
+		List<Supplier> supplierBy = supplierMapper.getSupplierBy(sName);
+		return supplierBy;
+	}
+
+	@Override
+	public Supplier getSupplierById(String id) {
+		Supplier selectByPrimaryKey = supplierMapper.selectByPrimaryKey(id);
+		return selectByPrimaryKey;
 	}
 
 }

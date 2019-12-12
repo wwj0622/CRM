@@ -163,16 +163,16 @@
   </update>
   
    <select id="getAllSupplier" resultMap="BaseResultMap" >
-  	select * from supplier 
-  	<where>
-        <if test="sname!=null and sname!=''">
-            sname like concat('%',#{name},'%')
-        </if>
-    </where>
+  	select * from supplier where sstate="1"
    </select>
   
   <select id="getSupplierBy" resultMap="BaseResultMap">
     select * from supplier 
+      <where>
+        <if test="sname!=null and sname!=''">
+            supplier.sname like concat('%',#{sname},'%')
+        </if>
+    </where>
   </select>
   
 </mapper>

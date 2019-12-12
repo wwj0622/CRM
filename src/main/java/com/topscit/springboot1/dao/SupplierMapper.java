@@ -2,9 +2,12 @@ package com.topscit.springboot1.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.topscit.springboot1.bean.Supplier;
 
 public interface SupplierMapper {
+	
     int deleteByPrimaryKey(String sid);
 
     int insert(Supplier record);
@@ -20,5 +23,5 @@ public interface SupplierMapper {
     
     public List<Supplier> getAllSupplier();
     
-    public List<Supplier> getSupplierBy(String name);
+    public List<Supplier> getSupplierBy(@Param("sname") String name);
 }

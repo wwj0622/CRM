@@ -25,4 +25,20 @@ public class GoodsServiecImpl implements GoodsService{
 		return pageInfo;
 	}
 
+	@Override
+	public void delGoodsById(String[] gids) {
+		for (int i = 0; i < gids.length; i++) {
+			goodsMapper.deleteByPrimaryKey(gids[i].toString());
+		}
+		
+	}
+
+	@Override
+	public PageInfo<Goods> selectListGoodsByLimit(String gname, int pn, int size) {
+		PageHelper.startPage(pn, size);
+		List<Goods> list = goodsMapper.selectListGoodsLimit(gname);
+		PageInfo<Goods> pageInfo = new PageInfo<Goods>(list);
+		return pageInfo;
+	}
+
 }
