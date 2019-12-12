@@ -138,4 +138,13 @@
       bdupdate_time = #{bdupdateTime,jdbcType=TIMESTAMP}
     where bdid = #{bdid,jdbcType=VARCHAR}
   </update>
+  
+  <select id="getBuyDetailBy" resultMap="BaseResultMap">
+    select * from buy_detail
+      <where>
+        <if test="bid!=null and bid!=''">
+           bid = #{bid}
+        </if>
+    </where>
+  </select>
 </mapper>
