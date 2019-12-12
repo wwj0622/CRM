@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +41,8 @@ public class UserController {
 	}
 	
 	@RequestMapping("/add")
+	@RequiresPermissions("user:user")
+	@RequiresRoles("超级管理员")
 	@ResponseBody
 	public HashMap<String, Object> addUser(@RequestBody User user)
 	{
@@ -268,6 +272,59 @@ public class UserController {
 		hashMap.put("String", addUser);
 		
 		return  hashMap;
+	}
+	
+	@RequestMapping("/changepassword")
+	public String changepassword(String id,Map<String, Object> data)
+	{
+	   User selectUser = loginService.selectUser(id);
+	   
+	   
+	   data.put("String", selectUser);
+	   
+		return "forward:/change-password.jsp";
+	}
+	
+	@RequestMapping("/updateUserPassowrd")
+	@ResponseBody
+	public HashMap<String, Object> updateUserPassowrd(@RequestBody User user)
+	{
+		boolean updateUserPassword = loginService.updateUserPassword(user);
+		HashMap<String, Object> hashMap = new HashMap<String,Object>();
+		hashMap.put("String",updateUserPassword);
+		return hashMap;		
+	}
+	
+	
+	@RequestMapping("/selectAllUser")
+	@ResponseBody
+	public List<User> SelectAllUser(@RequestBody HashMap<String, String> data)
+	{	
+	      List<User> selectUser = loginService.SelectUser(data);
+		  
+	      return selectUser;
+	}
+	
+	
+	@RequestMapping("/selectDeleteAllUser")
+	@ResponseBody
+	public List<User> selectDeleteAllUser(@RequestBody HashMap<String, String> data)
+	{	
+	      List<User> selectUser = loginService.SelectDeleteUser(data);
+		  
+	      return selectUser;
+	}
+	
+	@RequestMapping("/deleteUser")
+	@ResponseBody
+	public HashMap<String, Object> DeleteUser(String id)
+	{
+		boolean deleteUser = loginService.DeleteUser(id);
+		
+		HashMap<String, Object> hashMap = new HashMap<String,Object>();
+		hashMap.put("String", deleteUser);
+		
+		return hashMap;
 	}
 	
 	

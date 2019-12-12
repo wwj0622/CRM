@@ -1,13 +1,27 @@
 package com.topscit.springboot1.bean;
 
+import java.util.List;
+
 public class Role {
     private String id;
 
     private String name;
 
     private String available;
+    
+    private List<Permission> permission;
+    
 
-    public String getId() {
+    
+    public List<Permission> getPermission() {
+		return permission;
+	}
+
+	public void setPermission(List<Permission> permission) {
+		this.permission = permission;
+	}
+
+	public String getId() {
         return id;
     }
 
