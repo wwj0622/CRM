@@ -20,15 +20,44 @@
   </sql>
   
    <select id="AllUser" resultMap="BaseResultMap">
-    select * from sys_user  where locked!='3'
+     select * from sys_user  where locked!='3' and locked!='4'
   </select>
   
    <select id="AllDeleteUser" resultMap="BaseResultMap">
-      select * from sys_user  where locked='3'
+      select * from sys_user  where locked='3' and locked!='4'
   </select>
   
+  <select id="DateUser" resultMap="BaseResultMap">
+      select * from sys_user where  locked!='3' and locked!='4'
+      <if test="name !=null">    
+        and (usercode  LIKE #{name} OR id LIKE #{name} OR phone LIKE #{name} OR idcard LIKE #{name} )
+      </if>    
+     <if test="start != null">
+        and jointime  >  #{start}
+      </if>
+      <if test="end!=null">
+       and  jointime  &lt; #{end} 
+      </if>  
+      
+  </select>
+  
+   <select id="DatedeleteUser" resultMap="BaseResultMap">
+      select * from sys_user where  locked='3' and locked!='4'
+      <if test="name !=null">    
+        and (usercode  LIKE #{name} OR id LIKE #{name} OR phone LIKE #{name} OR idcard LIKE #{name} )
+      </if>    
+     <if test="start != null">
+        and jointime  >  #{start}
+      </if>
+      <if test="end!=null">
+       and  jointime  &lt; #{end} 
+      </if>  
+      
+  </select>
+  
+  
    <select id="select" resultMap="BaseResultMap">
-    select * from sys_user where usercode=#{name}
+    select * from sys_user where usercode=#{name} and locked='0'
   </select>
   
   <select id="selectUser" resultMap="BaseResultMap">

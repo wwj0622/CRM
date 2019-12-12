@@ -30,8 +30,8 @@ public class User {
     private String locked;
     
     private String roleid;
-    
-    
+        
+  
 
     public String getRoleid() {
 		return roleid;

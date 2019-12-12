@@ -1,6 +1,9 @@
 package com.topscit.springboot1.serviceImpl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -249,6 +252,124 @@ public class LoginServiceImpl implements LoginService{
 		{
 		return false;
     	}
+	}
+
+	@Override
+	public boolean updateUserPassword(User user) {
+        
+		String randomStr = Md5Util.getRandomStr(3);
+		String md5 = Md5Util.md5(user.getPassword(), randomStr);
+		
+		User user2 = new User();
+		user2.setId(user.getId());
+		user2.setPassword(md5);
+		user2.setSalt(randomStr);
+		user2.setOperationtime(new Date());
+		int updateByPrimaryKeySelective = userMapper.updateByPrimaryKeySelective(user2);
+		
+		if(updateByPrimaryKeySelective==1)
+		{
+			return true;
+		}
+		else
+		{
+		    return false;
+    	}
+	}
+
+	@Override
+	public List<User> SelectUser(HashMap<String, String> data) {
+		String start = data.get("start");
+		String end = data.get("end");
+		
+		String name = data.get("name");
+		
+		String name2="%"+name+"%";
+		
+		String pattern="yyyy-MM-dd";
+		
+		 Date parse = null;
+		 Date parse2 = null;
+		 List<User> dateUser = null;
+		SimpleDateFormat simple = new SimpleDateFormat(pattern);
+		try {
+		    if(!start.equals(""))
+		    {
+			  parse = simple.parse(start);
+		    }
+		    if(!end.equals(""))
+		    {
+			  parse2 = simple.parse(end);
+		    }
+		 dateUser = userMapper.DateUser(parse, parse2, name2);
+			
+		} catch (ParseException e) {
+			System.out.println("日期转换错误");
+		}
+		
+		return dateUser;
+	}
+
+	@Override
+	public List<User> SelectDeleteUser(HashMap<String, String> data) {
+			
+		    String start = data.get("start");
+			String end = data.get("end");
+			
+			String name = data.get("name");
+			
+			String name2="%"+name+"%";
+			
+			String pattern="yyyy-MM-dd";
+			
+			 Date parse = null;
+			 Date parse2 = null;
+			 List<User> dateUser = null;
+			SimpleDateFormat simple = new SimpleDateFormat(pattern);
+			try {
+			    if(!start.equals(""))
+			    {
+				  parse = simple.parse(start);
+			    }
+			    if(!end.equals(""))
+			    {
+				  parse2 = simple.parse(end);
+			    }
+			 dateUser = userMapper.DatedeleteUser(parse, parse2, name2);
+				
+			} catch (ParseException e) {
+				System.out.println("日期转换错误");
+			}
+			
+			return dateUser;
+	}
+
+	@Override
+	public boolean DeleteUser(String id) {
+         
+		User user = new User();
+		user.setId(id);
+		user.setLocked("4");
+		
+		int updateByPrimaryKey = userMapper.updateByPrimaryKey(user);
+
+		if(updateByPrimaryKey==1)
+		{
+			return true;
+		}
+		else
+		{
+		    return false;
+    	}
+	}
+
+	@Override
+	public List<Role> selectPermission(String id) {
+        
+        List<Role> selectPermission = permissionMapper.selectPermission(id);
+
+		
+		return selectPermission;
 	}
 	
 	

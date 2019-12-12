@@ -3,6 +3,7 @@ package com.topscit.springboot1.dao;
 import java.util.List;
 
 import com.topscit.springboot1.bean.Permission;
+import com.topscit.springboot1.bean.Role;
 
 public interface PermissionMapper {
     int deleteByPrimaryKey(Long id);
@@ -18,6 +19,10 @@ public interface PermissionMapper {
     int updateByPrimaryKey(Permission record);
     
     List<Permission> select(String id);
+    
+    List<Role> selectPermission(String id);
+    
+    
     
     
 }

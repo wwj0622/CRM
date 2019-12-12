@@ -26,22 +26,21 @@
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
 <script src="./js/axios.min.js"></script>
-
 <script src="./js/vue.js"></script>
 <title>删除的用户</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 删除的用户<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div class="page-container">
+<div class="page-container" id="app">
 	<div class="text-c"> 日期范围：
-		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">
+		<input type="text"  autocomplete="off" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">
 		-
-		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
-		<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="" name="">
-		<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+		<input type="text"  autocomplete="off" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
+		<input type="text"  autocomplete="off" v-model="udate.name"  class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="" name="">
+		<button type="button" @click="allUser" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> </span> <span class="r">共有数据：<strong>88</strong> 条</span> </div>
-	<div class="mt-20"  id="app">
+	<div class="mt-20"  >
 	<table class="table table-border table-bordered table-hover table-bg table-sort">
 		<thead>
 			<tr class="text-c">
@@ -70,7 +69,7 @@
 				<td>{{u.jointime}}</td>
 				<td>{{u.operationtime}}</td>
 				<td class="td-status"><span class="label label-danger radius">{{u.locked == 3?'已删除': '未删除' }}</span></td>
-				<td class="td-manage"><a style="text-decoration:none" href="javascript:;" @click="member_huanyuan(this,u.id)" title="还原"><i class="Hui-iconfont">&#xe66b;</i></a> <a title="删除" href="javascript:;" onclick="member_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+				<td class="td-manage"><a style="text-decoration:none" href="javascript:;" @click="member_huanyuan(this,u.id)" title="还原"><i class="Hui-iconfont">&#xe66b;</i></a> <a title="删除" href="javascript:;" @click="member_del(this,u.id)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 			</tr>
 		</tbody>
 	</table>
@@ -123,7 +122,11 @@ new Vue({
 	  data () {
 		  return {
 			  user:[],
-			 
+			  udate:{
+				  start:'',
+				  end:'',
+				  name:''
+			     }
 		  }
 	  },
 	  methods: {
@@ -150,14 +153,45 @@ new Vue({
 			.catch(err => {
 				console.error(err); 
 			})
-
-		
-			
 		      });
-	        }
+	        },
+	    	allUser(){
+				this_a=this;
+				 this_a.udate.start=document.getElementById('datemin').value;
+			     this_a.udate.end=document.getElementById('datemax').value;
+		          axios.post("/selectDeleteAllUser",this_a.udate)
+		          .then(res => {
+		            console.log(res);
+		             this_a.user = res.data;
+		          })
+		          .catch(err => {
+		            console.error(err); 
+		          })
+				
+			},
+			member_del(obj,id){
+				this_a=this;
+				layer.confirm('确认要删除吗？',function(index){
+					$.ajax({
+						type: 'POST',
+						url: '/deleteUser',
+						data: {id:id},
+						dataType: 'json',
+						success: function(data){
+							$(obj).parents("tr").remove();
+							layer.msg('已删除!',{icon:1,time:1000});
+							this_a.selectUser();
+						},
+						error:function(data) {
+							console.log(data.msg);
+						},
+					});		
+				});
+			}
+			
 		  
 	  },
-	  created () {
+	  created(){
 		this.selectUser();
 	  }
 

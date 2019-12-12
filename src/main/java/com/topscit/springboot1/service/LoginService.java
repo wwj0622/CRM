@@ -1,5 +1,6 @@
 package com.topscit.springboot1.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.topscit.springboot1.bean.Permission;
@@ -45,5 +46,14 @@ public interface LoginService {
 	
 	boolean updatePower(User user);
 	
+	boolean updateUserPassword(User user);
+	
+	List<User>  SelectUser(HashMap<String, String> data);
+	
+	List<User>  SelectDeleteUser(HashMap<String, String> data);
+	
+	boolean DeleteUser(String id);
+	
+	List<Role>  selectPermission(String id);
 	
 }
