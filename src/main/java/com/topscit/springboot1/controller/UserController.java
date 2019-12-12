@@ -278,6 +278,8 @@ public class UserController {
 	public String changepassword(String id,Map<String, Object> data)
 	{
 	   User selectUser = loginService.selectUser(id);
+	   
+	   
 	   data.put("String", selectUser);
 	   
 		return "forward:/change-password.jsp";
