@@ -18,4 +18,6 @@ public interface GoodsService {
 	//用PageHelper对goods全部数据进行分页
 	PageInfo<Goods> selectListGoodsByLimit(String gname,int pn , int size);
 
+	//修改goods信息
+	int updateByPrimaryKey(Goods goods);
 }

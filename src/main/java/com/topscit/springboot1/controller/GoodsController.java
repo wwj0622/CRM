@@ -86,12 +86,20 @@ public class GoodsController {
 			} 	
 			
 			goodsinfo.setGlogo(show);
-			System.out.println("update:"+goodsinfo.toString());
+			int updateByPrimaryKey = goodsService.updateByPrimaryKey(goodsinfo);
+			if(updateByPrimaryKey>0){
+				return true;
+			}else{
+				return false;
+			}
 		}else{
-			System.out.println("空"+goodsinfo.toString());
+			int updateByPrimaryKey = goodsService.updateByPrimaryKey(goodsinfo);
+			if(updateByPrimaryKey>0){
+				return true;
+			}else{
+				return false;
+			}
 		}
-		System.out.println(show);
-		System.out.println(realPath);
-		return true;
+		
 	}
 }

@@ -41,4 +41,10 @@ public class GoodsServiecImpl implements GoodsService{
 		return pageInfo;
 	}
 
+	@Override
+	public int updateByPrimaryKey(Goods goods) {
+		int updateByPrimaryKey = goodsMapper.updateByPrimaryKey(goods);
+		return updateByPrimaryKey;
+	}
+
 }
