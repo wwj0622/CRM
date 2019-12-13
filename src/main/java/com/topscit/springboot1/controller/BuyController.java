@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,4 +58,51 @@ public class BuyController {
 		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", parts,allSupplier);
 		return resultBean;
 	}
+	
+	@RequestMapping("/addInfo")
+	@ResponseBody
+	public ResultBean addInfo(@RequestBody Buy buy){
+		boolean addBuy = buyservice.addBuy(buy);
+		boolean addBuyDetail = buyservice.addBuyDetail(buy.getBuyDetail());
+		if(addBuy && addBuyDetail){
+			return new ResultBean(ResultBean.STATA_SUCCESS, "添加成功");
+		}
+		else{
+			return new ResultBean(ResultBean.STATA_FIAIL, "添加失败");
+		}
+	}
+	
+	@RequestMapping("/delBuy")
+	@ResponseBody
+	public ResultBean delBuy(String[] bid){
+		
+		boolean deleteBuy = false;
+		boolean deleteBuyDetailByBid = false;
+		
+		for(int i=0;i < bid.length;i++){
+			deleteBuy = buyservice.deleteBuy(bid[i]);
+			deleteBuyDetailByBid = buyservice.deleteBuyDetailByBid(bid[i]);
+		}
+		
+		if(deleteBuy && deleteBuyDetailByBid){
+			return new ResultBean(ResultBean.STATA_SUCCESS, "删除成功");
+		}
+		else{
+			return new ResultBean(ResultBean.STATA_FIAIL, "删除失败");
+		}
+	}
+	
+	@RequestMapping("/getBuyByTime")
+	@ResponseBody
+	public ResultBean getBuyByTime(
+			String beginDate,
+			String endDate,
+			@RequestParam(defaultValue="1")int pn,
+			@RequestParam(defaultValue="5")int size,
+			Map<String, Object> data){
+		PageInfo<Buy> selectBuyByTime = buyservice.selectBuyByTime(beginDate, endDate, pn, size);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectBuyByTime);
+		return resultBean;
+	}
+	
 }

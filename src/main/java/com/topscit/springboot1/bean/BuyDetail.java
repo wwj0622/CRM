@@ -95,4 +95,13 @@ public class BuyDetail {
     public void setBdupdateTime(Date bdupdateTime) {
         this.bdupdateTime = bdupdateTime;
     }
+
+	@Override
+	public String toString() {
+		return "BuyDetail [bdid=" + bdid + ", bid=" + bid + ", pid=" + pid + ", bdcount=" + bdcount + ", bdprice="
+				+ bdprice + ", bdstate=" + bdstate + ", bdman=" + bdman + ", bdremark=" + bdremark + ", bdupdateTime="
+				+ bdupdateTime + "]";
+	}
+    
+    
 }

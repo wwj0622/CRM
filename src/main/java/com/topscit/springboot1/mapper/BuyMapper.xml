@@ -129,4 +129,10 @@
   <select id="getAllBuy" resultMap="BaseResultMap" >
   	select * from buy
    </select>
+   	
+	 <select id="getBuyByTime" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+	     select * from buy
+	    where btime >= to_date(#{beginDate,jdbcType=VARCHAR},'yyyy-MM-dd hh24:mi:ss')
+	    and btime >= to_date(#{endDate,jdbcType=VARCHAR},'yyyy-MM-dd hh24:mi:ss')
+	</select>   
 </mapper>

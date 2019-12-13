@@ -39,7 +39,9 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container" id="app">
 	<div class="text-c"> 
-		<input type="text"  v-model="inputContent" class="input-text" style="width:250px" placeholder="输入供应商名称" id="" name="">
+		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">
+		-
+		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
 		<button  @click="search" class="btn btn-success radius" id="" name="">
 		<i class="Hui-iconfont">&#xe665;</i> 搜索
 		</button>
@@ -73,7 +75,7 @@
 			<tbody>
 			 
 			<tr class="text-c" v-for='(buy,i) in buyList'>
-					<td><input name=""  v-model="checkedSupplier" type="checkbox" :value="buy.bid"></td>
+					<td><input name=""  v-model="checkedBuy" type="checkbox" :value="buy.bid"></td>
 					<td class="text-l">{{buy.bid}}</td>
 					<td>{{buy.sid}}</td>
 					<td>{{buy.baddress}}</td>
@@ -84,10 +86,10 @@
 						<a href="javascript:void(0);" @click="member_edit('采购单详情','mao/show-buyDetail.jsp?bid='+buy.bid,'4','','510')">详情</a>
 					</td>
 					<td class="f-14 product-brand-manage">
-						<a style="text-decoration:none" @click="member_edit('编辑','mao/member-edit.jsp?sid='+supplier.sid,'4','','510')" href="javascript:;" title="编辑">
+						<a style="text-decoration:none" @click="member_edit('编辑采购单','mao/buy-edit.jsp?bid='+buy.sid,'4','','510')" href="javascript:;" title="编辑">
 							<i class="Hui-iconfont">&#xe6df;</i>
 						</a> 
-						<a style="text-decoration:none" class="ml-5" @click="member_del(this,supplier.sid)" href="javascript:;" title="删除">
+						<a style="text-decoration:none" class="ml-5" @click="member_del(this,buy.bid)" href="javascript:;" title="删除">
 							<i class="Hui-iconfont">&#xe6e2;</i>
 						</a>
 					</td>
@@ -111,7 +113,7 @@ var v =  new Vue({
 		buyList:[],
 		pageInfo:[],
 		inputContent:'',
-		checkedSupplier:[],
+		checkedBuy:[],
 		state:''
 	},
 	methods:{
@@ -119,11 +121,11 @@ var v =  new Vue({
 		 	var _this = this;
 	        $.ajax({
 	            type: "GET",
-	            url: "/supplier/getAllSupplier",
+	            url: "/buy/getAllBuy",
 	            data: {pn:page},
 	            dataType: "json",
 	            success: function (response) {
-	            	_this.supplierList = response.data.list;
+	            	_this.buyList = response.data.list;
 	            	_this.pageInfo = response.data;
 	            },
 	        });
@@ -142,17 +144,17 @@ var v =  new Vue({
  	            },
  	        });
          },
-         member_del(obj,id){
+         member_del(obj,bid){
         	var _this = this;
    			$.ajax({
    				type: "GET",
-   	            url: "/supplier/delSupplier",
-   	            data: {sids:id},
+   	            url: "/buy/delBuy",
+   	            data: {bid:bid},
    	            dataType: "json",
    				success: function(data){
    					$(obj).parents("tr").remove();
    					layer.msg('已删除!',{icon:1,time:1000});
-   					location.href="mao/product-brand.jsp";
+   					location.href="mao/show-buy.jsp";
    				},
    				error:function(data) {
    					console.log(data.msg);
@@ -160,12 +162,12 @@ var v =  new Vue({
    			});		
          },
          delAllSupllier(){
-        	 console.log(this.checkedSupplier);
+        	 console.log(this.checkedBuy);
         	 var _this = this;
     			$.ajax({
     				type: "GET",
-    	            url: "/supplier/delSupplier",
-    	            data: {sids:_this.checkedSupplier},
+    	            url: "/buy/delBuy",
+    	            data: {bid:_this.checkedBuy},
     	            dataType: "json",
     	            traditional: true,
     				success: function(data){

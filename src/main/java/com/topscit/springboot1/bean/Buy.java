@@ -9,6 +9,7 @@ public class Buy {
 
     private String bstate;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date btime;
 
     private String baddress;
@@ -22,6 +23,7 @@ public class Buy {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date gupdateTime;
     
+    private BuyDetail buyDetail;
     
     public String getBid() {
         return bid;
@@ -92,4 +94,25 @@ public class Buy {
     public void setGupdateTime(Date gupdateTime) {
         this.gupdateTime = gupdateTime;
     }
+
+    
+    
+	public BuyDetail getBuyDetail() {
+		return buyDetail;
+	}
+
+	public void setBuyDetail(BuyDetail buyDetail) {
+		this.buyDetail = buyDetail;
+	}
+
+	@Override
+	public String toString() {
+		return "Buy [bid=" + bid + ", bstate=" + bstate + ", btime=" + btime + ", baddress=" + baddress + ", bman="
+				+ bman + ", bremark=" + bremark + ", sid=" + sid + ", gupdateTime=" + gupdateTime + ", buyDetail="
+				+ buyDetail + "]";
+	}
+
+
+    
+    
 }

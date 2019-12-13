@@ -29,7 +29,7 @@
 	<![endif]-->
 	<!--/meta 作为公共模版分离出去-->
 	
-	<title>采购单详情- H-ui.admin v3.1</title>
+	<title>修改供货商 - H-ui.admin v3.1</title>
 	<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
 	<meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 </head>
@@ -38,51 +38,56 @@
 	 <form action="/supplier/updateSupplier" id="app" method="POST" enctype="multipart/form-data" target="_parent">
 		<input type="hidden" id="box" value="${param.bid }" >
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购详情编号：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>供货商名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdid" placeholder="" id="username" name="sname">
+				<input type="hidden" name="sid" v-model="supplier.sid" >
+				<input type="hidden" name="slogo" v-model="supplier.slogo" >
+				<input type="text" class="input-text" v-model="supplier.sname" placeholder="" id="username" name="sname">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购单编号：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>电话号码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bid" placeholder="" id="mobile" name="sphone">
+				<input type="text" class="input-text" v-model="supplier.sphone" placeholder="" id="mobile" name="sphone">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购原材料编号：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>银行账户：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.pid" placeholder="" id="account" name="saccount">
+				<input type="text" class="input-text" v-model="supplier.saccount" placeholder="" id="account" name="saccount">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购数量：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdcount" placeholder="@" name="semail" id="email">
+				<input type="text" class="input-text" v-model="supplier.semail" placeholder="@" name="semail" id="email">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购价格：</label>
+			<label class="form-label col-xs-4 col-sm-3">LOGO：</label>
+			<div  class="formControls col-xs-8 col-sm-9"> <span class="btn-upload form-group">
+				<img alt="LOGO" width="30" height="30"  :src="supplier.slogo" id="img">
+				
+				<a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+				<input type="file" name="fm"  onchange="showImg(this)" class="input-file">
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>地址：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdprice"name="saddress" id="address">
+				<input type="text" class="input-text" v-model="supplier.saddress" name="saddress" id="address">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否入库：</label>
+			<label class="form-label col-xs-4 col-sm-3">说明：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdstate"name="saddress" id="address">
+				<textarea name="sremark" cols="" rows="" v-model="supplier.sremark" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>操作人员：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdman"name="saddress" id="address">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>最近操作时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdupdateTime"name="saddress" id="address">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input type="submit"  class="btn btn-primary radius" value="提交">
 			</div>
 		</div>
 		</form>
@@ -154,15 +159,14 @@ $(function(){
 var v =  new Vue({
 	el:'#app',
 	data:{
-		buyDetail:{
-			bdid:'',
+		buy:{
 			bid:'',
-			pid:'',
-			bdcount:'',
-			bdprice:'',
-			bdstate:'',
-			bman:'',
-			bdupdateTime:''
+			bstate:'',
+			btime:'',
+			baddress:'',
+			bremark:'',
+			sid:'',
+			screateTime:''
 		},
 	},
 	methods:{
@@ -170,15 +174,15 @@ var v =  new Vue({
 	},
 	created(){  
         var _this = this;
-        var bid = document.getElementById("box").value;
-        console.log(bid);
+        var sid = document.getElementById("box").value;
+        console.log(sid);
         $.ajax({
             type: "GET",
-            url: "/buy/getBuyDetailBybid",
-            data: {bid:bid},
+            url: "/supplier/getSupplierById",
+            data: {sid:sid},
             dataType: "json",
             success: function (response) {
-            	_this.buyDetail = response.data;
+            	_this.supplier = response.data;
             },
         });
        }

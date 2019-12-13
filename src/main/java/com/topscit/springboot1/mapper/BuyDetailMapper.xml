@@ -147,4 +147,13 @@
         </if>
     </where>
   </select>
+  
+   <delete id="deleteByBid" parameterType="java.lang.String" >
+    delete from buy_detail
+    where bid = #{bid}
+  </delete>
+  
+  
+  
+  
 </mapper>

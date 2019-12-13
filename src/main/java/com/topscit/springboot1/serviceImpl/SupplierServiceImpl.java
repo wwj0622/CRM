@@ -66,7 +66,8 @@ public class SupplierServiceImpl implements SupplierService{
 		}
 		else{
 			return false;
-		}	}
+		}	
+	}
 
 	@Override
 	public boolean deleteSupplier(String id) {

@@ -34,47 +34,40 @@
 
 </head>
 <body>
-<article class="page-container">
-	 <form action="/supplier/addSupplier" id="app" method="POST" enctype="multipart/form-data" target="_parent">
+	<div id="app">
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>交货时间：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="date" class="input-text" v-model="buy.btime"  id="username" name="username">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
-			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
-				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-1" checked>
-					<label for="sex-1">男</label>
-				</div>
-				<div class="radio-box">
-					<input type="radio" id="sex-2" name="sex">
-					<label for="sex-2">女</label>
-				</div>
-				<div class="radio-box">
-					<input type="radio" id="sex-3" name="sex">
-					<label for="sex-3">保密</label>
-				</div>
+			<label class="form-label col-xs-4 col-sm-3">付款状态：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select  v-model="buy.bstate" class="select" size="1" name="city">
+					<option value="" selected>请选择付款状态</option>
+					<option value="1">已付款</option>
+					<option value="0">未付款</option>
+				</select>
+				</span>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>交货地点：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="mobile" name="mobile">
+				<input type="text" class="input-text" v-model="buy.baddress" placeholder="" id="mobile" name="mobile">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注信息：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" placeholder="@" name="email" id="email">
+				<input type="text" class="input-text" v-model="buy.bremark" name="email" id="email">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">供应商：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select class="select" size="1" name="city">
+				<select v-model="buy.sid" class="select" size="1" name="city">
 					<option value="" selected>请选择供应商</option>
 					<option v-for='(supplier,i) in supplierList' :value="supplier.sid">{{supplier.sname}}</option>
 				</select>
@@ -84,29 +77,49 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">原材料：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select class="select" size="1" name="city" >
+				<select v-model="buyDetail.pid" class="select" size="1" name="city" >
 					<option  value="" selected>请选择原材料</option>
 					<option v-for='(parts,i) in partsList' :value="parts.pid">{{parts.pname}}</option>
 				</select>
 				</span> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">备注：</label>
+			<label class="form-label col-xs-4 col-sm-3">是否入库：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select v-model="buyDetail.bdstate" class="select" size="1" name="city">
+				<option  value="" selected>请选择是否出库</option>
+					<option :value="0" selected>未入库</option>
+					<option :value="1">已入库</option>
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>产品数量：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="beizhu" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
-				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+				<input type="text" class="input-text" v-model="buyDetail.bdcount" placeholder="" id="mobile" name="mobile">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>产品价格：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" v-model="buyDetail.bdprice" placeholder="" id="mobile" name="mobile">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>操作人员：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" v-model="buyDetail.bdman" placeholder="" id="mobile" name="mobile">
 			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<input type="submit"  class="btn btn-primary radius" value="提交">
+				<button type="button" @click="addInfo" class="btn btn-primary radius" >提交</button>
 			</div>
 		</div>
-		</form>
-</article>
-
-
-<!--_footer 作为公共模版分离出去-->
+	</div>
+	
+	<!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
@@ -120,15 +133,48 @@
 
 <script src="mao/vue.js" ></script>
 <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-
+	
 <script type="text/javascript">
 var v =  new Vue({
 	el:'#app',
 	data:{
 		partsList:[],
-		supplierList:[]
+		supplierList:[],
+		buyDetail:{
+			pid:'',
+			bdcount:'',
+			bdprice:'',
+			bdstate:'',
+			bdman:''
+		},
+		buy:{
+			bstate:'',
+			btime:'',
+			baddress:'',
+			bremark:'',
+			sid:''
+		}
 	},
-	methods:{},
+	methods:{
+		addInfo(){
+			this.buy.buyDetail=this.buyDetail;
+			var _this = this;
+	        $.ajax({
+	            type: "POST",
+	            url: "/buy/addInfo",
+	            data: JSON.stringify(_this.buy),
+	            dataType: "json",
+	            contentType: "application/json; charset=utf-8",
+	            success: function (response) {
+	            	console.log(_this.buy);
+	            	console.log(_this.buyDetail);
+	            	layer.close(layer.index);
+	            	window.parent.location.reload();
+	            	
+	            },
+	        });
+		}
+	},
 	created(){  
         var _this = this;
         $.ajax({
@@ -144,6 +190,10 @@ var v =  new Vue({
        }
 });
 </script>
-
 </body>
 </html>
+
+
+
+
+

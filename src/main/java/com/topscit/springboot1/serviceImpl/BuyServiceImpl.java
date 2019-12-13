@@ -1,5 +1,6 @@
 package com.topscit.springboot1.serviceImpl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -20,12 +21,16 @@ import com.topscit.springboot1.service.BuyService;
 @Service("buyService")
 public class BuyServiceImpl  implements BuyService {
 	
+	private String bid;
 
 	@Resource
 	private BuyDetailMapper buyDetailMapper;
 	
 	@Resource
 	private PartsMapper partsMapper;
+	
+	@Resource
+	private BuyMapper buyMapper;
 	
 	
 	@Resource
@@ -50,4 +55,74 @@ public class BuyServiceImpl  implements BuyService {
 		List<Parts> allParts = partsMapper.getAllParts();
 		return allParts;
 	}
+	
+	
+	
+	@Override
+	public boolean addBuy(Buy buy) {
+		
+		bid = System.currentTimeMillis()+"hahah";
+		buy.setBid(bid);
+		Date date = new Date();
+		buy.setGupdateTime(date);
+		
+		int insertSelective = buyMapper.insertSelective(buy);
+		if(insertSelective == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	@Override
+	public boolean addBuyDetail(BuyDetail buyDetail) {
+		
+		buyDetail.setBdid(System.currentTimeMillis() + "xixiiix");
+		Date date = new Date();
+		buyDetail.setBdupdateTime(date);
+		buyDetail.setBid(bid);
+		
+		int insertSelective = buyDetailMapper.insertSelective(buyDetail);
+		if(insertSelective == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	@Override
+	public boolean deleteBuyDetailByBid(String id) {
+		int deleteByBid = buyDetailMapper.deleteByBid(id);
+		if(deleteByBid == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	@Override
+	public boolean deleteBuy(String id) {
+		int deleteByPrimaryKey = buyMapper.deleteByPrimaryKey(id);
+		if(deleteByPrimaryKey == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
+	@Override
+	public PageInfo<Buy> selectBuyByTime(String beginDate, String endDate, int pn, int size) {
+		BuyMapper mapper = st.getMapper(BuyMapper.class);
+		PageHelper.startPage(pn,size);
+		List<Buy> allBuy = mapper.getBuyByTime(beginDate, endDate);
+		PageInfo<Buy> pageInfo = new PageInfo<Buy>(allBuy);
+		return pageInfo;
+	}
+	
 }
