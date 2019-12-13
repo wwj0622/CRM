@@ -7,8 +7,6 @@
 <head>
 	<base href="<%=basepath %>" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Insert title here</title>
-
 <meta charset="utf-8">
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -55,34 +53,39 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">网站角色：</label>
 			<div class="formControls col-xs-8 col-sm-9">
+
 				
 				<dl class="permission-list" v-for="(p,i) in p1">
 					<dt>
 						<label>
-							<input type="checkbox" value="" name="user-Character-0" id="user-Character-1">
+							<input type="checkbox" :value="p.id" name="user-Character-0" id="user-Character-1">
 							{{p.name}}</label>
 					</dt>
-					<dd>
+				  <dd>
 						<dl class="cl permission-list2">
 							<dt>
 								<label class="">
-									<input type="checkbox" value="" name="user-Character-1-0" id="user-Character-1-0">
+									<input type="checkbox" :value="p.id" name="user-Character-1-0" id="user-Character-1-0">
 									{{p.name}}</label>
 							</dt>
-							<dd v-for="(pm,i) in p.miss">
-								<label class="">
-									<input type="checkbox" value="" name="user-Character-1-0-0" id="user-Character-1-0-0">
-									{{pm.name}}</label>
-								
+							<dd>
+								<label class="" v-for="(pm,i) in p.miss">
+									<input type="checkbox" :value="pm.id" name="user-Character-1-0-0" id="user-Character-1-0-0">
+									{{pm.name}}
+								</label>
+							
 							</dd>
 						</dl>
 					</dd>
+
 				</dl>
+
+
 			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<button type="submit" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
+				<button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
 			</div>
 		</div>
 	</form>
@@ -137,13 +140,13 @@ $(function(){
 	});
 });
 </script>
-
 <script>
   new Vue({
 	  el:'#app',
 	  data () {
 		  return {
 			  p1:[],
+			  p2:[]
 			
 		  }
 	  },
@@ -158,8 +161,7 @@ $(function(){
 			 .catch(err => {
 				 console.error(err); 
 			 })
-
-		  }
+		}
 	  },
 	  created () {
 		  this.pemis();

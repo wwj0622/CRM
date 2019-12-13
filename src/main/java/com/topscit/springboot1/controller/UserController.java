@@ -327,5 +327,42 @@ public class UserController {
 		return hashMap;
 	}
 	
+	@RequestMapping("/AllUserrole")
+	@ResponseBody
+	public List<User> SelectRole()
+	{
+	    List<User> selectUserandRole = loginService.selectUserandRole();
+		return selectUserandRole;
+	}
+	
+	@RequestMapping("/AllPermis")
+	@ResponseBody
+	public List<Permission> SelecTall()
+	{
+		List<Permission> selecPermission = loginService.selecPermission();
+		
+		return selecPermission;
+	}
+	
+	@RequestMapping("/roleuser")
+	public String SelectUser(String id,Map<String, Object> data)
+	{
+		data.put("String", id);
+		return "forward:/admin-role-user.jsp";
+		
+	}
+	
+	@RequestMapping("/selectUP")
+	@ResponseBody
+	public Role selectUserPermission(@RequestBody HashMap<String, String> data)
+	{
+		String id = data.get("id");
+		System.out.println(id);
+		Role role = loginService.SelectRolePermission(id);
+
+		return role;
+		
+	}
+	
 	
 }

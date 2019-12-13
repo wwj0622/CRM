@@ -32,6 +32,6 @@ public interface UserMapper {
 	
 	List<User> DatedeleteUser(@Param("start")Date start,@Param("end")Date end,@Param("name")String name);
     
-	
+	List<User> selectUserRole();
 
 }

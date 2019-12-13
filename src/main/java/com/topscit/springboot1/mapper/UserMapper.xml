@@ -19,6 +19,33 @@
     locked
   </sql>
   
+   <select id="selectUserRole" resultMap="ur">
+	   SELECT  su.*,sr.*,sr.id srid FROM sys_user su INNER JOIN sys_user_role sur
+	   on su.id =sur.sys_user_id INNER JOIN sys_role sr ON
+	   sur.sys_role_id =sr.id AND locked='0'
+   </select>
+   
+   <resultMap type="com.topscit.springboot1.bean.User" id="ur">
+	    <id column="id" jdbcType="VARCHAR" property="id" />
+	    <result column="usercode" jdbcType="VARCHAR" property="usercode" />
+	    <result column="username" jdbcType="VARCHAR" property="username" />
+	    <result column="password" jdbcType="VARCHAR" property="password" />
+	    <result column="salt" jdbcType="VARCHAR" property="salt" />
+	    <result column="phone" jdbcType="VARCHAR" property="phone" />
+	    <result column="ulogo" jdbcType="VARCHAR" property="ulogo" />
+	    <result column="operationtime" jdbcType="TIMESTAMP" property="operationtime" />
+	    <result column="jointime" jdbcType="TIMESTAMP" property="jointime" />
+	    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+	    <result column="locked" jdbcType="VARCHAR" property="locked" />
+	    <association property="role" javaType="com.topscit.springboot1.bean.Role" column="srid">
+	        <id column="srid" property="id" jdbcType="VARCHAR" />
+		    <result column="name" property="name" jdbcType="VARCHAR" />
+		    <result column="available" property="available" jdbcType="CHAR" />
+	    </association>
+   
+   </resultMap>
+  
+  
    <select id="AllUser" resultMap="BaseResultMap">
      select * from sys_user  where locked!='3' and locked!='4'
   </select>

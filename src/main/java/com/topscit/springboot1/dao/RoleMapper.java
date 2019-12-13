@@ -27,5 +27,9 @@ public interface RoleMapper {
     
     Role selectRolename(String id);
     
+    Role SelectRP(String id);
+    
+ 
+    
     
 }

@@ -56,4 +56,9 @@ public interface LoginService {
 	
 	List<Role>  selectPermission(String id);
 	
+	List<User>  selectUserandRole();
+	
+	List<Permission> selecPermission();
+	
+	Role SelectRolePermission(String id);
 }

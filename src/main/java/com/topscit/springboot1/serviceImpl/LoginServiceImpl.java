@@ -371,6 +371,31 @@ public class LoginServiceImpl implements LoginService{
 		
 		return selectPermission;
 	}
+
+	@Override
+	public List<User> selectUserandRole() {
+
+        List<User> selectUserRole = userMapper.selectUserRole();
+		
+		return selectUserRole;
+	}
+
+	@Override
+	public List<Permission> selecPermission() {
+		List<Permission> selectall = permissionMapper.selectall();
+		
+		return selectall;
+	}
+
+	@Override
+	public Role SelectRolePermission(String id) {
+
+		Role selectRP = roleMapper.SelectRP(id);
+		
+		return selectRP;
+	}
+
+	
 	
 	
 

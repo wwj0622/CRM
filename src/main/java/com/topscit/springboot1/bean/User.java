@@ -18,6 +18,7 @@ public class User {
     private String phone;
 
     private String ulogo;
+    
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
     private Date operationtime;
@@ -31,9 +32,19 @@ public class User {
     
     private String roleid;
         
-  
+    private Role   role;
+    
+    
 
-    public String getRoleid() {
+    public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public String getRoleid() {
 		return roleid;
 	}
 

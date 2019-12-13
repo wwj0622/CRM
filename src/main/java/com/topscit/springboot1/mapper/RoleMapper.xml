@@ -8,6 +8,25 @@
   </resultMap>
   
   
+  <select id="SelectRP" resultMap="rap">
+      SELECT sr.*,sp.id,sp.`name`,sp.id spid FROM sys_user su INNER JOIN sys_user_role sur
+      ON su.id=sur.sys_user_id INNER JOIN sys_role sr ON sur.sys_role_id=sr.id
+      INNER JOIN sys_role_permission srp ON sr.id=srp.sys_role_id INNER JOIN
+      sys_permission sp ON srp.sys_permission_id=sp.id WHERE su.id=#{id}
+  
+  </select>
+  
+  <resultMap type="com.topscit.springboot1.bean.Role" id="rap">
+     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="available" property="available" jdbcType="CHAR" />
+    <collection property="permission" column="id" ofType="com.topscit.springboot1.bean.Permission">
+     <id column="spid" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+  
+  
   <insert id="insertRole">
     
   
