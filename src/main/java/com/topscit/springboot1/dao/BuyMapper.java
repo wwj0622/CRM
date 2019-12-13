@@ -1,5 +1,7 @@
 package com.topscit.springboot1.dao;
 
+import java.util.List;
+
 import com.topscit.springboot1.bean.Buy;
 
 public interface BuyMapper {
@@ -14,4 +16,7 @@ public interface BuyMapper {
     int updateByPrimaryKeySelective(Buy record);
 
     int updateByPrimaryKey(Buy record);
+    
+    //查询所有
+    public List<Buy> getAllBuy();
 }

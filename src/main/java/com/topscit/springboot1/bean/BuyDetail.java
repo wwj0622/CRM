@@ -2,6 +2,8 @@ package com.topscit.springboot1.bean;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class BuyDetail {
     private String bdid;
 
@@ -18,7 +20,8 @@ public class BuyDetail {
     private String bdman;
 
     private String bdremark;
-
+    
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bdupdateTime;
 
     public String getBdid() {

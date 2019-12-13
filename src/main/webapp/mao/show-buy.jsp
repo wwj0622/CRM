@@ -32,7 +32,7 @@
 	<![endif]-->
 	
 	
-	<title>供货商管理</title>
+	<title>采购单管理</title>
 </head>
 <body>
 
@@ -49,8 +49,8 @@
 			<a href="javascript:;" @click="delAllSupllier" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
 			</a> 
-			<a href="javascript:;" onclick="member_add('添加用户','mao/member-add.jsp','','510')" class="btn btn-primary radius">
-				<i class="Hui-iconfont">&#xe600;</i> 添加用户
+			<a href="javascript:;" onclick="member_add('添加采购单','mao/add-buy.jsp','','510')" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加采购单
 			</a>
 		</span> 
 		<span class="r">共有数据：<strong>88</strong> 条</span> 
@@ -60,27 +60,29 @@
 			<thead>
 				<tr class="text-c">
 					<th width="25"></th>
-					<th width="70">供货商名称</th>
-					<th width="100">供货商电话号码</th>
-					<th width="100">供货商银行账户</th>
-					<th width="60">供货商邮箱</th>
-					<th>供货商地址</th>
-					<th width="60">供货商说明</th>
-					<th width="40">最近操作时间</th>
+					<th width="70">采购订单号</th>
+					<th width="100">供货商ID</th>
+					<th width="100">交货地址</th>
+					<th width="60">交货时间</th>
+					<th>备注信息</th>
+					<th width="60">付款状态</th>
+					<th width="40">详情</th>
 					<th width="100">操作</th>
 				</tr>
 			</thead>
 			<tbody>
 			 
-			<tr class="text-c" v-for='(supplier,i) in supplierList'>
-					<td><input name=""  v-model="checkedSupplier" type="checkbox" :value="supplier.sid"></td>
-					<td class="text-l"><img width="30" height="30" :src="supplier.slogo"> {{supplier.sname}}</td>
-					<td>{{supplier.sphone}}</td>
-					<td>{{supplier.saccount}}</td>
-					<td>{{supplier.semail}}</td>
-					<td class="text-l">{{supplier.saddress}}</td>
-					<td>{{supplier.sremark}}</td>
-					<td>{{supplier.supdateTime}}</td>
+			<tr class="text-c" v-for='(buy,i) in buyList'>
+					<td><input name=""  v-model="checkedSupplier" type="checkbox" :value="buy.bid"></td>
+					<td class="text-l">{{buy.bid}}</td>
+					<td>{{buy.sid}}</td>
+					<td>{{buy.baddress}}</td>
+					<td>{{buy.gupdateTime}}</td>
+					<td class="text-l">{{buy.bremark}}</td>
+					<td>{{buy.bstate}}</td>
+					<td>
+						<a href="javascript:void(0);" @click="member_edit('采购单详情','mao/show-buyDetail.jsp?bid='+buy.bid,'4','','510')">详情</a>
+					</td>
 					<td class="f-14 product-brand-manage">
 						<a style="text-decoration:none" @click="member_edit('编辑','mao/member-edit.jsp?sid='+supplier.sid,'4','','510')" href="javascript:;" title="编辑">
 							<i class="Hui-iconfont">&#xe6df;</i>
@@ -106,10 +108,11 @@
 var v =  new Vue({
 	el:'#app',
 	data:{
-		supplierList:[],
+		buyList:[],
 		pageInfo:[],
 		inputContent:'',
-		checkedSupplier:[]
+		checkedSupplier:[],
+		state:''
 	},
 	methods:{
 		jump(page){
@@ -182,11 +185,11 @@ var v =  new Vue({
         var _this = this;
         $.ajax({
             type: "GET",
-            url: "/supplier/getAllSupplier",
+            url: "/buy/getAllBuy",
             data: null,
             dataType: "json",
             success: function (response) {
-            	_this.supplierList = response.data.list;
+            	_this.buyList = response.data.list;
             	_this.pageInfo = response.data;
             },
         });
@@ -206,19 +209,6 @@ var v =  new Vue({
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
-<!--
-$(function(){
-	$('.table-sort').dataTable({
-		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
-		"bStateSave": true,//状态保存
-		"aoColumnDefs": [
-		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-		  {"orderable":false,"aTargets":[0,8,9]}// 制定列不参与排序
-		]
-	});
-	
-});
--->
 /*用户-添加*/
 function member_add(title,url,w,h){
 	layer_show(title,url,w,h);

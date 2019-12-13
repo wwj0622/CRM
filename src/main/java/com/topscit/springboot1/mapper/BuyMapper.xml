@@ -125,4 +125,8 @@
       gupdate_time = #{gupdateTime,jdbcType=TIMESTAMP}
     where bid = #{bid,jdbcType=VARCHAR}
   </update>
+  
+  <select id="getAllBuy" resultMap="BaseResultMap" >
+  	select * from buy
+   </select>
 </mapper>

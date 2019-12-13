@@ -2,6 +2,8 @@ package com.topscit.springboot1.bean;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Buy {
     private String bid;
 
@@ -17,8 +19,10 @@ public class Buy {
 
     private String sid;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date gupdateTime;
-
+    
+    
     public String getBid() {
         return bid;
     }
@@ -32,7 +36,13 @@ public class Buy {
     }
 
     public void setBstate(String bstate) {
-        this.bstate = bstate == null ? null : bstate.trim();
+    	if(bstate.equals("1")){
+    		this.bstate = "已付款";
+    	}
+    	else{
+    		this.bstate = "未付款";
+    	}
+         
     }
 
     public Date getBtime() {
