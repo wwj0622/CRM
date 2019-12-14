@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.topscit.springboot1.bean.Goods;
+import com.topscit.springboot1.bean.Storage;
 
 public interface GoodsService {
 	
@@ -20,4 +21,10 @@ public interface GoodsService {
 
 	//修改goods信息
 	int updateByPrimaryKey(Goods goods);
+	
+	//添加goods
+	int insertSelective(Goods goods);
+	
+	//查询所有的仓库编号
+	List<String> selectTid();
 }

@@ -41,7 +41,7 @@
 		<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" v-model="content"  id="" name="">
 		<button type="submit" class="btn btn-success radius" @click="selectIf()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" @click="datadel(0)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="member_add('添加用户','member-add.html','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a></span> <span class="r">共有数据：<strong>88</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" @click="datadel(0)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" @click="addgoodsfunction()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加商品</a></span> <span class="r">共有数据：<strong>{{total}}</strong> 条</span> </div>
 	<div class="mt-20">
 	<el-row>
           <el-col :span="24">
@@ -51,7 +51,9 @@
                   <el-table-column label="ID" prop="gid"></el-table-column>
                   <el-table-column label="产品名" prop="gname"></el-table-column>
                   <el-table-column label="头像">
-					　<img :src="glogo" width="30" height="30"  />
+					　　<template slot-scope="scope">
+					　　　　<img :src="scope.row.glogo" width="30" height="30" class="head_pic"/>
+					　　</template>
 				  </el-table-column>
                   <el-table-column label="成本价" prop="goriginal"></el-table-column>
                   <el-table-column label="零售价" prop="gprice"></el-table-column>
@@ -82,7 +84,7 @@
   									  :show-file-list="false"
 									  list-type="picture">
 									  <el-button size="small" type="primary">点击上传</el-button>
-									  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过3M</div>
+									  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过10M</div>
 									</el-upload>
                                   </el-form-item>
                                   <el-form-item label="成本价" >
@@ -95,7 +97,11 @@
                                     <el-input v-model="goodsinfo.gcount" ></el-input>
                                   </el-form-item>
                                   <el-form-item label="仓库编号" >
-                                    <el-input v-model="goodsinfo.ptid" ></el-input>
+                                    <el-select popper-class = "optionsContent" default-first-option filterable v-model="goodsinfo.ptid" @change="chickvalue1($event)" placeholder="请选择仓库">
+								    	
+								      <el-option v-for="(g,i) in goodstid" :key="i" :label="g" :value="g"></el-option>
+								      
+								    </el-select>
                                   </el-form-item>
                                   <!-- <el-form-item label="生日">
                                     <el-date-picker v-model="stuinfo.birthday" ></el-date-picker>
@@ -106,15 +112,62 @@
                                   <el-button type="success" @click="update()">确认</el-button>
                               </div>
                           </el-dialog>
-                          <el-button size="mini" type="danger" @click="datadel(1)">删除</el-button>
+                          <el-button size="mini" type="danger" @click="datadel1(1,scope)">删除</el-button>
                       </template>
                   </el-table-column>
               </el-table>
           </el-col>
+          <el-dialog title="添加商品信息" :visible.sync="addDialogState">
+                              <el-form :model="addgoods" :label-position="po" :label-width="wd">
+                                  
+                                  <el-form-item label="产品名">
+                                    <el-input v-model="addgoods.gname" ></el-input>
+                                  </el-form-item>
+                                  <el-form-item label="图片" >
+                                    <img :src="addgoods.glogo" width="30" height="30"  />
+                                    
+                                    <el-upload
+									  class="upload-demo"
+									  :action="actionUrl"
+									  :before-upload="beforeAvatarUpload"
+									  :on-change="addgoodsfile"
+									  :file-list="fileList"
+									  :auto-upload="false"
+  									  :show-file-list="false"
+									  list-type="picture">
+									  <el-button size="small" type="primary">点击上传</el-button>
+									  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过10M</div>
+									</el-upload>
+                                  </el-form-item>
+                                  <el-form-item label="成本价" >
+                                    <el-input v-model="addgoods.goriginal" ></el-input>
+                                  </el-form-item>
+                                  <el-form-item label="零售价" >
+                                    <el-input v-model="addgoods.gprice" ></el-input>
+                                  </el-form-item>
+                                  <el-form-item label="仓库数量" >
+                                    <el-input v-model="addgoods.gcount" ></el-input>
+                                  </el-form-item>
+                                  <el-form-item label="仓库编号">
+								    <el-select popper-class = "optionsContent" default-first-option filterable v-model="addgoods.ptid" @change="chickvalue($event)" placeholder="请选择仓库">
+								    	
+								      <el-option v-for="(g,i) in goodstid" :key="i" :label="g" :value="g"></el-option>
+								      
+								    </el-select>
+								  </el-form-item>
+                                  <!-- <el-form-item label="生日">
+                                    <el-date-picker v-model="stuinfo.birthday" ></el-date-picker>
+                                  </el-form-item> -->
+                              </el-form>
+                              <div slot="footer" class="dialog-footer">
+                                  <el-button type="primary" @click="clos()">取消</el-button>
+                                  <el-button type="success" @click="addupdate()">确认</el-button>
+                              </div>
+                          </el-dialog>
       </el-row>
       <el-row style="margin-top:10px">
       <el-col :span="24">
-        <el-pagination :current-page.sync="currentPage" @current-change="selectByPn" background page-size="1" :total="total" layout="prev,pager,next" ></el-pagination>
+        <el-pagination :current-page.sync="currentPage" @current-change="selectByPn" background :page-size="pageSize" :total="total" layout="prev,pager,next" ></el-pagination>
       </el-col>
     </el-row> 
 	 <!-- <table  class="table table-border table-bordered table-hover table-bg table-sort">
@@ -179,14 +232,10 @@ var v = new Vue({
 	data:{
 		file:'',
 		fileList:[],
-		uploadData:{
-			dataType:this.goodsinfo,
-			oldFilePath:""
-		},
 		actionUrl:'https://jsonplaceholder.typicode.com/posts/',
 		gidgoodslist:[],//存放多选时的所有数据
 		glist:[],//存放多选的所有的goodsid
-		goods:[],
+		goods:[],//存放分页查到的数据
 		content:'',//条件查询的内容
 		goodsinfo:{
             gid:'',
@@ -197,23 +246,94 @@ var v = new Vue({
             gprice:'',
             ptid:''
         },
-        total:1000,
+        addgoods:{
+            gid:'',
+            gname:'',
+            glogo:'',
+            gcount:'',
+            goriginal:'',
+            gprice:'',
+            ptid:''
+        },
+        goodstid:[],
+        pageSize:8,
+        total:0,
         currentPage:1,
         updateDialogState:false,
+        addDialogState:false,
         po:'left',
         wd:'80'
 	},
 	methods:{
+	    /* chickvalue:function (e) {
+			this.addgoods.ptid = e;
+		},
+	    chickvalue1:function (e) {
+			this.goodsinfo.ptid = e;
+		}, */
+		//修改框添加图片触发事件
 		changefile:function(file, fileList){
-			console.log("触发事件");
 			this.file = file;
 			this.goodsinfo.glogo = file.url;
-		   /*  var reader = new FileReader();
-		    reader.readAsDataURL(file.raw);
-		    reader.onload = function(e){
-		        console.log(this.result);//图片的base64数据
-		    } */ 
 		},
+		
+		//点击添加后触发的事件
+		addgoodsfunction:function(){
+			this.addDialogState = true;
+			this.selectAlltid();
+		},
+		
+		//查询所有的仓库编号
+		selectAlltid:function(){
+			var _this = this;
+        	$.ajax({
+        	      type: "GET",
+        	      traditional: true,
+        	      url: "/goods/selecttid",
+        	      data: null,
+        	      dataType: "json",
+        	      success: function (response) {
+        	    	  _this.goodstid = response;
+        	      }
+        	  });
+		},
+		
+		//添加goods框，改变图片触发事件
+		addgoodsfile:function(file){
+			this.file = file;
+			this.addgoods.glogo = file.url;
+		},
+		
+		//添加goods后上传到后台
+		addupdate:function(){
+			this.addDialogState = false;
+            var formData = new FormData();
+		    formData.append("file",this.file.raw);
+		    formData.append("gid",this.addgoods.gid);
+		    formData.append("gname",this.addgoods.gname);
+		    formData.append("glogo",this.addgoods.glogo);
+		    formData.append("gcount",this.addgoods.gcount);
+		    formData.append("goriginal",this.addgoods.goriginal);
+		    formData.append("gprice",this.addgoods.gprice);
+		    formData.append("ptid",this.addgoods.ptid);
+		    
+		    var _this = this;
+		    var configs = 'multipart/form-data;';
+		    const instance=axios.create({
+		          withCredentials: true
+		         }) 
+		    instance.post("/goods/addgoods", formData, configs).then(function(result) {
+                            console.log(result);
+                            _this.file = '';
+                            _this.selectAllGoods();
+                            let key;
+                            for(key in _this.addgoods){
+                            	_this.addgoods[key]  = ''
+                            }
+            })
+		},
+		
+		//上传文件之前的钩子,设置文件上传的大小为10M
 		beforeAvatarUpload:function(file){
 			const isLt10M = file.size / 1024 / 1024 < 10; // 限制小于10M
 	        return isLt10M;
@@ -224,22 +344,18 @@ var v = new Vue({
 	      handlePreview:function(file) {
 	        console.log(file);
 	      },  */
+	    //模糊查询  搜索框触发的事件
 		selectIf:function(){
 			console.log(this.content);
 			this.selectAllGoods();
 		},
-		updatestu:function(scope)
-        {
-			this.file = null;
-            this.updateDialogState = true;
-            console.log("scope.row:"+scope.row);
-            this.stuinfo = scope.row;
-        },
+		
+		//多选框 发生改变时触发的事件，将所选的goods信息传入gidgoodslist
         selection:function(val){
-        	
         	this.gidgoodslist = val;
-        	
         },
+        
+        //删除多条goods信息时的事件
         datadel:function(i){
         	if(i==0){
         		if(this.gidgoodslist.length==0)
@@ -252,22 +368,40 @@ var v = new Vue({
                 	}
             		this.delgoodsByGid();
        			}
-        		
-        	}else if(i==1){
+        	}
+        },
+        
+        //删除单条goods信息触发的事件，并进行一系列的逻辑判断
+        datadel1:function(i,scope){
+        	console.log(scope);
+        	if(i==1){
         		if(this.gidgoodslist.length>1)
         		{
         			alert("不能同时删除多条！");
-        		}else if(this.gidgoodslist.length==1){
+        		}
+        		else if(this.gidgoodslist.length==1)
+        		{
         			this.glist.length = 0;
         			this.glist.push(this.gidgoodslist[0].gid);
+        			if(this.gidgoodslist[0].gid==scope.row.gid)
+       				{
+        				this.delgoodsByGid();
+       				}
+        			else
+       				{
+        				alert("选择和要删除的信息不符！");
+       				}
+        		}
+        		else
+        		{
+        			this.glist.length = 0;
+        			this.glist.push(scope.row.gid);
         			this.delgoodsByGid();
-        		}else{
-        			alert("请选择要删除的信息！");
         		}
         	}
-        	
-        	
         },
+        
+        //删除goods信息的方法
         delgoodsByGid:function(){
         	var _this = this;
         	$.ajax({
@@ -281,30 +415,23 @@ var v = new Vue({
         	    	  },
         	      dataType: "json",
         	      success: function (response) {
-        	    	  /* location.href='/goods/goodslist1'; 
-        	    	  window.parent.location.reload();*/
         	    	  _this.selectAllGoods();
         	      }
         	  });
         },
-        delstu:function(scope){
-            console.log(scope);
-        },
+        
+        //点击修改信息时触发的事件
         updategoods:function(scope)
         {
             this.updateDialogState = true;
-            console.log("scope.row:");
             this.goodsinfo = scope.row;
-            console.log(this.goodsinfo);
+            this.selectAlltid();
         },
+        
+        //点击确认修改，触发的修改事件
         update:function(){
-        	
             this.updateDialogState = false;
-            
-            //this.goodsinfo.glogo = this.file;
-            //console.log(this.goodsinfo);
             var formData = new FormData();
-		    //updategoods.append("goodsinfo",this.goodsinfo);
 		    console.log("goodsinfo");
 		    console.log(this.goodsinfo);
 		    formData.append("file",this.file.raw);
@@ -323,22 +450,27 @@ var v = new Vue({
 		    const instance=axios.create({
 		          withCredentials: true
 		         }) 
-		    
 		    instance.post("/goods/update", formData, configs).then(function(result) {
                             console.log(result);
                             _this.file = '';
                             _this.selectAllGoods();
             })
-		    
         },
+        
+        //dialog取消时的事件
         clos:function(){
             this.updateDialogState = false;
+            this.addDialogState = false;
         },
+        
+        //点击页码发生的查询事件
         selectByPn:function()
         {
             console.log(this.currentPage);
             this.selectAllGoods();
         },
+        
+        //查询所有的goods信息，并分页
         selectAllGoods:function(){
         	var _this = this;
     		$.ajax({
@@ -349,12 +481,15 @@ var v = new Vue({
                 dataType: "json",
                 success: function (response) {
                     _this.goods = response.list;
-                    _this.total = response.pages;
+                    _this.total = response.total;
+                    _this.pageSize = response.pageSize;
                 }
             });
         }
 
 	},
+	
+	//钩子函数，直接调用分页查询
 	created:function(){
 		this.selectAllGoods();
 		
