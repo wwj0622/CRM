@@ -1,5 +1,7 @@
 package com.topscit.springboot1.serviceImpl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -118,9 +120,23 @@ public class BuyServiceImpl  implements BuyService {
 	
 	@Override
 	public PageInfo<Buy> selectBuyByTime(String beginDate, String endDate, int pn, int size) {
+		
 		BuyMapper mapper = st.getMapper(BuyMapper.class);
 		PageHelper.startPage(pn,size);
-		List<Buy> allBuy = mapper.getBuyByTime(beginDate, endDate);
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd");
+		Date endTime = null;
+		Date beginTime = null;
+		
+		try {
+			endTime = simpleDateFormat.parse(endDate);
+			beginTime = simpleDateFormat.parse(beginDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<Buy> allBuy = mapper.getBuyByTime(beginTime, endTime);
 		PageInfo<Buy> pageInfo = new PageInfo<Buy>(allBuy);
 		return pageInfo;
 	}

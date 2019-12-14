@@ -132,7 +132,9 @@
    	
 	 <select id="getBuyByTime" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
 	     select * from buy
-	    where btime >= to_date(#{beginDate,jdbcType=VARCHAR},'yyyy-MM-dd hh24:mi:ss')
-	    and btime >= to_date(#{endDate,jdbcType=VARCHAR},'yyyy-MM-dd hh24:mi:ss')
+	    where btime <![CDATA[ >= ]]> CONCAT(#{beginDate},' 00:00:00')
+	    and btime <![CDATA[ <= ]]> CONCAT(#{endDate},' 23:59:59')
+	    
 	</select>   
+	
 </mapper>

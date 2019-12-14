@@ -1,5 +1,6 @@
 package com.topscit.springboot1.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -23,5 +24,5 @@ public interface BuyMapper {
     public List<Buy> getAllBuy();
     
     //根据交货时间查询
-    public List<Buy> getBuyByTime(@Param("beginDate")String beginDate,@Param("endDate")String endDate);
+    public List<Buy> getBuyByTime(@Param("beginDate")Date beginDate,@Param("endDate")Date endDate);
 }
