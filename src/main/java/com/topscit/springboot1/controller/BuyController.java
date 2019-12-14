@@ -100,6 +100,7 @@ public class BuyController {
 			@RequestParam(defaultValue="1")int pn,
 			@RequestParam(defaultValue="5")int size,
 			Map<String, Object> data){
+		
 		PageInfo<Buy> selectBuyByTime = buyservice.selectBuyByTime(beginDate, endDate, pn, size);
 		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectBuyByTime);
 		return resultBean;

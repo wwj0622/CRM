@@ -39,9 +39,9 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container" id="app">
 	<div class="text-c"> 
-		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">
+		<input type="Date" v-model="beginTime"  id="datemin" class="input-text Wdate" style="width:150px;">
 		-
-		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
+		<input type="Date" v-model="endTime"  id="datemax" class="input-text Wdate" style="width:150px;">
 		<button  @click="search" class="btn btn-success radius" id="" name="">
 		<i class="Hui-iconfont">&#xe665;</i> 搜索
 		</button>
@@ -79,14 +79,14 @@
 					<td class="text-l">{{buy.bid}}</td>
 					<td>{{buy.sid}}</td>
 					<td>{{buy.baddress}}</td>
-					<td>{{buy.gupdateTime}}</td>
+					<td>{{buy.btime}}</td>
 					<td class="text-l">{{buy.bremark}}</td>
 					<td>{{buy.bstate}}</td>
 					<td>
 						<a href="javascript:void(0);" @click="member_edit('采购单详情','mao/show-buyDetail.jsp?bid='+buy.bid,'4','','510')">详情</a>
 					</td>
 					<td class="f-14 product-brand-manage">
-						<a style="text-decoration:none" @click="member_edit('编辑采购单','mao/buy-edit.jsp?bid='+buy.sid,'4','','510')" href="javascript:;" title="编辑">
+						<a style="text-decoration:none" @click="member_edit('编辑采购单','mao/edit-buy.jsp?bid='+buy.bid,'4','','510')" href="javascript:;" title="编辑">
 							<i class="Hui-iconfont">&#xe6df;</i>
 						</a> 
 						<a style="text-decoration:none" class="ml-5" @click="member_del(this,buy.bid)" href="javascript:;" title="删除">
@@ -114,7 +114,9 @@ var v =  new Vue({
 		pageInfo:[],
 		inputContent:'',
 		checkedBuy:[],
-		state:''
+		state:'',
+		beginTime:'',
+		endTime:''
 	},
 	methods:{
 		jump(page){
@@ -131,16 +133,18 @@ var v =  new Vue({
 	        });
          },
          search(){
+        	 console.log(this.beginTime);
+        	 console.log(this.endTime);
         	var _this = this;
-        	console.log(_this.inputContent);
+        	
  	        $.ajax({
  	            type: "GET",
- 	            url: "/supplier/getSupplierByName",
- 	            data: {name:_this.inputContent},
+ 	            url: "/buy/getBuyByTime",
+ 	            data: {beginDate:_this.beginTime,endDate:_this.endTime},
  	            dataType: "json",
  	            success: function (response) {
- 	            	_this.supplierList = response.data;
- 	            	
+ 	            	_this.buyList = response.data.list;
+ 	            	_this.pageInfo = response.data;
  	            },
  	        });
          },
@@ -207,6 +211,10 @@ var v =  new Vue({
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
