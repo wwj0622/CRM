@@ -74,7 +74,7 @@ public class ShiroConfig {
 		factoryBean.setUnauthorizedUrl("/unauthorized.jsp");
 
 		Map<String,String> hashMap = new HashMap<String, String>();
-		hashMap.put("/js/**", "anon");
+/*		hashMap.put("/js/**", "anon");
 		hashMap.put("/lib/**", "anon");
 		hashMap.put("/static/**", "anon");
 		hashMap.put("/temp/**", "anon");
@@ -82,7 +82,7 @@ public class ShiroConfig {
 		hashMap.put("/Login.jsp", "anon");
 		hashMap.put("/logout", "logout");
 		
-		hashMap.put("/**", "authc");
+		hashMap.put("/**", "authc");*/
 	
 		factoryBean.setFilterChainDefinitionMap(hashMap);
 		return factoryBean;

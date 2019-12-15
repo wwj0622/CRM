@@ -100,4 +100,12 @@ public class Customer {
     public void setSmid(String smid) {
         this.smid = smid == null ? null : smid.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Customer [cid=" + cid + ", cname=" + cname + ", cproterty=" + cproterty + ", cstate=" + cstate
+				+ ", caccount=" + caccount + ", cemail=" + cemail + ", cphone=" + cphone + ", caddress=" + caddress
+				+ ", bremark=" + bremark + ", smid=" + smid + "]";
+	}
+    
 }

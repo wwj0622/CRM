@@ -16,6 +16,9 @@
     from storage
     where stid = #{stid,jdbcType=VARCHAR}
   </select>
+  <select id="selectTid" resultType="com.topscit.springboot1.bean.Storage">
+  	select stid from storage
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from storage
     where stid = #{stid,jdbcType=VARCHAR}

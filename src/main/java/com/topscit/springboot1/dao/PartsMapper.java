@@ -1,5 +1,8 @@
 package com.topscit.springboot1.dao;
 
+
+import java.util.List;
+
 import com.topscit.springboot1.bean.Parts;
 
 public interface PartsMapper {
@@ -14,4 +17,6 @@ public interface PartsMapper {
     int updateByPrimaryKeySelective(Parts record);
 
     int updateByPrimaryKey(Parts record);
+    
+    List<Parts> getAllParts();
 }

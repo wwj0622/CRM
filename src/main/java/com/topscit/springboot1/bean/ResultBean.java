@@ -5,10 +5,29 @@ public class ResultBean {
 	private boolean state;
 	private String msg;
 	private Object data;
+	private Object data1;
 	
 	public static final boolean STATA_SUCCESS = true;
 	public static final boolean STATA_FIAIL = false;
 	
+	
+	
+	public ResultBean(boolean state, String msg, Object data, Object data1) {
+		super();
+		this.state = state;
+		this.msg = msg;
+		this.data = data;
+		this.data1 = data1;
+	}
+	
+	public Object getData1() {
+		return data1;
+	}
+
+	public void setData1(Object data1) {
+		this.data1 = data1;
+	}
+
 	public ResultBean()
 	{
 		

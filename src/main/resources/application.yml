@@ -4,6 +4,8 @@ spring:
       prefix: /WEB-INF/ 
       suffix: .jsp
   http:
+    multipart:
+      enabled: true
     encoding:
       charset: utf-8
       enabled: true
@@ -12,7 +14,11 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/shiro?characterEncoding=UTF-8  
     username: root
+<<<<<<< HEAD
     password: root
+=======
+    password: "root"
+>>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
   
 server:
   address: 127.0.0.1

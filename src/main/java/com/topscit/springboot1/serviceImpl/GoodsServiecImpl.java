@@ -1,5 +1,6 @@
 package com.topscit.springboot1.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.topscit.springboot1.bean.Goods;
+import com.topscit.springboot1.bean.Storage;
 import com.topscit.springboot1.dao.GoodsMapper;
+import com.topscit.springboot1.dao.StorageMapper;
 import com.topscit.springboot1.service.GoodsService;
 
 @Service("goodsService")
@@ -16,6 +19,9 @@ public class GoodsServiecImpl implements GoodsService{
 
 	@Autowired
 	private GoodsMapper goodsMapper;
+	
+	@Autowired
+	private StorageMapper storageMapper;
 
 	@Override
 	public PageInfo<Goods> selectListGoodsByPn(int pn, int size) {
@@ -39,6 +45,28 @@ public class GoodsServiecImpl implements GoodsService{
 		List<Goods> list = goodsMapper.selectListGoodsLimit(gname);
 		PageInfo<Goods> pageInfo = new PageInfo<Goods>(list);
 		return pageInfo;
+	}
+
+	@Override
+	public int updateByPrimaryKey(Goods goods) {
+		int updateByPrimaryKey = goodsMapper.updateByPrimaryKey(goods);
+		return updateByPrimaryKey;
+	}
+
+	@Override
+	public int insertSelective(Goods goods) {
+		int insertSelective = goodsMapper.insertSelective(goods);
+		return insertSelective;
+	}
+
+	@Override
+	public List<String> selectTid() {
+		List<String> list = new ArrayList<String>();
+		List<Storage> selectTid = storageMapper.selectTid();
+		for (int i = 0; i < selectTid.size(); i++) {
+			list.add(selectTid.get(i).getStid());
+		}
+		return list;
 	}
 
 }

@@ -185,4 +185,8 @@
       plogo = #{plogo,jdbcType=VARCHAR}
     where pid = #{pid,jdbcType=VARCHAR}
   </update>
+  
+    <select id="getAllParts" resultMap="BaseResultMap" >
+  	select * from parts where pstate="1"
+   </select>
 </mapper>
