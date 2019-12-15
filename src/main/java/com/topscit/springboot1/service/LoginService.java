@@ -61,4 +61,17 @@ public interface LoginService {
 	List<Permission> selecPermission();
 	
 	Role SelectRolePermission(String id);
+	
+	boolean SelectRoleName(String name);
+	
+	boolean InsertRoleandPermission(Role role);
+	
+	List<Role> RoleUser();
+	
+	Role SelectRP(String id);
+	
+	boolean updateRolePermission(Role Role);
+	
+	boolean updateRoleState(String id);
+	
 }

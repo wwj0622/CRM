@@ -14,4 +14,7 @@ public interface RolePermissionMapper {
     int updateByPrimaryKeySelective(RolePermission record);
 
     int updateByPrimaryKey(RolePermission record);
+    
+    boolean DelectRolePermission(String id);
+    
 }

@@ -29,6 +29,13 @@ public interface RoleMapper {
     
     Role SelectRP(String id);
     
+    Role SelectRoleName(String name);
+    
+    List<Role> RoleUser();
+   
+    Role SelectPermission(String id);
+    
+    boolean updateRoleState(String id);
  
     
     

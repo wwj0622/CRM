@@ -7,6 +7,58 @@
     <result column="available" property="available" jdbcType="CHAR" />
   </resultMap>
   
+  <select id="SelectPermission" resultMap="rolpa">
+      SELECT sr.*,sp.id,sp.`name`,sp.id spid FROM sys_role sr  LEFT JOIN sys_role_permission 
+      srp ON sr.id=srp.sys_role_id LEFT JOIN  sys_permission sp 
+      ON  srp.sys_permission_id =sp.id WHERE sr.id=#{id}
+  
+  </select>
+  
+  <resultMap type="com.topscit.springboot1.bean.Role" id="rolpa">
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="available" property="available" jdbcType="CHAR" />
+    <collection property="permission" column="id" ofType="com.topscit.springboot1.bean.Permission">
+	    <id column="spid" property="id" jdbcType="BIGINT" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+      
+    </collection>
+  
+  </resultMap>
+  
+  <select id="SelectRoleName" resultMap="BaseResultMap">
+     
+      select * from sys_role where  name=#{name}
+  </select>
+  
+  <select id="RoleUser" resultMap="ru">
+     select sr.*,su.*,sr.id srid FROM sys_role sr left JOIN sys_user_role sur 
+     ON sr.id =sur.sys_role_id LEFT  JOIN sys_user su ON
+     sur.sys_user_id =su.id  ; 
+  </select>
+  
+  <resultMap type="com.topscit.springboot1.bean.Role" id="ru">
+     <id column="srid" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="available" property="available" jdbcType="CHAR" />
+   <association property="user" column="id" javaType="com.topscit.springboot1.bean.User">
+          <id column="id" jdbcType="VARCHAR" property="id" />
+	    <result column="usercode" jdbcType="VARCHAR" property="usercode" />
+	    <result column="username" jdbcType="VARCHAR" property="username" />
+	    <result column="password" jdbcType="VARCHAR" property="password" />
+	    <result column="salt" jdbcType="VARCHAR" property="salt" />
+	    <result column="phone" jdbcType="VARCHAR" property="phone" />
+	    <result column="ulogo" jdbcType="VARCHAR" property="ulogo" />
+	    <result column="operationtime" jdbcType="TIMESTAMP" property="operationtime" />
+	    <result column="jointime" jdbcType="TIMESTAMP" property="jointime" />
+	    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+	    <result column="locked" jdbcType="VARCHAR" property="locked" />
+   </association>
+  
+  </resultMap>
+  
+  <select id=""></select>
+  
   
   <select id="SelectRP" resultMap="rap">
       SELECT sr.*,sp.id,sp.`name`,sp.id spid FROM sys_user su INNER JOIN sys_user_role sur
@@ -40,7 +92,7 @@
   
   
   <select id="selectRole" resultMap="BaseResultMap">
-     select * from sys_role
+     select * from sys_role where state='0'
   </select>
   
   <sql id="Base_Column_List" >
@@ -90,6 +142,14 @@
       </if>
     </trim>
   </insert>
+  <update id="updateRoleState">
+     update sys_role
+    set state = '1'
+    where id = #{id,jdbcType=VARCHAR}
+  
+  </update>
+  
+  
   <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Role" >
     update sys_role
     <set >

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
@@ -348,20 +349,89 @@ public class UserController {
 	public String SelectUser(String id,Map<String, Object> data)
 	{
 		data.put("String", id);
-		return "forward:/admin-role-user.jsp";
+		return "forward:/admin-role-permission.jsp";
 		
 	}
+	
+	@RequestMapping("/urp")
+	public String Userp(String id,Map<String, Object> data)
+	{
+		data.put("String", id);
+		return "forward:/admin-power-user.jsp";
+		
+	}
+	
 	
 	@RequestMapping("/selectUP")
 	@ResponseBody
 	public Role selectUserPermission(@RequestBody HashMap<String, String> data)
 	{
 		String id = data.get("id");
-		System.out.println(id);
 		Role role = loginService.SelectRolePermission(id);
 
 		return role;
 		
+	}
+	
+	@RequestMapping("/selectRp")
+	@ResponseBody
+	public Role selectRolePermission(@RequestBody HashMap<String, String> data)
+	{
+		String id = data.get("id");
+		Role role = loginService.SelectRP(id);
+		return role;	
+	}
+	
+	@RequestMapping("/selectRoleName")
+	@ResponseBody
+	public HashMap<String, Object> selectRoleName(@RequestBody HashMap<String, String> data)
+	{
+	     	String name = data.get("name");
+		    boolean selectRoleName = loginService.SelectRoleName(name);
+		    HashMap<String, Object> hashMap = new HashMap<String,Object>();
+		    hashMap.put("state", selectRoleName);
+		    return hashMap;
+	}
+	
+	
+	@RequestMapping("/inserRaP")
+	@ResponseBody
+	public HashMap<String, Object> insertRolePermission(@RequestBody Role role)
+	{
+	   boolean insertRoleandPermission = loginService.InsertRoleandPermission(role);
+       HashMap<String, Object> hashMap = new HashMap<String,Object>();
+	   hashMap.put("state", insertRoleandPermission);
+	   return hashMap;
+		
+	}
+	
+	@RequestMapping("/Allrole")
+	@ResponseBody
+	public List<Role> allRole()
+	{
+	    List<Role> selectRole = loginService.selectRole();
+		return selectRole;
+	}
+	
+	@RequestMapping("/updateRolePermission")
+	@ResponseBody
+	public HashMap<String, Object> updateRolePermission(@RequestBody Role role)
+	{
+		 boolean updateRolePermission = loginService.updateRolePermission(role);
+		 HashMap<String, Object> hashMap = new HashMap<String,Object>();
+		 hashMap.put("state", updateRolePermission);
+		 return hashMap;
+	}
+	
+	@RequestMapping("/deleteRole")
+	@ResponseBody
+	public HashMap<String, Object> deleteRole(String id)
+	{    
+		 boolean updateRoleState = loginService.updateRoleState(id);
+		 HashMap<String, Object> hashMap = new HashMap<String,Object>();
+		 hashMap.put("state",updateRoleState);
+		 return hashMap;
+		 
 	}
 	
 	

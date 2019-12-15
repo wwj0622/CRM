@@ -61,7 +61,7 @@
 		</div>
 
 		<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3">用户权限：</label>
+				<label class="form-label col-xs-4 col-sm-3">用户角色：</label>
 				<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 					<select class="select" size="1" name="city" :id="rid" v-model="user.roleid">
 						<option v-for="(r,i) in role" :value="r.id"  >{{r.name}}</option>

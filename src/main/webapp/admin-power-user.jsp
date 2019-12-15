@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basepath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -37,17 +38,18 @@
 </head>
 <body>
 <article class="page-container" id="app">
-	<form action="" method="post"  class="form form-horizontal" id="form-admin-role-add">
+	<form action="" method="post" class="form form-horizontal" id="form-admin-role-add">
+		<input type="hidden" value="${String}"  id="id">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value=""  v-model="role.name" @blur="na" placeholder="" id="roleName" name="roleName">
+				<input type="text" class="input-text" value="" v-model="p2.name" placeholder="" id="roleName" name="roleName">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">备注：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" v-model="role.available" placeholder="" id="" name="">
+				<input type="text" class="input-text" value="" v-model="p2.available" placeholder="" id="" name="">
 			</div>
 		</div>
 		<div class="row cl">
@@ -55,11 +57,12 @@
 			<div class="formControls col-xs-8 col-sm-9">
 
 				
-				<dl class="permission-list" v-for="(p,i) in p1">
+				<dl class="permission-list" v-for="(p,i) in p1" >
 					<dt>
 						<label>
-							<input type="checkbox" :value="p.id" @click="dj"  name="user-Character-1-0-0" :id="'a'+p.id">
-							{{p.name}}</label>
+							<input type="checkbox"  @click="dj" :value="p.id"  name="user-Character-1-0-0" :id="'a'+p.id">
+							{{p.name}}
+						</label>
 					</dt>
 				  <dd>
 						<dl class="cl permission-list2">
@@ -69,8 +72,8 @@
 									{{p.name}}</label>
 							</dt> -->
 							<dd>
-								<label class="" v-for="(pm,i) in p.miss">
-									<input type="checkbox" :value="pm.id"  @click="ddj" :class="'a'+p.id" name="user-Character-1-0-0" id="user-Character-1-0-0">
+								<label class="" v-for="(pm,i) in p.miss" >
+									<input :class="'a'+p.id" type="checkbox" @click="ddj"  :value="pm.id" name="user-Character-1-0-0" v-model="permission" id="user-Character-1-0-0">
 									{{pm.name}}
 								</label>
 							
@@ -85,7 +88,7 @@
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<button type="button" @click="per" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
+				<button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
 			</div>
 		</div>
 	</form>
@@ -101,109 +104,9 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
-
-<script>
-  new Vue({
-	  el:'#app',
-	  data () {
-		  return {
-			  p1:[],
-			  p2:[],
-			  perid:[],
-			  perid2:[],
-			  role:{
-				  name:'',
-				  available:'',
-				  perID:[]
-			  }
-			
-		  }
-	  },
-	  methods: {
-		  pemis(){
-             this_a=this;
-			 axios.post("/AllPermis",null)
-			 .then(res => {
-				 console.log(res);
-                    this_a.p1 = res.data;
-			 })
-			 .catch(err => {
-				 console.error(err); 
-			 })
-		},
-		dj(){
-			$(".a"+$(event.target).val()).prop("checked",$(event.target).prop("checked"));
-		  },
-		ddj(){
-			var	id=$(event.target).attr("class");
-			var m=$("#"+id);
-			var k=$("."+id);
-		
-			var state=false;
-			for (let i = 0; i < k.length; i++) {
-				if(k[i].checked){
-					state=true;
-					break;
-				}
-			}
-			m.prop('checked',state);
-			  
-		  },
-		 na(){
-			  this_a=this;
-			  axios.post("/selectRoleName",{name:this_a.roname})
-			  .then(res => {
-				  console.log(res);
-				  if(res.data.state){
-					  alert('角色名字重复');
-					  document.getElementById('form-admin-role-add').reset();
-				  }
-			  })
-			  .catch(err => {
-				  console.error(err); 
-			  })
-			  
-			  
-		  },
-		  per(){
-				 this_a=this;
-				 var m= document.getElementsByName("user-Character-1-0-0");
-					for (let i = 0; i < m.length; i++) {
-						if(m[i].checked){
-							this_a.role.perID.push(m[i].value);
-						}
-						
-					}
-					
-				 
-				 axios.post("/inserRaP",this_a.role)
-				 .then(res => {
-					 console.log(res);
-					 if(res.data.state)
-				     {
-					    alert('插入成功');
-					    layer.close(layer.index);
-					    window.parent.location.reload();
-					 }
-				 })
-				 .catch(err => {
-					 console.error(err); 
-				 })
-		 
-			}
-		
-	  },
-	  created () {
-		  this.pemis();
-	  }
-
-
-  })
-
-</script>
 <!-- <script type="text/javascript">
 $(function(){
-	$(".permission-list dt input:checkbox").click(function(){
+	/* $(".permission-list dt input:checkbox").click(function(){
 		$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
 	});
 	$(".permission-list2 dd input:checkbox").click(function(){
@@ -222,8 +125,8 @@ $(function(){
 			}
 		}
 	});
-	
-	$("#form-admin-role-add").validate({
+	 */
+	/* $("#form-admin-role-add").validate({
 		rules:{
 			roleName:{
 				required:true,
@@ -237,8 +140,107 @@ $(function(){
 			var index = parent.layer.getFrameIndex(window.name);
 			parent.layer.close(index);
 		}
-	});
+	}); */
 });
 </script> -->
+<script>
+  new Vue({
+	  el:'#app',
+	  data () {
+		  return {
+			  p1:[],
+			  id:'',
+			  permission:[],
+			  p2:{
+				  id:'',
+				  name:'',
+				  available:''
+			  }
+			
+		  }
+	  },
+	  methods: {
+		  pemis(){
+             this_a=this;
+			 axios.post("/AllPermis",null)
+			 .then(res => {
+				 console.log(res);
+                    this_a.p1 = res.data;
+                    this_a.a();
+			 })
+			 .catch(err => {
+				 console.error(err); 
+			 })
+		},
+		a(){
+			this.id=document.getElementById('id').value;
+			this_a=this;
+			axios.post("/selectUP",{id:this_a.id})
+			.then(res => {
+				console.log(res);
+			    this_a.p2=res.data;
+			    this_a.permission=res.data.permission; 
+			    this_a.c();
+			
+			})
+			.catch(err => {
+				console.error(err); 
+			})
+		  },
+		  c(){
+			 var permission = this.permission;
+			  for (let index = 0; index < permission.length; index++) {
+				  var a=document.getElementsByName('user-Character-1-0-0');
+	
+                  for (let i = 0; i < a.length; i++){
+					   if(a[i].value==permission[index].id)
+					   {
+						   a[i].checked = true;
+					   }
+					  
+				  }
+ 			  }
+		    },
+  	    	dj(){
+	    		$(".a"+$(event.target).val()).prop("checked",$(event.target).prop("checked"));
+  			  },
+  			  ddj(){
+  				  
+  				var id = $(event.target).attr("class");
+  				alert(id);
+  				var m=$("#"+id);
+
+  				var k=$("."+id);
+  				var state = false;
+
+  			/* 	$.each(k, function (indexInArray, valueOfElement) { 
+  					if($(this).prop("checked")){
+  						state = true;
+  					}
+  				}); */
+  				
+  			
+  				for (let i = 0; i < k.length; i++) {
+  					if(k[i].checked){
+  						state = true;
+  						break;
+  					}
+  				}
+  				console.log(state);
+  				m.prop('checked',state);
+  			  }
+		
+	  },
+	  created () {
+		  this.pemis();
+		  
+		  
+	  }
+
+
+  })
+
+</script>
+
 </body>
 </html>

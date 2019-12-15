@@ -4,7 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.topscit.springboot1.bean.Permission;
 import com.topscit.springboot1.bean.Role;
+import com.topscit.springboot1.bean.RolePermission;
 import com.topscit.springboot1.bean.User;
 import com.topscit.springboot1.bean.userRole;
 import com.topscit.springboot1.dao.PermissionMapper;
@@ -393,6 +396,94 @@ public class LoginServiceImpl implements LoginService{
 		Role selectRP = roleMapper.SelectRP(id);
 		
 		return selectRP;
+	}
+
+	@Override
+	public boolean SelectRoleName(String name) {
+         
+		Role selectRoleName = roleMapper.SelectRoleName(name);
+
+		if(selectRoleName==null)
+		{
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	@Override
+	public boolean InsertRoleandPermission(Role role) {
+         
+		String string = UUID.randomUUID().toString();
+		role.setId(string);
+		int r = roleMapper.insertSelective(role);
+		
+		String[] perID = role.getPerID();
+		RolePermission record = new RolePermission();
+		int rp = 0;
+		String string2 = UUID.randomUUID().toString();
+		for (int i = 0; i < perID.length; i++) {
+			record.setSysRoleId(string);
+			record.setSysPermissionId(perID[i]);
+			rp = rolePermissionMapper.insertSelective(record);
+		}
+		if(r==1&&rp==1){
+			return true;
+		}
+		else
+		{
+			return false;
+		}	
+	}
+
+	@Override
+	public List<Role> RoleUser() {
+
+        List<Role> roleUser = roleMapper.RoleUser();
+		
+		return roleUser;
+	}
+	
+	
+	public Role RoleUser(String id){
+		Role selectPermission = roleMapper.SelectPermission(id);	
+		return selectPermission;
+	}
+
+	@Override
+	public Role SelectRP(String id) {
+       
+        Role selectPermission = roleMapper.SelectPermission(id);  
+		
+		return selectPermission;
+	}
+
+	@Override
+	public boolean updateRolePermission(Role role) {
+         
+		int i = roleMapper.updateByPrimaryKeySelective(role);
+		
+		String id = role.getId();
+		boolean d = rolePermissionMapper.DelectRolePermission(id);
+		
+		String[] perID = role.getPerID();
+		RolePermission rp = new RolePermission();
+		int insertSelective = 0;
+		for (int j = 0; j < perID.length; j++) {
+			rp.setSysRoleId(id);
+			rp.setSysPermissionId(perID[j]);
+		insertSelective = rolePermissionMapper.insertSelective(rp);
+		}
+		
+			return true;
+   }
+
+	@Override
+	public boolean updateRoleState(String id) {
+        boolean updateRoleState = roleMapper.updateRoleState(id);
+		 
+		return updateRoleState;
 	}
 
 	

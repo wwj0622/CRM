@@ -43,13 +43,13 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" v-model="p2.name" placeholder="" id="roleName" name="roleName">
+				<input type="text" class="input-text" value="" v-model="role.name" placeholder="" id="roleName" name="roleName">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">备注：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" v-model="p2.available" placeholder="" id="" name="">
+				<input type="text" class="input-text" value="" v-model="role.available" placeholder="" id="" name="">
 			</div>
 		</div>
 		<div class="row cl">
@@ -60,8 +60,9 @@
 				<dl class="permission-list" v-for="(p,i) in p1" >
 					<dt>
 						<label>
-							<input type="checkbox" :value="p.id"  name="user-Character-0" id="user-Character-1">
-							{{p.name}}</label>
+							<input type="checkbox"  @click="dj"  :value="p.id"  name="user-Character-1-0-0" :id="'a'+p.id">
+							{{p.name}}
+						</label>
 					</dt>
 				  <dd>
 						<dl class="cl permission-list2">
@@ -72,7 +73,7 @@
 							</dt> -->
 							<dd>
 								<label class="" v-for="(pm,i) in p.miss" >
-									<input type="checkbox" :value="pm.id" name="user-Character-1-0-0" v-model="permission.id" id="user-Character-1-0-0">
+									<input :class="'a'+p.id" type="checkbox"   @click="ddj"  :value="pm.id" name="user-Character-1-0-0"  id="user-Character-1-0-0">
 									{{pm.name}}
 								</label>
 							
@@ -87,7 +88,7 @@
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
+				<button type="button" @click="updateRP" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定修改</button>
 			</div>
 		</div>
 	</form>
@@ -103,9 +104,9 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 $(function(){
-	$(".permission-list dt input:checkbox").click(function(){
+	/* $(".permission-list dt input:checkbox").click(function(){
 		$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
 	});
 	$(".permission-list2 dd input:checkbox").click(function(){
@@ -124,8 +125,8 @@ $(function(){
 			}
 		}
 	});
-	
-	$("#form-admin-role-add").validate({
+	 */
+	/* $("#form-admin-role-add").validate({
 		rules:{
 			roleName:{
 				required:true,
@@ -139,9 +140,9 @@ $(function(){
 			var index = parent.layer.getFrameIndex(window.name);
 			parent.layer.close(index);
 		}
-	});
+	}); */
 });
-</script>
+</script> -->
 <script>
   new Vue({
 	  el:'#app',
@@ -154,6 +155,12 @@ $(function(){
 				  id:'',
 				  name:'',
 				  available:''
+			  },
+			  role:{
+				  id:'',
+				  name:'',
+				  available:'',
+				  perID:[]
 			  }
 			
 		  }
@@ -174,13 +181,13 @@ $(function(){
 		a(){
 			this.id=document.getElementById('id').value;
 			this_a=this;
-			axios.post("/selectUP",{id:this_a.id})
+			axios.post("/selectRp",{id:this_a.id})
 			.then(res => {
 				console.log(res);
-			    this_a.p2=res.data;
+			    this_a.role=res.data;
 			    this_a.permission=res.data.permission; 
 			    this_a.c();
-			    this_a.d();
+			
 			})
 			.catch(err => {
 				console.error(err); 
@@ -198,22 +205,60 @@ $(function(){
 					   }
 					  
 				  }
+ 			  }
+		    },
+  	    	dj(){
+	    		$(".a"+$(event.target).val()).prop("checked",$(event.target).prop("checked"));
+  			  },
+  			  ddj(){
+  				  
+  				var id = $(event.target).attr("class");
+  				var m=$("#"+id);
 
-				  
-			  }
-		   },
-		   d(){
-              var a=document.getElementsByName('user-Character-0');	
-			  var m=document.getElementsByName('user-Character-1-0-0');
-			  for (let index = 0; index < a.length; index++) {
-				  for (let i = 0; i < m.length; i++) {
-						  if(m[i].checked){
-							  a[index].checked=true;
-						  }
-						  
-					  }
-				  }		  
-  	    	  }
+  				var k=$("."+id);
+  				var state = false;
+
+  			/* 	$.each(k, function (indexInArray, valueOfElement) { 
+  					if($(this).prop("checked")){
+  						state = true;
+  					}
+  				}); */
+			
+  				for (let i = 0; i < k.length; i++) {
+  					if(k[i].checked){
+  						state = true;
+  						break;
+  					}
+  				}
+  				console.log(state);
+  				m.prop('checked',state);
+  			  },
+  	         updateRP(){
+  	             this_a=this;
+  	           this_a.role.perID=[];
+  	             this_a.role.id= document.getElementById('id').value;
+  	  		  var m = document.getElementsByName("user-Character-1-0-0");
+  	  		 console.log(this_a.role);
+				for (let i = 0; i < m.length; i++) {
+					if(m[i].checked){
+						this_a.role.perID.push(m[i].value);
+					}					
+				}
+ 	             axios.post('/updateRolePermission',this_a.role)
+  	             .then(res => {
+  	                 console.log(res);
+  	                 if(res.data.state)
+  	                 {
+  	                	 alert('修改成功');
+  	                	 layer.close(layer.index);
+  	                	 window.parent.location.reload();
+  	                 }
+  	             })
+  	             .catch(err => {
+  	                 console.error(err); 
+  	             })
+
+  	         }
 		
 	  },
 	  created () {

@@ -233,7 +233,11 @@ $(function(){
 			 if(r.state)
 			 {
 				 alert('账号已存在');
+				 document.getElementById('form-member-add').reset();
+				 
 			 }
+			
+			 
 			
 			})
 			.catch(err => {

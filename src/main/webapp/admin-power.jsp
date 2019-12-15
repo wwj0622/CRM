@@ -42,17 +42,19 @@
 				<th width="25"><input type="checkbox" value="" name=""></th>
 				<th width="40">ID</th>
 				<th width="200">角色名</th>
+				<th>用户列表</th>
 				<th width="300">描述</th>
 				<th width="70">操作</th>
 			</tr>
 		</thead>
 		<tbody>
-		    <tr class="text-c" v-for="(u,i) in role">
+		    <tr class="text-c" v-for="(u,i) in user">
 				<td><input type="checkbox" value="" name=""></td>
-				<td>{{u.id}}</td>
-				<td>{{u.name}}</td>
-				<td>{{u.available}}</td>
-				<td class="f-14"><a title="编辑" href="javascript:;" @click="admin_role_edit('角色编辑','/roleuser?id='+u.id,'1')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" @click="admin_role_del(this,u.id)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+				<td>{{u.role.id}}</td>
+				<td>{{u.role.name}}</td>
+				<td><a href="#">{{u.usercode}}</a></td>
+				<td>{{u.role.available}}</td>
+				<td class="f-14"><a title="编辑" href="javascript:;" @click="admin_role_edit('角色编辑','/urp?id='+u.id,'1')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_role_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 			</tr>
 		</tbody>
 	</table>
@@ -98,16 +100,17 @@ function admin_role_del(obj,id){
 	  data () {
 		  return {
 			  role:[],
-		
+			  user:[]
 		  }
 	  },
 	  methods: {
 		 srole(){
             this_a=this;
-			axios.post("/Allrole",null)
+			axios.post("/AllUserrole",null)
 			.then(res => {
 				console.log(res);
-				this_a.role=res.data;
+				this_a.user=res.data;
+				this_a.role=res.data.role;
 			})
 			.catch(err => {
 				console.error(err); 
@@ -116,28 +119,7 @@ function admin_role_del(obj,id){
 		 },
 		 admin_role_edit(title,url,id,w,h){
 				layer_show(title,url,w,h);
-			},
-		admin_role_del(obj,id){
-		    this_a=this;
-			layer.confirm('角色删除须谨慎,无法恢复，确认要删除吗？',function(index){
-				$.ajax({
-					type: 'POST',
-					url: '/deleteRole',
-					data:{id:id},
-					dataType: 'json',
-					success: function(data){
-						if(data.state)
-					    {
-						layer.msg('已删除!',{icon:1,time:1000});
-					    }
-						this_a.srole();
-					},
-					error:function(data) {
-						console.log(data.msg);
-					},
-				});		
-			});
-		}
+			}
 		  
 	  },
 	  created () {

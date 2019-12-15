@@ -11,9 +11,31 @@ public class Role {
     
     private List<Permission> permission;
     
+    private User user;
+    
+    private String  PerID[];
+    
+    
+    
 
     
-    public List<Permission> getPermission() {
+    public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String[] getPerID() {
+		return PerID;
+	}
+
+	public void setPerID(String[] perID) {
+		PerID = perID;
+	}
+
+	public List<Permission> getPermission() {
 		return permission;
 	}
 
