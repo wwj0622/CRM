@@ -66,7 +66,7 @@
 		    <el-input readonly type="text" style="width:700px;" v-model="customer.smid " autocomplete="off"></el-input>
 		  </el-form-item>
 		  <el-form-item>
-		    <el-button type="primary" @click="submitForm('customer')">提交</el-button>
+		    <el-button type="primary" @click="submitForm('customer')">修改</el-button>
 		    <el-button @click="resetForm('customer')">重置</el-button>
 		  </el-form-item>
 		</el-form>

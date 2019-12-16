@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageInfo;
+import com.topscit.springboot1.bean.Customer;
 import com.topscit.springboot1.bean.Goods;
+import com.topscit.springboot1.bean.User;
+import com.topscit.springboot1.bean.OrderGoods;
 import com.topscit.springboot1.service.GoodsService;
 import com.topscit.springboot1.util.uploadFile;
 
@@ -127,5 +130,56 @@ public class GoodsController {
 	public List<String> selecttid(){
 		List<String> selectTid = goodsService.selectTid();
 		return selectTid;
+	}
+	
+	
+	//购买goods时的controller
+	@RequestMapping("/shopping")
+	public String goodsShopping(){
+		return "forward:/ws/goods-shopping.jsp";
+	}
+	
+	@RequestMapping("/addorder")
+	@ResponseBody
+	public int addOrderGoods(OrderGoods order_goods){
+		order_goods.setOid(UUID.randomUUID().toString().replace("-", "").substring(0,30));
+//		User user = (User)SecurityUtils.getSubject().getPrincipal();
+//		order_goods.setUid(user.getId());
+		order_goods.setUid("1");
+		System.out.println(order_goods);
+//		List<OrderGoods> selectByGid = goodsService.selectByGid(user.getId);
+		List<OrderGoods> selectByGid = goodsService.selectByGid("1");
+		for(int i = 0;i<selectByGid.size();i++)
+		{
+			if(order_goods.getGid().equals(selectByGid.get(i).getGid()))
+			{
+				String count = String.valueOf(Integer.valueOf(selectByGid.get(i).getOgcount())+Integer.valueOf(order_goods.getGid())); 
+				System.out.println(count);
+				goodsService.updateGtOgcount(order_goods.getGid(), count);
+				break;
+			}else
+			{
+				System.out.println("else");
+				int insert = goodsService.insert(order_goods);
+				break;
+			}
+		}
+		return 0;
+	}
+	
+	@RequestMapping("/selectAllOrderById")
+	@ResponseBody
+	public int selectAllOrderById(){
+//		User user = (User)SecurityUtils.getSubject().getPrincipal();
+		User user = new User();
+		int orderById;
+		if(user.getId()!=null)
+		{
+			 orderById = goodsService.selectAllOrderById(user.getId());
+		}else
+		{
+			 orderById = goodsService.selectAllOrderById("1");
+		}
+		return orderById;
 	}
 }

@@ -1,4 +1,4 @@
-package com.topscit.springboot1.configuration;
+/*package com.topscit.springboot1.configuration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +74,7 @@ public class ShiroConfig {
 		factoryBean.setUnauthorizedUrl("/unauthorized.jsp");
 
 		Map<String,String> hashMap = new HashMap<String, String>();
-/*		hashMap.put("/js/**", "anon");
+		hashMap.put("/js/**", "anon");
 		hashMap.put("/lib/**", "anon");
 		hashMap.put("/static/**", "anon");
 		hashMap.put("/temp/**", "anon");
@@ -82,13 +82,13 @@ public class ShiroConfig {
 		hashMap.put("/Login.jsp", "anon");
 		hashMap.put("/logout", "logout");
 		
-		hashMap.put("/**", "authc");*/
+		hashMap.put("/**", "authc");
 	
 		factoryBean.setFilterChainDefinitionMap(hashMap);
 		return factoryBean;
 	}
 	
-	/*开启shiro注解*/
+	开启shiro注解
 	@Bean
     @ConditionalOnMissingBean
 	public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator(){
@@ -109,7 +109,7 @@ public class ShiroConfig {
 	    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
 	        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
 	        Properties properties = new Properties();
-	        /*未授权处理页*/
+	        未授权处理页
 	        properties.setProperty("UnauthorizedException", "403.html");
 	        resolver.setExceptionMappings(properties);
 	        return resolver;
@@ -117,3 +117,4 @@ public class ShiroConfig {
 	
 
 }
+*/
