@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.OrderGoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.OrderGoods" >
+    <id column="oid" property="oid" jdbcType="VARCHAR" />
+    <result column="gid" property="gid" jdbcType="VARCHAR" />
+    <result column="ogcount" property="ogcount" jdbcType="VARCHAR" />
+    <result column="ogremark" property="ogremark" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap1" type="com.topscit.springboot1.bean.OrderGoods" >
+    <id column="oid" property="oid" jdbcType="VARCHAR" />
+    <result column="ogcount" property="ogcount" jdbcType="VARCHAR" />
+    <result column="ogremark" property="ogremark" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="gid" property="gid" jdbcType="VARCHAR" />
+    <association property="goods" column="gid" javaType="com.topscit.springboot1.bean.Goods">
+    	
+	    <result column="gname" property="gname" jdbcType="VARCHAR" />
+	    <result column="goriginal" property="goriginal" jdbcType="VARCHAR" />
+	    <result column="gprice" property="gprice" jdbcType="VARCHAR" />
+	    <result column="ptid" property="ptid" jdbcType="VARCHAR" />
+	    <result column="gcount" property="gcount" jdbcType="VARCHAR" />
+	    <result column="glogo" property="glogo" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    oid, gid, ogcount, ogremark, uid
+  </sql>
+   <select id="selectListGoodsOrder" resultMap="BaseResultMap1">
+  	select * from order_goods o inner join goods g on o.gid = g.gid where uid = #{uid}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from order_goods
+    where oid = #{oid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAllOrderById" resultType="Integer">
+  	select count(*) from order_goods where uid = #{id}
+  </select>
+  <select id="selectByGid" resultMap="BaseResultMap">
+  	select * from order_goods where uid = #{uid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from order_goods
+    where oid = #{oid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.OrderGoods" >
+    insert into order_goods (oid, gid, ogcount, 
+      ogremark, uid)
+    values (#{oid,jdbcType=VARCHAR}, #{gid,jdbcType=VARCHAR}, #{ogcount,jdbcType=VARCHAR}, 
+      #{ogremark,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.OrderGoods" >
+    insert into order_goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        oid,
+      </if>
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="ogcount != null" >
+        ogcount,
+      </if>
+      <if test="ogremark != null" >
+        ogremark,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        #{oid,jdbcType=VARCHAR},
+      </if>
+      <if test="gid != null" >
+        #{gid,jdbcType=VARCHAR},
+      </if>
+      <if test="ogcount != null" >
+        #{ogcount,jdbcType=VARCHAR},
+      </if>
+      <if test="ogremark != null" >
+        #{ogremark,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.OrderGoods" >
+    update order_goods
+    <set >
+      <if test="gid != null" >
+        gid = #{gid,jdbcType=VARCHAR},
+      </if>
+      <if test="ogcount != null" >
+        ogcount = #{ogcount,jdbcType=VARCHAR},
+      </if>
+      <if test="ogremark != null" >
+        ogremark = #{ogremark,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where oid = #{oid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.OrderGoods" >
+    update order_goods
+    set gid = #{gid,jdbcType=VARCHAR},
+      ogcount = #{ogcount,jdbcType=VARCHAR},
+      ogremark = #{ogremark,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=VARCHAR}
+    where oid = #{oid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateGtOgcount">
+  	update order_goods set ogcount = #{count} where gid = #{gid} 
+  </update>
+</mapper>
