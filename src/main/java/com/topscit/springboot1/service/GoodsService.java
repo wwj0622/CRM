@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.github.pagehelper.PageInfo;
+import com.topscit.springboot1.bean.Customer;
 import com.topscit.springboot1.bean.Goods;
 import com.topscit.springboot1.bean.OrderGoods;
 import com.topscit.springboot1.bean.Storage;
@@ -42,4 +43,6 @@ public interface GoodsService {
 	
 	//订单里已有该商品，就添加数量
 	int updateGtOgcount(String gid , String count);
+	
+	List<Customer> selectAllKehuById(String smid);
 }

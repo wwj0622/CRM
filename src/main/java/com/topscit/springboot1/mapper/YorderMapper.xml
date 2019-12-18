@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.topscit.springboot1.dao.YorderMapper" >
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Yorder" >
+    <id column="yoid" property="yoid" jdbcType="VARCHAR" />
+    <result column="ymoney" property="ymoney" jdbcType="VARCHAR" />
+    <result column="ytime" property="ytime" jdbcType="TIMESTAMP" />
+    <result column="ystate" property="ystate" jdbcType="VARCHAR" />
+    <result column="cid" property="cid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    yoid, ymoney, ytime, ystate, cid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from yorder
+    where yoid = #{yoid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from yorder
+    where yoid = #{yoid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Yorder" >
+    insert into yorder (yoid, ymoney, ytime, 
+      ystate, cid)
+    values (#{yoid,jdbcType=VARCHAR}, #{ymoney,jdbcType=VARCHAR}, now(), 
+      #{ystate,jdbcType=VARCHAR}, #{cid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Yorder" >
+    insert into yorder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="yoid != null" >
+        yoid,
+      </if>
+      <if test="ymoney != null" >
+        ymoney,
+      </if>
+      <if test="ytime != null" >
+        ytime,
+      </if>
+      <if test="ystate != null" >
+        ystate,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="yoid != null" >
+        #{yoid,jdbcType=VARCHAR},
+      </if>
+      <if test="ymoney != null" >
+        #{ymoney,jdbcType=VARCHAR},
+      </if>
+      <if test="ytime != null" >
+        #{ytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ystate != null" >
+        #{ystate,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Yorder" >
+    update yorder
+    <set >
+      <if test="ymoney != null" >
+        ymoney = #{ymoney,jdbcType=VARCHAR},
+      </if>
+      <if test="ytime != null" >
+        ytime = #{ytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ystate != null" >
+        ystate = #{ystate,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where yoid = #{yoid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Yorder" >
+    update yorder
+    set ymoney = #{ymoney,jdbcType=VARCHAR},
+      ytime = #{ytime,jdbcType=TIMESTAMP},
+      ystate = #{ystate,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=VARCHAR}
+    where yoid = #{yoid,jdbcType=VARCHAR}
+  </update>
+</mapper>

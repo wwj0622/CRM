@@ -1,6 +1,7 @@
 package com.topscit.springboot1.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -143,12 +144,9 @@ public class GoodsController {
 	@ResponseBody
 	public int addOrderGoods(OrderGoods order_goods){
 		order_goods.setOid(UUID.randomUUID().toString().replace("-", "").substring(0,30));
-//		User user = (User)SecurityUtils.getSubject().getPrincipal();
-//		order_goods.setUid(user.getId());
-		order_goods.setUid("1");
 		System.out.println(order_goods);
-//		List<OrderGoods> selectByGid = goodsService.selectByGid(user.getId);
-		List<OrderGoods> selectByGid = goodsService.selectByGid("1");
+		List<OrderGoods> selectByGid = goodsService.selectByGid(order_goods.getUid());
+		Boolean istrue = true;
 		for(int i = 0;i<selectByGid.size();i++)
 		{
 			if(order_goods.getGid().equals(selectByGid.get(i).getGid()))
@@ -156,13 +154,13 @@ public class GoodsController {
 				String count = String.valueOf(Integer.valueOf(selectByGid.get(i).getOgcount())+Integer.valueOf(order_goods.getGid())); 
 				System.out.println(count);
 				goodsService.updateGtOgcount(order_goods.getGid(), count);
-				break;
-			}else
-			{
-				System.out.println("else");
-				int insert = goodsService.insert(order_goods);
+				istrue = false;
 				break;
 			}
+		}
+		if(istrue)
+		{
+			int insert = goodsService.insert(order_goods);
 		}
 		return 0;
 	}
@@ -181,5 +179,21 @@ public class GoodsController {
 			 orderById = goodsService.selectAllOrderById("1");
 		}
 		return orderById;
+	}
+	
+	@RequestMapping("/selectAllKehuById")
+	@ResponseBody
+	public List<Customer> selectAllKehuById(){
+//		User user = (User)SecurityUtils.getSubject().getPrincipal();
+		User user = new User();
+		List<Customer> selectAllKehuById = new ArrayList<Customer>();
+		if(user.getId()!=null)
+		{
+			 selectAllKehuById = goodsService.selectAllKehuById(user.getId());
+		}else
+		{
+			selectAllKehuById = goodsService.selectAllKehuById("1");
+		}
+		return selectAllKehuById;
 	}
 }

@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.topscit.springboot1.bean.Customer;
 import com.topscit.springboot1.bean.Goods;
-import com.topscit.springboot1.bean.Order;
 import com.topscit.springboot1.bean.OrderGoods;
 import com.topscit.springboot1.bean.Storage;
+import com.topscit.springboot1.dao.CustomerMapper;
 import com.topscit.springboot1.dao.GoodsMapper;
 import com.topscit.springboot1.dao.OrderGoodsMapper;
 import com.topscit.springboot1.dao.StorageMapper;
@@ -28,6 +29,9 @@ public class GoodsServiecImpl implements GoodsService{
 	
 	@Autowired
 	private OrderGoodsMapper orderGoodsMapper;
+	
+	@Autowired
+	private CustomerMapper customerMapper;
 
 	@Override
 	public PageInfo<Goods> selectListGoodsByPn(int pn, int size) {
@@ -97,6 +101,12 @@ public class GoodsServiecImpl implements GoodsService{
 	public int updateGtOgcount(String gid, String count) {
 		int updateGtOgcount = orderGoodsMapper.updateGtOgcount(gid, count);
 		return 0;
+	}
+
+	@Override
+	public List<Customer> selectAllKehuById(String smid) {
+		List<Customer> selectAllKehuById = customerMapper.selectAllKehuById(smid);
+		return selectAllKehuById;
 	}
 
 }

@@ -15,6 +15,8 @@ public class Order {
 
     private Date otime;
 
+    private String yoid;
+
     public String getOid() {
         return oid;
     }
@@ -61,5 +63,13 @@ public class Order {
 
     public void setOtime(Date otime) {
         this.otime = otime;
+    }
+
+    public String getYoid() {
+        return yoid;
+    }
+
+    public void setYoid(String yoid) {
+        this.yoid = yoid == null ? null : yoid.trim();
     }
 }

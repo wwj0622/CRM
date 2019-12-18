@@ -15,6 +15,8 @@ public interface OrderGoodsMapper {
     int insertSelective(OrderGoods record);
 
     OrderGoods selectByPrimaryKey(String oid);
+    
+    OrderGoods selectOrderGoodsByPrimaryKey(@Param("oid")String oid);
 
     int updateByPrimaryKeySelective(OrderGoods record);
 
@@ -28,5 +30,7 @@ public interface OrderGoodsMapper {
     int updateGtOgcount(@Param("gid")String gid , @Param("count")String count);
     
     List<OrderGoods> selectListGoodsOrder(@Param("uid")String uid);
+    
+    int updateOgcountByOid(@Param("oid")String oid , @Param("count")String count);
     
 }
