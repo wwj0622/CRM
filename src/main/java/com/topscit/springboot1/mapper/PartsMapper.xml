@@ -15,6 +15,12 @@
     <result column="pupdate_time" property="pupdateTime" jdbcType="TIMESTAMP" />
     <result column="pcreate_time" property="pcreateTime" jdbcType="TIMESTAMP" />
     <result column="plogo" property="plogo" jdbcType="VARCHAR" />
+    <association property="storage" column="ptid" javaType="com.topscit.springboot1.bean.Storage">
+        <id column="stid" property="stid" jdbcType="VARCHAR" />
+   		<result column="stname" property="stname" jdbcType="VARCHAR" />
+    	<result column="stremark" property="stremark" jdbcType="VARCHAR" />
+    	<result column="stupdate_time" property="stupdateTime" jdbcType="TIMESTAMP" />
+     </association>
   </resultMap>
   <sql id="Base_Column_List" >
     pid, pname, pexplain, punit, ptid, pcount, pdanger, pstate, pprice, premark, pupdate_time, 
@@ -189,4 +195,10 @@
     <select id="getAllParts" resultMap="BaseResultMap" >
   	select * from parts where pstate="1"
    </select>
+   
+   <select id="getPartsBy" resultMap="BaseResultMap">
+   	SELECT * FROM parts INNER JOIN storage 
+	WHERE parts.ptid=storage.stid AND pcount+0 <![CDATA[ < ]]> pdanger+0
+   </select>
+   
 </mapper>

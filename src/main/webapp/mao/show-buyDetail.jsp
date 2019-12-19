@@ -50,9 +50,9 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购原材料编号：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购原材料名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.pid" placeholder="" id="account" name="saccount">
+				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.parts.pname" placeholder="" id="account" name="saccount">
 			</div>
 		</div>
 		<div class="row cl">
@@ -68,9 +68,9 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否入库：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否付款：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdstate"name="saddress" id="address">
+				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdstate==1?'已付款':'未付款' "name="saddress" id="address">
 			</div>
 		</div>
 		<div class="row cl">
@@ -179,6 +179,7 @@ var v =  new Vue({
             dataType: "json",
             success: function (response) {
             	_this.buyDetail = response.data;
+            	  console.log(_this.buyDetail);
             },
         });
        }

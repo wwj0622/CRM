@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.topscit.springboot1.bean.Buy;
 
 public interface BuyMapper {
+	
     int deleteByPrimaryKey(String bid);
 
     int insert(Buy record);
@@ -20,9 +21,12 @@ public interface BuyMapper {
 
     int updateByPrimaryKey(Buy record);
     
+    int updateStateByBid(@Param("bid")String bid);
+    
     //查询所有
     public List<Buy> getAllBuy();
     
+    public List<Buy> getAllBuyIn();
     //根据交货时间查询
     public List<Buy> getBuyByTime(@Param("beginDate")Date beginDate,@Param("endDate")Date endDate);
 }

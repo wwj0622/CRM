@@ -42,13 +42,10 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">付款状态：</label>
-			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select  v-model="buy.bstate" class="select" size="1" name="city">
-					<option value="" selected>请选择付款状态</option>
-					<option value="1">已付款</option>
-					<option value="0">未付款</option>
-				</select>
+			<label class="form-label col-xs-4 col-sm-3">入库状态：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+			<span class="select-box">
+				未入库
 				</span>
 			</div>
 		</div>
@@ -84,12 +81,12 @@
 				</span> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">是否入库：</label>
+			<label class="form-label col-xs-4 col-sm-3">是否付款：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select v-model="buyDetail.bdstate" class="select" size="1" name="city">
-				<option  value="" selected>请选择是否出库</option>
-					<option :value="0" selected>未入库</option>
-					<option :value="1">已入库</option>
+				<option  value="" selected>请选择是否付款</option>
+					<option :value="0" selected>未付款</option>
+					<option :value="1">已付款</option>
 				</select>
 				</span>
 			</div>
@@ -166,8 +163,6 @@ var v =  new Vue({
 	            dataType: "json",
 	            contentType: "application/json; charset=utf-8",
 	            success: function (response) {
-	            	console.log(_this.buy);
-	            	console.log(_this.buyDetail);
 	            	layer.close(layer.index);
 	            	window.parent.location.reload();
 	            	

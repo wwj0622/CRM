@@ -19,4 +19,6 @@ public interface PartsMapper {
     int updateByPrimaryKey(Parts record);
     
     List<Parts> getAllParts();
+    
+    List<Parts> getPartsBy();
 }

@@ -11,6 +11,23 @@
     <result column="bdman" property="bdman" jdbcType="VARCHAR" />
     <result column="bdremark" property="bdremark" jdbcType="VARCHAR" />
     <result column="bdupdate_time" property="bdupdateTime" jdbcType="TIMESTAMP" />
+    <association property="parts" column="pid" javaType="com.topscit.springboot1.bean.Parts">
+        <id column="pid" property="pid" jdbcType="VARCHAR" />
+	    <result column="pname" property="pname" jdbcType="VARCHAR" />
+	    <result column="pexplain" property="pexplain" jdbcType="VARCHAR" />
+	    <result column="punit" property="punit" jdbcType="VARCHAR" />
+	    <result column="ptid" property="ptid" jdbcType="VARCHAR" />
+	    <result column="pcount" property="pcount" jdbcType="VARCHAR" />
+	    <result column="pdanger" property="pdanger" jdbcType="VARCHAR" />
+	    <result column="pstate" property="pstate" jdbcType="VARCHAR" />
+	    <result column="pprice" property="pprice" jdbcType="VARCHAR" />
+	    <result column="premark" property="premark" jdbcType="VARCHAR" />
+	    <result column="pupdate_time" property="pupdateTime" jdbcType="TIMESTAMP" />
+	    <result column="pcreate_time" property="pcreateTime" jdbcType="TIMESTAMP" />
+	    <result column="plogo" property="plogo" jdbcType="VARCHAR" />
+   </association>
+   
+   
   </resultMap>
   <sql id="Base_Column_List" >
     bdid, bid, pid, bdcount, bdprice, bdstate, bdman, bdremark, bdupdate_time
@@ -140,12 +157,17 @@
   </update>
   
   <select id="getBuyDetailBy" resultMap="BaseResultMap">
-    select * from buy_detail
-      <where>
-        <if test="bid!=null and bid!=''">
-           bid = #{bid}
-        </if>
-    </where>
+    select *,CASE buy_detail.bdstate
+	WHEN "1" THEN
+		"已付款"
+	ELSE
+		"未付款"
+	END as state 
+	from buy_detail inner join parts where buy_detail.pid=parts.pid and buy_detail.bid = #{bid}
+  </select>
+  
+   <select id="getBuyDetailAll" resultMap="BaseResultMap">
+    select * from buy_detail where bdstate ="1"
   </select>
   
    <delete id="deleteByBid" parameterType="java.lang.String" >

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.management.MalformedObjectNameException;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.topscit.springboot1.bean.Buy;
 import com.topscit.springboot1.bean.BuyDetail;
+import com.topscit.springboot1.bean.Goods;
 import com.topscit.springboot1.bean.Parts;
 import com.topscit.springboot1.dao.BuyDetailMapper;
 import com.topscit.springboot1.dao.BuyMapper;
 import com.topscit.springboot1.dao.PartsMapper;
 import com.topscit.springboot1.service.BuyService;
+
+import scala.annotation.meta.setter;
 
 @Service("buyService")
 public class BuyServiceImpl  implements BuyService {
@@ -35,8 +39,17 @@ public class BuyServiceImpl  implements BuyService {
 	private BuyMapper buyMapper;
 	
 	
+	
 	@Resource
 	private SqlSessionTemplate st;
+	
+	@Override
+	public Buy getBuyBybid(String bid) {
+		Buy selectByPrimaryKey = buyMapper.selectByPrimaryKey(bid);
+		return selectByPrimaryKey;
+	}
+	
+	
 	@Override
 	public PageInfo<Buy> selectBuyList(int pn, int size) {
 		
@@ -67,6 +80,8 @@ public class BuyServiceImpl  implements BuyService {
 		buy.setBid(bid);
 		Date date = new Date();
 		buy.setGupdateTime(date);
+		
+		buy.setBstate("0");
 		
 		int insertSelective = buyMapper.insertSelective(buy);
 		if(insertSelective == 1)
@@ -140,5 +155,65 @@ public class BuyServiceImpl  implements BuyService {
 		PageInfo<Buy> pageInfo = new PageInfo<Buy>(allBuy);
 		return pageInfo;
 	}
+
+
+	@Override
+	public boolean updateBuyByBid(Buy buy) {
+		int updateByPrimaryKeySelective = buyMapper.updateByPrimaryKeySelective(buy);
+		if(updateByPrimaryKeySelective == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+
+	@Override
+	public boolean updateBuyDetail(BuyDetail buydetail) {
+		int updateByPrimaryKeySelective = buyDetailMapper.updateByPrimaryKeySelective(buydetail);
+		if(updateByPrimaryKeySelective == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+
+	@Override
+	public boolean updateStateByBid(String bid) {
+		int updateStateByBid = buyMapper.updateStateByBid(bid);
+		if(updateStateByBid == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}	}
+
+
+	@Override
+	public PageInfo<Buy> selectBuyInList(int pn, int size) {
+		BuyMapper mapper = st.getMapper(BuyMapper.class);
+		PageHelper.startPage(pn,size);
+		List<Buy> allBuy = mapper.getAllBuyIn();
+		PageInfo<Buy> pageInfo = new PageInfo<Buy>(allBuy);
+		return pageInfo;
+	}
+
+
+	@Override
+	public PageInfo<Parts> selectPartsListBy(int pn, int size) {
+		PartsMapper mapper = st.getMapper(PartsMapper.class);
+		PageHelper.startPage(pn,size);
+		List<Parts> partsBy = mapper.getPartsBy();
+		PageInfo<Parts> pageInfo = new PageInfo<Parts>(partsBy);
+		return pageInfo;
+	}
+
+
 	
 }

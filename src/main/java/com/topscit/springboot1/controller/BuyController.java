@@ -41,6 +41,18 @@ public class BuyController {
 		return resultBean;
 	}
 	
+	
+	@RequestMapping("/getAllBuyIn")
+	@ResponseBody
+	public ResultBean getAllBuyIn(
+			@RequestParam(defaultValue="1")int pn,
+			@RequestParam(defaultValue="5")int size,
+			Map<String, Object> data){
+		PageInfo<Buy> selectBuyList = buyservice.selectBuyInList(pn, size);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectBuyList);
+		return resultBean;
+	}
+	
 	@RequestMapping("/getBuyDetailBybid")
 	@ResponseBody
 	public ResultBean getBuyDetailBybid(String bid){
@@ -106,4 +118,51 @@ public class BuyController {
 		return resultBean;
 	}
 	
+	@RequestMapping("/getBuyByBid")
+	@ResponseBody
+	public ResultBean getBuyByBid(String bid){
+		Buy buyBybid = buyservice.getBuyBybid(bid);
+		BuyDetail buyDetailBy = buyservice.getBuyDetailBy(bid);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", buyBybid,buyDetailBy);
+		return resultBean;
+	}
+	
+	@RequestMapping("/updateByBid")
+	@ResponseBody
+	public ResultBean updateByBid(@RequestBody Buy buy){
+		
+		boolean updateBuyByBid = buyservice.updateBuyByBid(buy);
+		boolean updateBuyDetail = buyservice.updateBuyDetail(buy.getBuyDetail());
+		if(updateBuyByBid && updateBuyDetail){
+			return new ResultBean(ResultBean.STATA_SUCCESS, "修改成功");
+		}
+		else{
+			return new ResultBean(ResultBean.STATA_FIAIL, "修改失败");
+		}
+	}
+	
+	
+	@RequestMapping("/updateState")
+	@ResponseBody
+	public ResultBean updateState(String bid){
+		boolean updateStateByBid = buyservice.updateStateByBid(bid);
+		if(updateStateByBid){
+			return new ResultBean(ResultBean.STATA_SUCCESS, "修改成功");
+		}
+		else{
+			return new ResultBean(ResultBean.STATA_FIAIL, "修改失败");
+		}	}
+	
+	
+	@RequestMapping("/getPartsBy")
+	@ResponseBody
+	public ResultBean getPartsBy(
+			@RequestParam(defaultValue="1")int pn,
+			@RequestParam(defaultValue="5")int size,
+			Map<String, Object> data){
+		PageInfo<Parts> selectPartsListBy = buyservice.selectPartsListBy(pn, size);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectPartsListBy);
+		return resultBean;
+	}
 }
+

@@ -2,6 +2,8 @@ package com.topscit.springboot1.bean;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Parts {
     private String pid;
 
@@ -23,13 +25,26 @@ public class Parts {
 
     private String premark;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date pupdateTime;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date pcreateTime;
 
     private String plogo;
+    
+    private Storage storage;
+    
 
-    public String getPid() {
+    public Storage getStorage() {
+		return storage;
+	}
+
+	public void setStorage(Storage storage) {
+		this.storage = storage;
+	}
+
+	public String getPid() {
         return pid;
     }
 
@@ -132,4 +147,14 @@ public class Parts {
     public void setPlogo(String plogo) {
         this.plogo = plogo == null ? null : plogo.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Parts [pid=" + pid + ", pname=" + pname + ", pexplain=" + pexplain + ", punit=" + punit + ", ptid="
+				+ ptid + ", pcount=" + pcount + ", pdanger=" + pdanger + ", pstate=" + pstate + ", pprice=" + pprice
+				+ ", premark=" + premark + ", pupdateTime=" + pupdateTime + ", pcreateTime=" + pcreateTime + ", plogo="
+				+ plogo + ", storage=" + storage + "]";
+	}
+    
+    
 }
