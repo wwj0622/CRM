@@ -41,7 +41,9 @@
 		<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" v-model="content"  id="" name="">
 		<button type="submit" class="btn btn-success radius" @click="selectIf()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" @click="datadel(0)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量支付</a></span> <span class="r">共有数据：<strong>{{total}}</strong> 条</span> </div>
+	
+	<input type="hidden" id="cids" value='${cid }'>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" @click="datadel(0)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 添加订单并支付</a></span> <span class="r">共有数据：<strong>{{total}}</strong> 条</span> </div>
 	<div class="mt-20">
 	<el-row>
           <el-col :span="24">
@@ -57,17 +59,14 @@
 				  </el-table-column>
                   <el-table-column label="零售价" prop="goods.gprice"></el-table-column>
                   <el-table-column label="购买数量" prop="ogcount">
-                  	<template slot-scope="scope">
-                          <el-button size="mini" type="danger" @click="increase(1,scope)">+</el-button>
-                          {{scope.row.ogcount}}<span>&nbsp;</span>
-                          <el-button size="mini" style="margin-right:0px" type="danger" @click="increase(1,scope)">-</el-button>
-                      </template>
+                  	
                   </el-table-column>
                   
-                  <el-table-column label="操作">
+                  <el-table-column label="数量操作">
                       <template slot-scope="scope">
+                      <el-button size="mini" style="margin-right:0px" type="danger" @click="increase(1,scope)">+</el-button>
+                          <el-button size="mini" type="danger" @click="increase(0,scope)">-</el-button>
                           
-                          <el-button size="mini" type="danger" @click="datadel1(1,scope)">支付</el-button>
                       </template>
                   </el-table-column>
               </el-table>
@@ -94,6 +93,7 @@
 var v = new Vue({
 	el:"#app",
 	data:{
+		cid:'',
 		file:'',
 		fileList:[],
 		actionUrl:'https://jsonplaceholder.typicode.com/posts/',
@@ -101,13 +101,15 @@ var v = new Vue({
 		glist:[],//存放多选的所有的goodsid
 		goods:[],//存放分页查到的数据
 		content:'',//条件查询的内容
-		order_goods:{
+		order_goods:[],
+		orderGoods:{
             gid:'',
             oid:'',
             ogcount:'',
             ogremark:'',
             uid:'',
             goods:{
+            	gid:'',
             	gname:'',
                 glogo:'',
                 gcount:'',
@@ -133,7 +135,50 @@ var v = new Vue({
         wd:'80'
 	},
 	methods:{
-		increase:function(){
+		
+		increase:function(i,scope){
+			var istrue = true;
+			if(i==1)
+			{
+				scope.row.ogcount = parseInt(scope.row.ogcount)+1;
+				
+			}
+			else
+			{
+				scope.row.ogcount = parseInt(scope.row.ogcount)-1;
+				if(scope.row.ogcount == 0)
+				{
+					istrue = false;
+					var _this = this;
+		        	$.ajax({
+		        	      type: "POST",
+		        	      traditional: true,
+		        	      url: "/order/delordergoods",
+		        	      data: {oid:scope.row.oid},
+		        	      dataType: "json",
+		        	      success: function (response) {
+		        	    	  _this.selectAllGoodsOrderById();
+		        	      }
+		        	  });
+				}
+			}
+			if(istrue)
+			{
+				var _this = this;
+	        	$.ajax({
+	        	      type: "POST",
+	        	      traditional: true,
+	        	      url: "/order/updateordergoodsbycount",
+	        	      data: {
+	        	    	  ogcount:scope.row.ogcount,
+	        	    	  oid:scope.row.oid
+	        	      },
+	        	      dataType: "json",
+	        	      success: function (response) {
+	        	    	  _this.selectAllGoodsOrderById();
+	        	      }
+	        	  });
+			}
 			
 		},
 	    //模糊查询  搜索框触发的事件
@@ -149,6 +194,7 @@ var v = new Vue({
         
         //删除多条goods信息时的事件
         datadel:function(i){
+        	
         	if(i==0){
         		if(this.ordergoodslist.length==0)
        			{
@@ -158,63 +204,26 @@ var v = new Vue({
             		for(var j = 0;j<this.ordergoodslist.length;j++){
                 		this.glist.push(this.ordergoodslist[j].oid);
                 	}
+            		console.log(this.glist);
             		//this.delgoodsByGid();
             		//先添加到ordergoods表
             		//再删除order表
+            		_this = this;
+            		$.ajax({
+  	        	      type: "POST",
+  	        	      traditional: true,
+  	        	      url: "/order/buyordergoods",
+  	        	      data: {list:_this.glist,
+  	        	    	  cid:_this.cid},
+  	        	      dataType: "json",
+  	        	      success: function (response) {
+  	        	    	  _this.selectAllGoodsOrderById();
+  	        	      }
+  	        	  });
        			}
         	}
         },
         
-        //删除单条goods信息触发的事件，并进行一系列的逻辑判断
-        datadel1:function(i,scope){
-        	console.log(scope);
-        	if(i==1){
-        		if(this.ordergoodslist.length>1)
-        		{
-        			alert("不能同时支付多个！");
-        		}
-        		else if(this.ordergoodslist.length==1)
-        		{
-        			this.glist.length = 0;
-        			this.glist.push(this.ordergoodslist[0].oid);
-        			if(this.ordergoodslist[0].oid==scope.row.oid)
-       				{
-        				console.log("111111111");
-        				//this.delgoodsByGid();
-        				//先添加到ordergoods表
-            		//再删除order表
-       				}
-        			else
-       				{
-        				alert("选择和支付的商品信息不符！");
-       				}
-        		}
-        		else
-        		{
-        			this.glist.length = 0;
-        			alert("请选择要支付的商品信息！");
-        		}
-        	}
-        },
-        
-        //删除goods信息的方法
-        delgoodsByGid:function(){
-        	var _this = this;
-        	$.ajax({
-        	      type: "POST",
-        	      traditional: true,
-        	      url: "/goods/del",
-        	      data: {
-        	    	  
-        	    	  gidlist:_this.glist,
-        	    	  pn:_this.currentPage
-        	    	  },
-        	      dataType: "json",
-        	      success: function (response) {
-        	    	  _this.selectAllGoods();
-        	      }
-        	  });
-        },
         
         //点击修改信息时触发的事件
         updategoods:function(scope)
@@ -224,34 +233,6 @@ var v = new Vue({
             this.selectAlltid();
         },
         
-        //点击确认修改，触发的修改事件
-        update:function(){
-            this.updateDialogState = false;
-            var formData = new FormData();
-		    console.log("goodsinfo");
-		    console.log(this.goodsinfo);
-		    formData.append("file",this.file.raw);
-		    formData.append("gid",this.goodsinfo.gid);
-		    formData.append("gname",this.goodsinfo.gname);
-		    formData.append("glogo",this.goodsinfo.glogo);
-		    formData.append("gcount",this.goodsinfo.gcount);
-		    formData.append("goriginal",this.goodsinfo.goriginal);
-		    formData.append("gprice",this.goodsinfo.gprice);
-		    formData.append("ptid",this.goodsinfo.ptid);
-		    /* let config = {
-		    		'ContentType':'application/x-www-form-urlencoded'
-		    } ; */
-		    var _this = this;
-		    var configs = 'multipart/form-data;';
-		    const instance=axios.create({
-		          withCredentials: true
-		         }) 
-		    instance.post("/goods/update", formData, configs).then(function(result) {
-                            console.log(result);
-                            _this.file = '';
-                            _this.selectAllGoods();
-            })
-        },
         
         //dialog取消时的事件
         clos:function(){
@@ -272,14 +253,15 @@ var v = new Vue({
     		$.ajax({
                 type: "GET",
                 url: "/order/allorderbyid",
-                data: {pn:_this.currentPage,
+                data: {
+                	cid:_this.cid,
+                	pn:_this.currentPage,
                 	content:_this.content},
                 dataType: "json",
                 success: function (response) {
                     _this.total = response.total;
                     _this.pageSize = response.pageSize;
                     _this.order_goods = response.list;
-                    console.log(_this.order_goods);
                 }
             });
         }
@@ -288,6 +270,7 @@ var v = new Vue({
 	
 	//钩子函数，直接调用分页查询
 	created:function(){
+		this.cid = $("#cids").val();
 		this.selectAllGoodsOrderById();
 		
 	}

@@ -41,7 +41,13 @@
 		<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" v-model="content"  id="" name="">
 		<button type="submit" class="btn btn-success radius" @click="selectIf()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a href="order/allorder"  class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 个人订单</a></span> <span class="r">共有订单：<strong>{{ordernum}}</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a href="JavaScript:void(0)" @click="ahref()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 个人购物车</a>
+	    <el-select popper-class = "optionsContent" default-first-option filterable v-model="customer.cname" @change="chickvalue($event)" placeholder="请选择客户">
+	    	
+	      <el-option v-for="(g,i) in customer_cname" :key="i" :label="g.cname" :value="g.cname"></el-option>
+	      
+	    </el-select>
+	</span> <!-- <span class="r">共有订单：<strong>{{ordernum}}</strong> 条</span> --> </div>
 	<div class="mt-20">
 	<el-row>
           <el-col :span="24">
@@ -60,7 +66,7 @@
                   
                   <el-table-column label="操作">
                       <template slot-scope="scope">
-                          <el-button size="mini" @click="updategoods(scope)">添加订单</el-button>
+                          <el-button size="mini" @click="updategoods(scope)">添加购物车</el-button>
                           <el-dialog title="修改商品数量" :visible.sync="updateDialogState">
                               <el-form :model="goodsinfo" :label-position="po" :label-width="wd">
                                   <el-form-item label="ID">
@@ -121,9 +127,23 @@ var v = new Vue({
 	data:{
 		ogremark:'',
 		order_goods:{
+			uid:'',
 			gid:'',
 			ogcount:'',
 			ogremark:''
+		},
+		customer_cname:[],
+		customer:{
+			cid:'',
+			cname:'',
+			cproterty:'',
+			cstate:'',
+			caccount:'',
+			cemail:'',
+			cphone:'',
+			caddress:'',
+			bremark:'',
+			smid:''
 		},
 		ordernum:'0',
 		shopnum:'1',
@@ -154,6 +174,28 @@ var v = new Vue({
         wd:'80'
 	},
 	methods:{
+		ahref:function(){
+			if(this.customer.cid!="")
+			{
+				var _this = this;
+				console.log(_this.customer.cid);
+				window.location.href="order/allorder?cid="+_this.customer.cid;
+			}else
+			{
+				alert("请选择客户！");
+			}
+			
+		},
+		chickvalue:function(e){
+			
+			for(var i = 0;i < this.customer_cname.length;i++)
+			{
+				if(this.customer_cname[i].cname==this.customer.cname){
+					this.customer.cid = this.customer_cname[i].cid;
+					break;
+				}
+			}
+		},
 		//修改框添加图片触发事件
 		changefile:function(file, fileList){
 			this.file = file;
@@ -197,41 +239,53 @@ var v = new Vue({
         //点击修改信息时触发的事件
         updategoods:function(scope)
         {
-            this.updateDialogState = true;
-            this.goodsinfo = scope.row;
-            this.selectAlltid();
+        	if(this.customer.cname!="")
+       		{
+        		this.updateDialogState = true;
+                this.goodsinfo = scope.row;
+                this.selectAlltid();
+       		}else{
+       			alert("请选择客户信息！");
+       		}
+            
         },
         
         //点击确认修改，触发的修改事件
         update:function(){
-            this.updateDialogState = false;
-            this.order_goods.gid = this.goodsinfo.gid;
-            this.order_goods.ogcount = this.shopnum;
-            this.order_goods.ogremark = this.ogremark;
-            if(this.order_goods.ogcount > this.goodsinfo.gcount)
-           	{
-           		alert("仓库数量不足！");
-           	}else
-       		{
-           		var _this = this;
-           		$.ajax({
-          	      type: "POST",
-          	      traditional: true,
-          	      url: "/goods/addorder",
-          	      data: _this.order_goods,
-          	      dataType: "json",
-          	      success: function (response) {
-          	    	_this.selectAllOrderById();
-          	    	_this.selectAllGoods();
-          	    	let key;
-                    for(key in _this.order_goods){
-                    	_this.order_goods[key]  = ''
-                    }
-                    _this.shopnum="1";
-                    _this.ogremark="";
-          	      }
-          	  });
-       		}
+        	console.log(this.customer.cid);
+        	
+                this.order_goods.gid = this.goodsinfo.gid;
+                this.order_goods.ogcount = this.shopnum;
+                this.order_goods.ogremark = this.ogremark;
+                this.order_goods.uid = this.customer.cid;
+                this.updateDialogState = false;
+                console.log(this.order_goods);
+                if(this.order_goods.ogcount > this.goodsinfo.gcount)
+               	{
+               		alert("仓库数量不足！");
+               	}else
+           		{
+               		var _this = this;
+               		$.ajax({
+              	      type: "POST",
+              	      traditional: true,
+              	      url: "/goods/addorder",
+              	      data: _this.order_goods,
+              	      dataType: "json",
+              	      success: function (response) {
+              	    	_this.selectAllOrderById();
+              	    	_this.selectAllGoods();
+              	    	let key;
+                        for(key in _this.order_goods){
+                        	_this.order_goods[key]  = ''
+                        }
+                        _this.shopnum="1";
+                        _this.ogremark="";
+              	      }
+              	  });
+           		}
+       		
+            
 		    
 		    
         },
@@ -276,6 +330,18 @@ var v = new Vue({
                     _this.ordernum = response;
                 }
             });
+        },
+        selectAllKehuById:function(){
+        	var _this = this;
+    		$.ajax({
+                type: "GET",
+                url: "/goods/selectAllKehuById",
+                data: null,
+                dataType: "json",
+                success: function (response) {
+                    _this.customer_cname = response;
+                }
+            });
         }
 
 	},
@@ -284,6 +350,7 @@ var v = new Vue({
 	created:function(){
 		this.selectAllGoods();
 		this.selectAllOrderById();
+		this.selectAllKehuById();
 	}
 });
 </script>

@@ -37,6 +37,9 @@
     from order_goods
     where oid = #{oid,jdbcType=VARCHAR}
   </select>
+  <select id="selectOrderGoodsByPrimaryKey" resultMap="BaseResultMap1">
+  	select * from order_goods o inner join goods g on o.gid = g.gid where oid = #{oid}
+  </select>
   <select id="selectAllOrderById" resultType="Integer">
   	select count(*) from order_goods where uid = #{id}
   </select>
@@ -118,5 +121,8 @@
   </update>
   <update id="updateGtOgcount">
   	update order_goods set ogcount = #{count} where gid = #{gid} 
+  </update>
+  <update id="updateOgcountByOid">
+  	update order_goods set ogcount = #{count} where oid = #{oid} 
   </update>
 </mapper>
