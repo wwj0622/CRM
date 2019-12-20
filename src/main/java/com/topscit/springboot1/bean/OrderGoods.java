@@ -13,7 +13,47 @@ public class OrderGoods {
     
     private Goods goods;
 
-    public Goods getGoods() {
+	public String getOid() {
+		return oid;
+	}
+
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+
+	public String getGid() {
+		return gid;
+	}
+
+	public void setGid(String gid) {
+		this.gid = gid;
+	}
+
+	public String getOgcount() {
+		return ogcount;
+	}
+
+	public void setOgcount(String ogcount) {
+		this.ogcount = ogcount;
+	}
+
+	public String getOgremark() {
+		return ogremark;
+	}
+
+	public void setOgremark(String ogremark) {
+		this.ogremark = ogremark;
+	}
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public Goods getGoods() {
 		return goods;
 	}
 
@@ -21,50 +61,15 @@ public class OrderGoods {
 		this.goods = goods;
 	}
 
-	public String getOid() {
-        return oid;
-    }
-
-    public void setOid(String oid) {
-        this.oid = oid == null ? null : oid.trim();
-    }
-
-    public String getGid() {
-        return gid;
-    }
-
-    public void setGid(String gid) {
-        this.gid = gid == null ? null : gid.trim();
-    }
-
-    public String getOgcount() {
-        return ogcount;
-    }
-
-    public void setOgcount(String ogcount) {
-        this.ogcount = ogcount == null ? null : ogcount.trim();
-    }
-
-    public String getOgremark() {
-        return ogremark;
-    }
-
-    public void setOgremark(String ogremark) {
-        this.ogremark = ogremark == null ? null : ogremark.trim();
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid == null ? null : uid.trim();
-    }
-
 	@Override
 	public String toString() {
 		return "OrderGoods [oid=" + oid + ", gid=" + gid + ", ogcount=" + ogcount + ", ogremark=" + ogremark + ", uid="
 				+ uid + ", goods=" + goods + "]";
 	}
+
+	public OrderGoods() {
+	}
+    
+    
 
 }

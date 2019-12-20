@@ -40,8 +40,8 @@
 		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
 		<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" v-model="content"  id="" name="">
 		<button type="submit" class="btn btn-success radius" @click="selectIf()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
-	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a href="JavaScript:void(0)" @click="ahref()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 个人购物车</a>
+	</div><!-- href="JavaScript:void(0)" -->
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a  @click="ahref()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加订单</a>
 	    <el-select popper-class = "optionsContent" default-first-option filterable v-model="customer.cname" @change="chickvalue($event)" placeholder="请选择客户">
 	    	
 	      <el-option v-for="(g,i) in customer_cname" :key="i" :label="g.cname" :value="g.cname"></el-option>
@@ -63,49 +63,13 @@
 				  </el-table-column>
                   <el-table-column label="零售价" prop="gprice"></el-table-column>
                   <el-table-column label="仓库数量" prop="gcount"></el-table-column>
-                  <el-table-column label="购买数量" >
+                  <el-table-column label="操作购买数量" >
                   	<template slot-scope="scope">
                   		<i @click="changenum(1,scope)" style="margin-left:30px; color:red; " class="el-icon-plus"></i>
 		                 <span style="margin-left:30px;">{{inde[scope.$index]}}</span>
 		                 <i @click="changenum(0,scope)" style="margin-left:30px; color:red; " class="el-icon-minus"></i>
 					　</template>
 		                 
-                  </el-table-column>
-                  <el-table-column label="操作">
-                      <template slot-scope="scope">
-                          <el-button size="mini" @click="updategoods(scope)">添加购物车</el-button>
-                          <el-dialog title="修改商品数量" :visible.sync="updateDialogState">
-                              <el-form :model="goodsinfo" :label-position="po" :label-width="wd">
-                                  <el-form-item label="ID">
-                                      <el-input color="Gainsboro" readonly v-model="goodsinfo.gid"></el-input>
-                                  </el-form-item>
-                                  <el-form-item label="产品名">
-                                    <el-input readonly v-model="goodsinfo.gname" ></el-input>
-                                  </el-form-item>
-                                  <el-form-item label="图片" >
-                                    <img :src="goodsinfo.glogo" width="30" height="30"  />
-                                    
-                                    
-                                  </el-form-item>
-                                  <el-form-item label="零售价" >
-                                    <el-input readonly v-model="goodsinfo.gprice" ></el-input>
-                                  </el-form-item>
-                                  <el-form-item label="仓库数量" >
-                                    <el-input readonly v-model="goodsinfo.gcount" ></el-input>
-                                  </el-form-item>
-                                  <el-form-item label="购买数量" >
-                                    <el-input v-model="shopnum" ></el-input>
-                                  </el-form-item>
-                                  <el-form-item label="备注说明" >
-								    <el-input type="textarea" v-model="ogremark" autocomplete="off"></el-input>
-								  </el-form-item>
-                              </el-form>
-                              <div slot="footer" class="dialog-footer">
-                                  <el-button type="primary" @click="clos()">取消</el-button>
-                                  <el-button type="success" @click="update()">确认</el-button>
-                              </div>
-                          </el-dialog>
-                      </template>
                   </el-table-column>
               </el-table>
           </el-col>
@@ -137,7 +101,6 @@ var v = new Vue({
 			uid:'',
 			gid:'',
 			ogcount:'1',
-			ogremark:''
 		},
 		customer_cname:[],
 		customer:{
@@ -184,12 +147,7 @@ var v = new Vue({
 	},
 	methods:{
 		selection:function(val){
-			if(this.customer.cid == "")
-			{
-				alert("请选择客户!");
-			}
-			else
-			{
+			
 				this.ordergoodslist.length = 0;
 	        	var i = 0,j=0;
 	        	for(i;i<val.length;i++)
@@ -205,12 +163,11 @@ var v = new Vue({
 	        			}
 	        		}
 	        		
-	        		this.order_goods.ogcount = this.inde[j];
+	        		this.order_goods.ogcount = this.inde[j].toString();
 	        		this.ordergoodslist[i]=JSON.parse(JSON.stringify(this.order_goods));
 	        		j = 0;
 	        	} 
-	        	console.log(this.ordergoodslist);
-			}
+			
 			
         },
 		changenum:function(i,scope)
@@ -237,18 +194,43 @@ var v = new Vue({
 	        			
 	        			if(this.goods[j].gid==this.ordergoodslist[i].gid)
 	        			{
-	        				this.ordergoodslist[i].ogcount = this.inde[j];
+	        				this.ordergoodslist[i].ogcount = this.inde[j].toString();
 	        				break;
 	        			}
 	        		}
 	        		j = 0;
 	        	}
 			}
-			console.log(this.ordergoodslist);
 			
 		},
 		ahref:function(){
-			if(this.customer.cid!="")
+			if(this.ordergoodslist.length==0)
+			{
+				alert("请选择商品！");
+			}else
+			{
+				if(this.ordergoodslist[0].uid=="")
+				{
+					alert("请选择客户！");
+				}else
+				{
+					var _this = this;
+					console.log(_this.ordergoodslist);
+		        	$.ajax({
+		        	      type: "POST",
+		        	      url: "/order/addordergoods",
+		        	      contentType:'application/json',
+		        	      data:JSON.stringify(_this.ordergoodslist),
+		        	      dataType: "json",
+		        	      success: function (response) {
+		        	      }
+		        	  });
+				}
+				
+			}
+			
+			
+			/* if(this.customer.cid!="")
 			{
 				var _this = this;
 				console.log(_this.customer.cid);
@@ -256,8 +238,7 @@ var v = new Vue({
 			}else
 			{
 				alert("请选择客户！");
-			}
-			
+			} */
 		},
 		chickvalue:function(e){
 			
@@ -267,6 +248,15 @@ var v = new Vue({
 					this.customer.cid = this.customer_cname[i].cid;
 					break;
 				}
+			}
+			if(this.ordergoodslist.length>0)
+			{
+				var j = 0;
+				for(j;j<this.ordergoodslist.length;j++)
+        		{
+        			this.ordergoodslist[j].uid = this.customer.cid;
+        			
+        		}
 			}
 		},
 		//修改框添加图片触发事件
