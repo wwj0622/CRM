@@ -21,8 +21,9 @@ public interface BuyMapper {
 
     int updateByPrimaryKey(Buy record);
     
-    int updateStateByBid(@Param("bid")String bid);
     
+    
+    Buy getBuyBy(@Param("bid")String bid);
     //查询所有
     public List<Buy> getAllBuy();
     

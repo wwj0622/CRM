@@ -3,21 +3,23 @@ package com.topscit.springboot1.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 
 import com.github.pagehelper.PageInfo;
 import com.topscit.springboot1.bean.Buy;
 import com.topscit.springboot1.bean.BuyDetail;
-import com.topscit.springboot1.bean.Goods;
 import com.topscit.springboot1.bean.Parts;
 
 public interface BuyService {
 	
 	public PageInfo<Buy> selectBuyList(int pn,int size);
 	
+	public PageInfo<BuyDetail> selectBuyDetailList(int pn,int size);
+	
 	public PageInfo<Buy> selectBuyInList(int pn,int size);
 	
 	public PageInfo<Buy> selectBuyByTime(String beginDate,String endDate,int pn,int size);
+	
+	public List<BuyDetail> selectBuyDetailByTime(String beginDate,String endDate);
 	
 	 BuyDetail getBuyDetailBy(String id);
 	 
@@ -48,6 +50,8 @@ public interface BuyService {
 	 //修改出库状态
 	 public boolean updateStateByBid(String bid);
 	 
+	 //修改原材料数量
+	 public boolean updateCount(String count,String pid);
 	 //查询缺货的goods
 	 public PageInfo<Parts> selectPartsListBy(int pn,int size);
 	 

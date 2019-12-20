@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.management.MalformedObjectNameException;
 
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class BuyServiceImpl  implements BuyService {
 	
 	@Override
 	public Buy getBuyBybid(String bid) {
-		Buy selectByPrimaryKey = buyMapper.selectByPrimaryKey(bid);
+		Buy selectByPrimaryKey = buyMapper.getBuyBy(bid);
 		return selectByPrimaryKey;
 	}
 	
@@ -99,6 +100,7 @@ public class BuyServiceImpl  implements BuyService {
 		Date date = new Date();
 		buyDetail.setBdupdateTime(date);
 		buyDetail.setBid(bid);
+		buyDetail.setBdstate("0");
 		
 		int insertSelective = buyDetailMapper.insertSelective(buyDetail);
 		if(insertSelective == 1)
@@ -156,6 +158,24 @@ public class BuyServiceImpl  implements BuyService {
 		return pageInfo;
 	}
 
+	@Override
+	public List<BuyDetail> selectBuyDetailByTime(String beginDate, String endDate) {
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd");
+		Date endTime = null;
+		Date beginTime = null;
+		
+		try {
+			endTime = simpleDateFormat.parse(endDate);
+			beginTime = simpleDateFormat.parse(beginDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<BuyDetail> buyDetailByTime = buyDetailMapper.getBuyDetailByTime(beginTime, endTime);
+		return buyDetailByTime;
+	}
 
 	@Override
 	public boolean updateBuyByBid(Buy buy) {
@@ -185,7 +205,7 @@ public class BuyServiceImpl  implements BuyService {
 
 	@Override
 	public boolean updateStateByBid(String bid) {
-		int updateStateByBid = buyMapper.updateStateByBid(bid);
+		int updateStateByBid = buyDetailMapper.updateStateByBid(bid);
 		if(updateStateByBid == 1)
 		{
 			return true;
@@ -213,6 +233,31 @@ public class BuyServiceImpl  implements BuyService {
 		PageInfo<Parts> pageInfo = new PageInfo<Parts>(partsBy);
 		return pageInfo;
 	}
+
+
+	@Override
+	public PageInfo<BuyDetail> selectBuyDetailList(int pn, int size) {
+		BuyDetailMapper mapper = st.getMapper(BuyDetailMapper.class);
+		PageHelper.startPage(pn,size);
+		List<BuyDetail> buyDetailAll = mapper.getBuyDetailAll();
+		PageInfo<BuyDetail> pageInfo = new PageInfo<BuyDetail>(buyDetailAll);
+		return pageInfo;
+	}
+
+
+	@Override
+	public boolean updateCount(String count, String pid) {
+		int updateCount = partsMapper.updateCount(count, pid);
+		if(updateCount == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+
 
 
 	

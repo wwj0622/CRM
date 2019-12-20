@@ -167,7 +167,7 @@
   </select>
   
    <select id="getBuyDetailAll" resultMap="BaseResultMap">
-    select * from buy_detail where bdstate ="1"
+    select * from buy_detail inner join parts where buy_detail.pid=parts.pid and bdstate ="0"
   </select>
   
    <delete id="deleteByBid" parameterType="java.lang.String" >
@@ -176,6 +176,16 @@
   </delete>
   
   
+   <select id="getBuyDetailByTime" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+	     select * from buy_detail
+	    where bdupdate_time <![CDATA[ >= ]]> CONCAT(#{beginDate},' 00:00:00')
+	    and bdupdate_time <![CDATA[ <= ]]> CONCAT(#{endDate},' 23:59:59') 
+	    and bdstate ="0"
+	    
+	</select>   
   
+ 	<update id="updateStateByBid" parameterType="java.lang.String">
+		UPDATE buy_detail SET buy_detail.bdstate="1" WHERE bid = #{bid}
+	</update>
   
 </mapper>

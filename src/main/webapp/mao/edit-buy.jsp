@@ -47,7 +47,7 @@
 			<label class="form-label col-xs-4 col-sm-3">入库状态：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
 			<span class="select-box">
-				<div v-model="buy.bstate">未入库</div>
+				<div v-model="buyDetail.bdstate">未入库</div>
 				</span>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注信息：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buy.bremark" name="email" id="email">
+				<input type="text" class="input-text" v-model="buyDetail.bdremark" name="email" id="email">
 			</div>
 		</div>
 		<div class="row cl">
@@ -88,7 +88,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">是否付款：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select v-model="buyDetail.bdstate" class="select" size="1" name="city">
+				<select v-model="buy.bstate" class="select" size="1" name="city">
 					<option :value="0" selected>未付款</option>
 					<option :value="1">已付款</option>
 				</select>
@@ -110,7 +110,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>操作人员：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buy.bman">
+				<input type="text" class="input-text" v-model="buyDetail.bdman">
 			</div>
 		</div>
 		<div class="row cl">

@@ -39,7 +39,7 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container" id="app">
 	<div class="text-c"> 
-		根据交货时间查询
+		根据操作时间查询
 		<input type="Date" v-model="beginTime"  id="datemin" class="input-text Wdate" style="width:150px;">
 		-
 		<input type="Date" v-model="endTime"  id="datemax" class="input-text Wdate" style="width:150px;">
@@ -67,7 +67,9 @@
 					<th width="100">采购原材料名称</th>
 					<th width="100">采购数量</th>
 					<th width="60">采购价格</th>
+					<th width="60">操作人员</th>
 					<th>备注信息</th>
+					<th width="60">操作时间</th>
 					<th width="60">入库状态</th>
 					<th width="40">详情</th>
 					<th width="100">操作</th>
@@ -75,22 +77,24 @@
 			</thead>
 			<tbody>
 			 
-			<tr class="text-c" v-for='(buy,i) in buyList'>
-					<td><input name=""  v-model="checkedBuy" type="checkbox" :value="buy.bid"></td>
-					<td class="text-l">{{buy.bid}}</td>
+			<tr class="text-c" v-for='(buyDetail,i) in buyDetailList'>
+					<td><input name=""  v-model="checkedBuy" type="checkbox" :value="buyDetail.bid"></td>
+					<td class="text-l">{{buyDetail.bid}}</td>
 					<td>{{buyDetail.parts.pname}}</td>
 					<td>{{buyDetail.bdcount}}</td>
 					<td>{{buyDetail.bdprice}}</td>
-					<td class="text-l">{{buy.bremark}}</td>
-					<td>{{buyDetail.bdstate==1?"已入库":"未入库"}} <button @click="changeState(buy.bid)">点击入库</button> </td>
+					<td>{{buyDetail.bdman}}</td>
+					<td class="text-l">{{buyDetail.bdremark}}</td>
+					<td>{{buyDetail.bdupdateTime}}</td>
+					<td>{{buyDetail.bdstate==1?"已入库":"未入库"}} <button @click="changeState(buyDetail.pid,buyDetail.bdcount,buyDetail.bid)">点击入库</button> </td>
 					<td>
-						<a href="javascript:void(0);" @click="member_edit('采购单详情','mao/show-buyDetail.jsp?bid='+buy.bid,'4','','510')">点击查看详情</a>
+						<a href="javascript:void(0);" @click="member_edit('采购单详情','mao/show-oneBuy.jsp?bid='+buyDetail.bid,'4','','510')">点击查看详情</a>
 					</td>
 					<td class="f-14 product-brand-manage">
-						<a style="text-decoration:none" @click="member_edit('编辑采购单','mao/edit-buy.jsp?bid='+buy.bid,'4','','510')" href="javascript:;" title="编辑">
+						<a style="text-decoration:none" @click="member_edit('编辑采购单','mao/edit-buy.jsp?bid='+buyDetail.bid,'4','','510')" href="javascript:;" title="编辑">
 							<i class="Hui-iconfont">&#xe6df;</i>
 						</a> 
-						<a style="text-decoration:none" class="ml-5" @click="member_del(this,buy.bid)" href="javascript:;" title="删除">
+						<a style="text-decoration:none" class="ml-5" @click="member_del(this,buyDetail.bid)" href="javascript:;" title="删除">
 							<i class="Hui-iconfont">&#xe6e2;</i>
 						</a>
 					</td>
@@ -111,7 +115,7 @@
 var v =  new Vue({
 	el:'#app',
 	data:{
-		buyList:[],
+		buyDetailList:[],
 		pageInfo:[],
 		inputContent:'',
 		checkedBuy:[],
@@ -126,11 +130,11 @@ var v =  new Vue({
 		 	var _this = this;
 	        $.ajax({
 	            type: "GET",
-	            url: "/buy/getAllBuy",
+	            url: "/buy/getAllBuyDetail",
 	            data: {pn:page},
 	            dataType: "json",
 	            success: function (response) {
-	            	_this.buyList = response.data.list;
+	            	_this.buyDetailList = response.data.list;
 	            	_this.pageInfo = response.data;
 	            },
 	        });
@@ -142,12 +146,11 @@ var v =  new Vue({
         	
  	        $.ajax({
  	            type: "GET",
- 	            url: "/buy/getBuyByTime",
+ 	            url: "/buy/getBuyDetailByTime",
  	            data: {beginDate:_this.beginTime,endDate:_this.endTime},
  	            dataType: "json",
  	            success: function (response) {
- 	            	_this.buyList = response.data.list;
- 	            	_this.pageInfo = response.data;
+ 	            	_this.buyDetailList = response.data;
  	            },
  	        });
          },
@@ -189,12 +192,12 @@ var v =  new Vue({
          member_edit(title,url,id,w,h){
         	 layer_show(title,url,w,h);
          },
-         changeState(bid){
+         changeState(pid,count,bid){
  			var _this = this;
  			$.ajax({
  	            type: "POST",
  	            url: "/buy/updateState",
- 	            data: {bid:bid},
+ 	            data: {pid:pid,pcount:count,bid:bid},
  	            dataType: "json",
  	            success: function (response) {
  	            	layer.close(layer.index);
@@ -207,11 +210,11 @@ var v =  new Vue({
         var _this = this;
         $.ajax({
             type: "GET",
-            url: "/buy/getAllBuy",
+            url: "/buy/getAllBuyDetail",
             data: null,
             dataType: "json",
             success: function (response) {
-            	_this.buyList = response.data.list;
+            	_this.buyDetailList = response.data.list;
             	_this.pageInfo = response.data;
             },
         });

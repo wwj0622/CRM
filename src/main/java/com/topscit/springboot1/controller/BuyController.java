@@ -41,6 +41,16 @@ public class BuyController {
 		return resultBean;
 	}
 	
+	@RequestMapping("/getAllBuyDetail")
+	@ResponseBody
+	public ResultBean getAllBuyDetail(
+			@RequestParam(defaultValue="1")int pn,
+			@RequestParam(defaultValue="5")int size,
+			Map<String, Object> data){
+		PageInfo<BuyDetail> selectBuyDetailList = buyservice.selectBuyDetailList(pn, size);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectBuyDetailList);
+		return resultBean;
+	}
 	
 	@RequestMapping("/getAllBuyIn")
 	@ResponseBody
@@ -61,6 +71,14 @@ public class BuyController {
 		return resultBean;
 	}
 	
+	
+	@RequestMapping("/getBuyBybid")
+	@ResponseBody
+	public ResultBean getBuyBybid(String bid){
+		Buy buyBybid = buyservice.getBuyBybid(bid);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", buyBybid);
+		return resultBean;
+	}
 	
 	@RequestMapping("/getInfo")
 	@ResponseBody
@@ -104,17 +122,16 @@ public class BuyController {
 		}
 	}
 	
-	@RequestMapping("/getBuyByTime")
+	@RequestMapping("/getBuyDetailByTime")
 	@ResponseBody
-	public ResultBean getBuyByTime(
+	public ResultBean getBuyDetailByTime(
 			String beginDate,
 			String endDate,
 			@RequestParam(defaultValue="1")int pn,
 			@RequestParam(defaultValue="5")int size,
 			Map<String, Object> data){
-		
-		PageInfo<Buy> selectBuyByTime = buyservice.selectBuyByTime(beginDate, endDate, pn, size);
-		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectBuyByTime);
+		List<BuyDetail> selectBuyDetailByTime = buyservice.selectBuyDetailByTime(beginDate, endDate);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectBuyDetailByTime);
 		return resultBean;
 	}
 	
@@ -144,9 +161,12 @@ public class BuyController {
 	
 	@RequestMapping("/updateState")
 	@ResponseBody
-	public ResultBean updateState(String bid){
+	public ResultBean updateState(String pid,String pcount,String bid){
+		
+		boolean updateCount = buyservice.updateCount(pcount, pid);
 		boolean updateStateByBid = buyservice.updateStateByBid(bid);
-		if(updateStateByBid){
+		
+		if(updateCount && updateStateByBid){
 			return new ResultBean(ResultBean.STATA_SUCCESS, "修改成功");
 		}
 		else{

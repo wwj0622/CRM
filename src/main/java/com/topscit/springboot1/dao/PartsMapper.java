@@ -3,6 +3,8 @@ package com.topscit.springboot1.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.topscit.springboot1.bean.Parts;
 
 public interface PartsMapper {
@@ -21,4 +23,6 @@ public interface PartsMapper {
     List<Parts> getAllParts();
     
     List<Parts> getPartsBy();
+    
+    int updateCount(@Param("count")String count,@Param("pid")String pid);
 }

@@ -148,6 +148,10 @@
 	END as state
 	FROM buy inner join supplier where buy.sid=supplier.sid and buy.bstate="0"
    </select>
+   
+   <select id="getBuyBy" resultMap="BaseResultMap" >
+  	SELECT * FROM buy inner join supplier where buy.sid=supplier.sid and buy.bid=#{bid}
+   </select>
    	
    	 <select id="getAllBuyIn" resultMap="BaseResultMap" >
   	SELECT *,CASE buy.bstate
@@ -166,9 +170,7 @@
 	    
 	</select>   
 	
-	<update id="updateStateByBid" parameterType="java.lang.String">
-		UPDATE buy SET buy.bstate="1" WHERE bid = #{bid}
-	</update>
+	
 	
 	
 </mapper>

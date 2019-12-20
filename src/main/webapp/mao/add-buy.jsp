@@ -58,7 +58,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注信息：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buy.bremark" name="email" id="email">
+				<input type="text" class="input-text" v-model="buyDetail.bdremark" name="email" id="email">
 			</div>
 		</div>
 		<div class="row cl">
@@ -83,7 +83,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">是否付款：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select v-model="buyDetail.bdstate" class="select" size="1" name="city">
+				<select v-model="buy.bstate" class="select" size="1" name="city">
 				<option  value="" selected>请选择是否付款</option>
 					<option :value="0" selected>未付款</option>
 					<option :value="1">已付款</option>
