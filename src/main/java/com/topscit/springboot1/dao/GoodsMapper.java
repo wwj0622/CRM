@@ -22,4 +22,6 @@ public interface GoodsMapper {
     List<Goods> selectListGoods();
     
     List<Goods> selectListGoodsLimit(@Param("gname")String gname);
+    
+    int updateGoodsByGid(@Param("gid")String gid,@Param("num")int num);
 }

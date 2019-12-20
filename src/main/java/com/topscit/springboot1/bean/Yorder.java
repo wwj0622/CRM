@@ -52,4 +52,10 @@ public class Yorder {
     public void setCid(String cid) {
         this.cid = cid == null ? null : cid.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Yorder [yoid=" + yoid + ", ymoney=" + ymoney + ", ytime=" + ytime + ", ystate=" + ystate + ", cid="
+				+ cid + "]";
+	}
 }

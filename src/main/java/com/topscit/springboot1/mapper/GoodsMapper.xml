@@ -86,6 +86,9 @@
       </if>
     </trim>
   </insert>
+  <update id="updateGoodsByGid">
+  	update goods set gcount = cast(gcount as decimal) - #{num} where gid = #{gid}
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Goods" >
     update goods
     <set >

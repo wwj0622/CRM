@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.xpath.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,9 @@ import com.github.pagehelper.PageInfo;
 import com.topscit.springboot1.bean.Goods;
 import com.topscit.springboot1.bean.Order;
 import com.topscit.springboot1.bean.OrderGoods;
+import com.topscit.springboot1.bean.User;
 import com.topscit.springboot1.bean.Yorder;
+import com.topscit.springboot1.dao.GoodsMapper;
 import com.topscit.springboot1.dao.OrderGoodsMapper;
 import com.topscit.springboot1.dao.OrderMapper;
 import com.topscit.springboot1.dao.YorderMapper;
@@ -31,6 +34,9 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
 	private YorderMapper yorderMapper;
+	
+	@Autowired
+	private GoodsMapper goodsMapper;
 
 	@Override
 	public PageInfo<OrderGoods> selectListOrderGoodsByPn(String uid,int pn, int size) {
@@ -54,10 +60,13 @@ public class OrderServiceImpl implements OrderService{
 
 	@Override
 	public void buyOrderGoods(String[] list,String cid) {
+//		User user = (User)SecurityUtils.getSubject().getPrincipal();
+		User user = new User();
 		String yoid = UUID.randomUUID().toString().replace("-", "").substring(0,30);
 		int money = 0;
 		for (int i = 0; i < list.length; i++) {
 			OrderGoods orderGoods = orderGoodsMapper.selectOrderGoodsByPrimaryKey(list[i]);
+			goodsMapper.updateGoodsByGid(orderGoods.getGid(), Integer.valueOf(orderGoods.getOgcount()));
 			Order order = new Order();
 			order.setCid(cid);
 			order.setYoid(yoid);
@@ -72,9 +81,15 @@ public class OrderServiceImpl implements OrderService{
 		Yorder yorder = new Yorder();
 		yorder.setYoid(yoid);
 		yorder.setYmoney(String.valueOf(money));
-		yorder.setYstate("1");
-		yorder.setYoid(cid);
-		System.out.println();
+		if(user.getId()!=null)
+		{
+			yorder.setYstate(user.getId());
+		}else{
+			yorder.setYstate("1");
+		}
+		
+		yorder.setCid(cid);
+		System.out.println(yorder);
 		yorderMapper.insert(yorder);
 	}
 

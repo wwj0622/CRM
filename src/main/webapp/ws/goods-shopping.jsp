@@ -53,8 +53,8 @@
           <el-col :span="24">
               <el-table ref="multipleTable" @selection-change="selection" :data="goods" border>
                   <el-table-column type="selection" width="55" ></el-table-column>
-                  <!-- <el-table-column type="index" ></el-table-column> -->
-                  <el-table-column label="ID" prop="gid"></el-table-column>
+                  <el-table-column type="index" ></el-table-column> 
+                  <!-- <el-table-column label="ID" prop="gid"></el-table-column> -->
                   <el-table-column label="产品名" prop="gname" ></el-table-column>
                   <el-table-column label="头像">
 					　　<template slot-scope="scope">
@@ -63,7 +63,14 @@
 				  </el-table-column>
                   <el-table-column label="零售价" prop="gprice"></el-table-column>
                   <el-table-column label="仓库数量" prop="gcount"></el-table-column>
-                  
+                  <el-table-column label="购买数量" >
+                  	<template slot-scope="scope">
+                  		<i @click="changenum(1,scope)" style="margin-left:30px; color:red; " class="el-icon-plus"></i>
+		                 <span style="margin-left:30px;">{{inde[scope.$index]}}</span>
+		                 <i @click="changenum(0,scope)" style="margin-left:30px; color:red; " class="el-icon-minus"></i>
+					　</template>
+		                 
+                  </el-table-column>
                   <el-table-column label="操作">
                       <template slot-scope="scope">
                           <el-button size="mini" @click="updategoods(scope)">添加购物车</el-button>
@@ -129,7 +136,7 @@ var v = new Vue({
 		order_goods:{
 			uid:'',
 			gid:'',
-			ogcount:'',
+			ogcount:'1',
 			ogremark:''
 		},
 		customer_cname:[],
@@ -145,6 +152,8 @@ var v = new Vue({
 			bremark:'',
 			smid:''
 		},
+		ordergoodslist:[],
+		inde:[],
 		ordernum:'0',
 		shopnum:'1',
 		file:'',
@@ -174,6 +183,70 @@ var v = new Vue({
         wd:'80'
 	},
 	methods:{
+		selection:function(val){
+			if(this.customer.cid == "")
+			{
+				alert("请选择客户!");
+			}
+			else
+			{
+				this.ordergoodslist.length = 0;
+	        	var i = 0,j=0;
+	        	for(i;i<val.length;i++)
+	        	{
+	        		this.order_goods.uid = this.customer.cid;
+	        		this.order_goods.gid = val[i].gid;
+	        		
+	        		for(j;j<this.goods.length;j++)
+	        		{
+	        			if(this.goods[j].gid==val[i].gid)
+	        			{
+	        				break;
+	        			}
+	        		}
+	        		
+	        		this.order_goods.ogcount = this.inde[j];
+	        		this.ordergoodslist[i]=JSON.parse(JSON.stringify(this.order_goods));
+	        		j = 0;
+	        	} 
+	        	console.log(this.ordergoodslist);
+			}
+			
+        },
+		changenum:function(i,scope)
+		{
+			if(i==1)
+			{
+				this.inde[scope.$index] = this.inde[scope.$index] + 1;
+			}else
+			{
+				if(this.inde[scope.$index]>1)
+				{
+					this.inde[scope.$index] = this.inde[scope.$index] - 1;
+				}
+			}
+			this.inde.splice(-1,0);
+			
+			if(this.ordergoodslist.length>0)
+			{
+				var i = 0,j=0;
+	        	for(i;i<this.ordergoodslist.length;i++)
+	        	{
+	        		for(j;j<this.goods.length;j++)
+	        		{
+	        			
+	        			if(this.goods[j].gid==this.ordergoodslist[i].gid)
+	        			{
+	        				this.ordergoodslist[i].ogcount = this.inde[j];
+	        				break;
+	        			}
+	        		}
+	        		j = 0;
+	        	}
+			}
+			console.log(this.ordergoodslist);
+			
+		},
 		ahref:function(){
 			if(this.customer.cid!="")
 			{
@@ -231,9 +304,6 @@ var v = new Vue({
 		},
 		
 		//多选框 发生改变时触发的事件，将所选的goods信息传入gidgoodslist
-        selection:function(val){
-        	this.gidgoodslist = val;
-        },
         
         
         //点击修改信息时触发的事件
@@ -316,6 +386,11 @@ var v = new Vue({
                     _this.goods = response.list;
                     _this.total = response.total;
                     _this.pageSize = response.pageSize;
+                    
+                    var i = 0;
+                    for(i;i<response.list.length;i++){
+                    	_this.inde.push(1);
+                    }
                 }
             });
         },
