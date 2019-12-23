@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,16 +62,25 @@ public class BuyController {
 		return resultBean;
 	}
 	
+//	查询buyDetailList
 	@RequestMapping("/getBuyDetailBybid")
 	@ResponseBody
 	public ResultBean getBuyDetailBybid(String bid){
-		BuyDetail buyDetailBy = buyservice.getBuyDetailBy(bid);
+		List<BuyDetail> buyDetailBy = buyservice.getBuyDetailBy(bid);
 		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", buyDetailBy);
 		return resultBean;
 	}
 	
 	
-	@RequestMapping("/getBuyBybid")
+	@RequestMapping("/getBuyDetailByBdid")
+	@ResponseBody
+	public ResultBean getBuyDetailByBdid(String bdid){
+		BuyDetail buyDetailByBdid = buyservice.getBuyDetailByBdid(bdid);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", buyDetailByBdid);
+		return resultBean;
+	}
+	
+	@RequestMapping("/getBuyByBid")
 	@ResponseBody
 	public ResultBean getBuyBybid(String bid){
 		Buy buyBybid = buyservice.getBuyBybid(bid);
@@ -91,16 +99,35 @@ public class BuyController {
 	
 	@RequestMapping("/addInfo")
 	@ResponseBody
-	public ResultBean addInfo(@RequestBody Buy buy){
+	public ResultBean addInfo(Buy buy){
+		System.out.println(buy);
 		boolean addBuy = buyservice.addBuy(buy);
-		boolean addBuyDetail = buyservice.addBuyDetail(buy.getBuyDetail());
-		if(addBuy && addBuyDetail){
-			return new ResultBean(ResultBean.STATA_SUCCESS, "添加成功");
+		String bid = buy.getBid();
+		if(addBuy){
+			return new ResultBean(ResultBean.STATA_SUCCESS, "添加成功",bid);
 		}
 		else{
 			return new ResultBean(ResultBean.STATA_FIAIL, "添加失败");
 		}
 	}
+	
+	
+//	@RequestMapping("/addBuyDetail")
+//	@ResponseBody
+//	public ResultBean addBuyDetail(List<BuyDetail> buyDetail){
+//		System.out.println(buyDetail);
+//		boolean addBuyDetail = false;
+//		for(int i =0;i < buyDetail.size();i++){
+//			addBuyDetail = buyservice.addBuyDetail(buyDetail.get(i));
+//		}
+//		
+//		if(addBuyDetail){
+//			return new ResultBean(ResultBean.STATA_SUCCESS, "添加成功");
+//		}
+//		else{
+//			return new ResultBean(ResultBean.STATA_FIAIL, "添加失败");
+//		}
+//	}
 	
 	@RequestMapping("/delBuy")
 	@ResponseBody
@@ -111,7 +138,9 @@ public class BuyController {
 		
 		for(int i=0;i < bid.length;i++){
 			deleteBuy = buyservice.deleteBuy(bid[i]);
-			deleteBuyDetailByBid = buyservice.deleteBuyDetailByBid(bid[i]);
+			for(int j=0;j < bid.length;j++){
+				deleteBuyDetailByBid = buyservice.deleteBuyDetailByBid(bid[j]);
+			}
 		}
 		
 		if(deleteBuy && deleteBuyDetailByBid){
@@ -122,35 +151,45 @@ public class BuyController {
 		}
 	}
 	
+	
+	@RequestMapping("/delBuyDetail")
+	@ResponseBody
+	public ResultBean delBuyDetail(String[] bdid){
+		
+		boolean deleteBuyDetail = false;
+		
+		for(int i=0;i < bdid.length;i++){
+			deleteBuyDetail = buyservice.deleteBuyDetail(bdid[i]);
+		}
+		
+		if(deleteBuyDetail){
+			return new ResultBean(ResultBean.STATA_SUCCESS, "删除成功");
+		}
+		else{
+			return new ResultBean(ResultBean.STATA_FIAIL, "删除失败");
+		}
+	}
 	@RequestMapping("/getBuyDetailByTime")
 	@ResponseBody
-	public ResultBean getBuyDetailByTime(
-			String beginDate,
-			String endDate,
-			@RequestParam(defaultValue="1")int pn,
-			@RequestParam(defaultValue="5")int size,
-			Map<String, Object> data){
+	public ResultBean getBuyDetailByTime(String beginDate,String endDate){
 		List<BuyDetail> selectBuyDetailByTime = buyservice.selectBuyDetailByTime(beginDate, endDate);
 		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectBuyDetailByTime);
 		return resultBean;
 	}
 	
-	@RequestMapping("/getBuyByBid")
+	@RequestMapping("/getBuyByTime")
 	@ResponseBody
-	public ResultBean getBuyByBid(String bid){
-		Buy buyBybid = buyservice.getBuyBybid(bid);
-		BuyDetail buyDetailBy = buyservice.getBuyDetailBy(bid);
-		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", buyBybid,buyDetailBy);
+	public ResultBean getBuyByTime(String beginDate,String endDate){
+		List<Buy> selectBuyByTime = buyservice.selectBuyByTime(beginDate, endDate);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectBuyByTime);
 		return resultBean;
 	}
 	
 	@RequestMapping("/updateByBid")
 	@ResponseBody
-	public ResultBean updateByBid(@RequestBody Buy buy){
-		
+	public ResultBean updateByBid(Buy buy){
 		boolean updateBuyByBid = buyservice.updateBuyByBid(buy);
-		boolean updateBuyDetail = buyservice.updateBuyDetail(buy.getBuyDetail());
-		if(updateBuyByBid && updateBuyDetail){
+		if(updateBuyByBid){
 			return new ResultBean(ResultBean.STATA_SUCCESS, "修改成功");
 		}
 		else{
@@ -158,20 +197,40 @@ public class BuyController {
 		}
 	}
 	
-	
-	@RequestMapping("/updateState")
+	@RequestMapping("/updateBuyDetail")
 	@ResponseBody
-	public ResultBean updateState(String pid,String pcount,String bid){
-		
-		boolean updateCount = buyservice.updateCount(pcount, pid);
-		boolean updateStateByBid = buyservice.updateStateByBid(bid);
-		
-		if(updateCount && updateStateByBid){
+	public ResultBean updateBuyDetail(BuyDetail buyDetail){
+		boolean updateBuyDetail = buyservice.updateBuyDetail(buyDetail);
+		if(updateBuyDetail){
 			return new ResultBean(ResultBean.STATA_SUCCESS, "修改成功");
 		}
 		else{
 			return new ResultBean(ResultBean.STATA_FIAIL, "修改失败");
-		}	}
+		}
+	}
+	
+	//11111111111
+	@RequestMapping("/updateState")
+	@ResponseBody
+	public ResultBean updateState(String[] bdid){
+		boolean updateCount =false;
+		boolean updateStateByBdid =false;
+		for(int i=0;i < bdid.length;i++){
+			
+			BuyDetail buyDetailByBdid = buyservice.getBuyDetailByBdid(bdid[i]);
+			String bdcount = buyDetailByBdid.getBdcount();
+			String pid = buyDetailByBdid.getPid();
+			
+			updateCount = buyservice.updateCount(bdcount, pid);
+			updateStateByBdid = buyservice.updateStateByBdid(bdid[i]);
+		}
+		if(updateCount && updateStateByBdid){
+			return new ResultBean(ResultBean.STATA_SUCCESS, "修改成功");
+		}
+		else{
+			return new ResultBean(ResultBean.STATA_FIAIL, "修改失败");
+		}	
+		}
 	
 	
 	@RequestMapping("/getPartsBy")

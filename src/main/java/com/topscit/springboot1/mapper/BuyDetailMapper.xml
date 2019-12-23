@@ -157,17 +157,14 @@
   </update>
   
   <select id="getBuyDetailBy" resultMap="BaseResultMap">
-    select *,CASE buy_detail.bdstate
-	WHEN "1" THEN
-		"已付款"
-	ELSE
-		"未付款"
-	END as state 
-	from buy_detail inner join parts where buy_detail.pid=parts.pid and buy_detail.bid = #{bid}
+    select * from buy_detail inner join parts 
+    where buy_detail.pid=parts.pid 
+    and buy_detail.bid = #{bid} 
+    and buy_detail.bdstate = "0"
   </select>
   
    <select id="getBuyDetailAll" resultMap="BaseResultMap">
-    select * from buy_detail inner join parts where buy_detail.pid=parts.pid and bdstate ="0"
+    select * from buy_detail inner join parts where buy_detail.pid=parts.pid and buy_detail.bdstate ="0"
   </select>
   
    <delete id="deleteByBid" parameterType="java.lang.String" >
@@ -184,8 +181,8 @@
 	    
 	</select>   
   
- 	<update id="updateStateByBid" parameterType="java.lang.String">
-		UPDATE buy_detail SET buy_detail.bdstate="1" WHERE bid = #{bid}
+ 	<update id="updateStateByBdid" parameterType="java.lang.String">
+		UPDATE buy_detail SET buy_detail.bdstate="1" WHERE bdid = #{bdid}
 	</update>
   
 </mapper>

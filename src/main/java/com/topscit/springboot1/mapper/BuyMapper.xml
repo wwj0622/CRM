@@ -122,8 +122,9 @@
         sid = #{sid,jdbcType=VARCHAR},
       </if>
       <if test="gupdateTime != null" >
-        gupdate_time = #{gupdateTime,jdbcType=TIMESTAMP},
+        gupdate_time = #{gupdateTime},
       </if>
+      
     </set>
     where bid = #{bid,jdbcType=VARCHAR}
   </update>
@@ -140,19 +141,13 @@
   </update>
   
   <select id="getAllBuy" resultMap="BaseResultMap" >
-  	SELECT *,CASE buy.bstate
-	WHEN "1" THEN
-		"已入库"
-	ELSE
-		"未入库"
-	END as state
-	FROM buy inner join supplier where buy.sid=supplier.sid and buy.bstate="0"
+  	SELECT * FROM buy inner join supplier where buy.sid=supplier.sid
    </select>
    
    <select id="getBuyBy" resultMap="BaseResultMap" >
   	SELECT * FROM buy inner join supplier where buy.sid=supplier.sid and buy.bid=#{bid}
    </select>
-   	
+   
    	 <select id="getAllBuyIn" resultMap="BaseResultMap" >
   	SELECT *,CASE buy.bstate
 	WHEN "1" THEN
@@ -161,16 +156,12 @@
 		"未入库"
 	END as state
 	FROM buy where bstate="1"
-   </select>
+   </select>	
    	
-	 <select id="getBuyByTime" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
-	     select * from buy
-	    where btime <![CDATA[ >= ]]> CONCAT(#{beginDate},' 00:00:00')
-	    and btime <![CDATA[ <= ]]> CONCAT(#{endDate},' 23:59:59')
-	    
-	</select>   
-	
-	
-	
+	 <select id="getBuyByTime" resultMap="BaseResultMap">
+	     select * FROM buy inner join supplier where buy.sid=supplier.sid 
+	     and buy.btime &gt;= CONCAT(#{beginDate},' 00:00:00')
+	     and buy.btime &lt;= CONCAT(#{endDate},' 23:59:59')
+	</select>  
 	
 </mapper>

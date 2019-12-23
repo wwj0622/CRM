@@ -2,6 +2,8 @@ package com.topscit.springboot1.bean;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class BuyDetail {
@@ -23,20 +25,12 @@ public class BuyDetail {
     
     private String state;
     
-    private Buy buy;
-    
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bdupdateTime;
 
     private Parts parts;
     
-    public Buy getBuy() {
-		return buy;
-	}
-
-	public void setBuy(Buy buy) {
-		this.buy = buy;
-	}
 
 	public Parts getParts() {
 		return parts;

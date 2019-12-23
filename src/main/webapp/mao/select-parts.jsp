@@ -32,67 +32,55 @@
 	<![endif]-->
 	
 	
-	<title>采购单管理</title>
+	<title>供货商管理</title>
 </head>
 <body>
 
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container" id="app">
-	<div class="text-c"> 
-		根据交货时间查询
-		<input type="Date" v-model="beginTime"  id="datemin" class="input-text Wdate" style="width:150px;">
-		-
-		<input type="Date" v-model="endTime"  id="datemax" class="input-text Wdate" style="width:150px;">
-		<button  @click="search" class="btn btn-success radius" id="" name="">
-		<i class="Hui-iconfont">&#xe665;</i> 搜索
-		</button>
-	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
-		<span class="l">
-			<a href="javascript:;" @click="delAllSupllier" class="btn btn-danger radius">
-				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
-			</a> 
-			<a href="javascript:;" @click="member_add" class="btn btn-primary radius">
-				<i class="Hui-iconfont">&#xe600;</i> 添加采购单
-			</a>
-		</span> 
-		<span class="r">共有数据：<strong>88</strong> 条</span> 
+	
+		<h2>选择原材料</h2>
+		<button  @click="addBuyDetail" class="btn btn-success radius" id="" name="">
+		<i class="Hui-iconfont">&#xe665;</i> 添加
+		</button>
 	</div>
 	<div class="mt-20">
 	<table class="table table-border table-bordered table-bg table-sort">
 			<thead>
 				<tr class="text-c">
 					<th width="25"></th>
-					<th width="70">采购订单号</th>
-					<th width="100">供货商名称</th>
-					<th width="100">交货地址</th>
-					<th width="60">交货时间</th>
-					<th>备注信息</th>
-					<th width="60">付款状态</th>
-					<th width="40">详情</th>
-					<th width="100">操作</th>
+					<th width="70">原材料编号</th>
+					<th width="100">原材料名称</th>
+					<th width="100">批发价</th>
+					<th width="60">单位</th>
+					<th width="100">采购数量</th>
+					<th width="100">采购总价</th>
 				</tr>
 			</thead>
 			<tbody>
 			 
-			<tr class="text-c" v-for='(buy,i) in buyList'>
-					<td><input name=""  v-model="checkedBuy" type="checkbox" :value="buy.bid"></td>
-					<td class="text-l">{{buy.bid}}</td>
-					<td>{{buy.supplier.sname}}</td>
-					<td>{{buy.baddress}}</td>
-					<td>{{buy.btime}}</td>
-					<td class="text-l">{{buy.bremark}}</td>
-					<td>{{buy.bstate==1?"已付款":"未付款"}}</td>
+			<tr class="text-c" v-for='(parts,i) in partsList'>
+					<td><input name=""  v-model="checkedParts" type="checkbox" :value="parts.pid"></td>
 					<td>
-						<a href="javascript:void(0);" @click="buyDetail(buy.bid)">点击查看详情</a>
+						<input type="hidden" id="box" value="${param.bid }" >
+						{{parts.pid}}
 					</td>
-					<td class="f-14 product-brand-manage">
-						<a style="text-decoration:none" @click="member_edit('编辑采购单','mao/edit-buy.jsp?bid='+buy.bid,'4','','510')" href="javascript:;" title="编辑">
-							<i class="Hui-iconfont">&#xe6df;</i>
-						</a> 
-						<a style="text-decoration:none" class="ml-5" @click="member_del(this,buy.bid)" href="javascript:;" title="删除">
-							<i class="Hui-iconfont">&#xe6e2;</i>
-						</a>
+					<td class="text-l">
+						<img width="30" height="30" :src="parts.plogo">
+						{{parts.pname}}
+					</td>
+					<td>
+						{{parts.pprice}}
+					</td>
+					<td>
+						{{parts.punit}}
+					</td>
+					<td>
+						<input type="text" v-model="buyDetail.bdount">
+					</td>
+					<td>
+						<input type="text" v-model="buyDetail.bdprice">
 					</td>
 				</tr>
 			 <tr>
@@ -111,101 +99,54 @@
 var v =  new Vue({
 	el:'#app',
 	data:{
-		buyList:[],
 		pageInfo:[],
 		inputContent:'',
-		checkedBuy:[],
-		state:'',
-		beginTime:'',
-		endTime:'',
-		stateeee:''
+		checkedParts:[],
+		partsList:[],
+		buyDetail:[],
 	},
 	methods:{
-		buyDetail(bid){
-			location.href="mao/show-buyDetail.jsp?bid="+bid;
+		addBuyDetail(){
+			var bid = document.getElementById("box").value;
+			this.buyDetail.pid=this.checkedParts.pid;
+			this.buyDetail.bid=bid;
+			console.log(this.buyDetail);
+			var _this = this;
+			/*  $.ajax({
+		            type: "GET",
+		            url: "/buy/addBuyDetail",
+		            data: {pid:_this.checkedParts,count:_this.count,price:_this.},
+		            dataType: "json",
+		            success: function (response) {
+		            	
+		            },
+		        }); */
 		},
-		member_add(){
-    		location.href="mao/add-buy.jsp";
-    	},
 		jump(page){
 		 	var _this = this;
 	        $.ajax({
 	            type: "GET",
-	            url: "/buy/getAllBuy",
+	            url: "/buy/getPartsBy",
 	            data: {pn:page},
 	            dataType: "json",
 	            success: function (response) {
-	            	_this.buyList = response.data.list;
+	            	_this.partsList = response.data.list;
 	            	_this.pageInfo = response.data;
 	            },
 	        });
          },
-         search(){
-        	 console.log(this.beginTime);
-        	 console.log(this.endTime);
-        	var _this = this;
-        	
- 	        $.ajax({
- 	            type: "GET",
- 	            url: "/buy/getBuyByTime",
- 	            data: {beginDate:_this.beginTime,endDate:_this.endTime},
- 	            dataType: "json",
- 	            success: function (response) {
- 	            	_this.buyList = response.data;
- 	            },
- 	        });
-         },
-         member_del(obj,bid){
-        	var _this = this;
-   			$.ajax({
-   				type: "GET",
-   	            url: "/buy/delBuy",
-   	            data: {bid:bid},
-   	            dataType: "json",
-   				success: function(data){
-   					$(obj).parents("tr").remove();
-   					layer.msg('已删除!',{icon:1,time:1000});
-   					location.href="mao/show-buy.jsp";
-   				},
-   				error:function(data) {
-   					console.log(data.msg);
-   				},
-   			});		
-         },
-         delAllSupllier(){
-        	 console.log(this.checkedBuy);
-        	 var _this = this;
-    			$.ajax({
-    				type: "GET",
-    	            url: "/buy/delBuy",
-    	            data: {bid:_this.checkedBuy},
-    	            dataType: "json",
-    	            traditional: true,
-    				success: function(data){
-    					layer.msg('已删除!',{icon:1,time:1000});
-    					window.parent.location.reload();
-    				},
-    				error:function(data) {
-    					console.log(data.msg);
-    				},
-    			});		
-         },
-         member_edit(title,url,id,w,h){
-        	 layer_show(title,url,w,h);
-         }
-        
-         
 	},
 	created(){  
         var _this = this;
         $.ajax({
             type: "GET",
-            url: "/buy/getAllBuy",
+            url: "/buy/getPartsBy",
             data: null,
             dataType: "json",
             success: function (response) {
-            	_this.buyList = response.data.list;
+            	_this.partsList = response.data.list;
             	_this.pageInfo = response.data;
+            	console.log(_this.partsList);
             },
         });
        }
@@ -221,15 +162,26 @@ var v =  new Vue({
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
-
-<!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
-
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+<!--
+$(function(){
+	$('.table-sort').dataTable({
+		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+		"bStateSave": true,//状态保存
+		"aoColumnDefs": [
+		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+		  {"orderable":false,"aTargets":[0,8,9]}// 制定列不参与排序
+		]
+	});
+	
+});
+-->
 /*用户-添加*/
-
+function member_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
 /*用户-查看*/
 function member_show(title,url,id,w,h){
 	layer_show(title,url,w,h);

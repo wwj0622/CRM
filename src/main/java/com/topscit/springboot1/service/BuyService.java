@@ -17,11 +17,14 @@ public interface BuyService {
 	
 	public PageInfo<Buy> selectBuyInList(int pn,int size);
 	
-	public PageInfo<Buy> selectBuyByTime(String beginDate,String endDate,int pn,int size);
+	public List<Buy> selectBuyByTime(String beginDate,String endDate);
 	
 	public List<BuyDetail> selectBuyDetailByTime(String beginDate,String endDate);
 	
-	 BuyDetail getBuyDetailBy(String id);
+	 List<BuyDetail> getBuyDetailBy(String id);
+	 
+	 public BuyDetail  getBuyDetailByBdid(String bdid);
+	 
 	 
 	 //查询原材料名称
 	 public List<Parts> getParts();
@@ -34,6 +37,8 @@ public interface BuyService {
 	 
 	 //根据bid删除 buyDetail
 	 public boolean deleteBuyDetailByBid(String id);
+	 
+	 public boolean deleteBuyDetail(String bdid);
 	 
 	 //根据bid删除 buy
 	 public boolean deleteBuy(String id);
@@ -48,11 +53,14 @@ public interface BuyService {
 	 public boolean updateBuyDetail(BuyDetail buydetail);
 	 
 	 //修改出库状态
-	 public boolean updateStateByBid(String bid);
+	 public boolean updateStateByBdid(String bdid);
 	 
 	 //修改原材料数量
 	 public boolean updateCount(String count,String pid);
 	 //查询缺货的goods
 	 public PageInfo<Parts> selectPartsListBy(int pn,int size);
+	 
+	
+	 
 	 
 }

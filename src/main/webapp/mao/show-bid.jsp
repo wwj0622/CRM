@@ -33,7 +33,8 @@
 	<tr>
 		<td width="200" class="va-t">
 			<ul id="treeDemo" class="ztree">
-				
+				<h1>所有订单：</h1>
+				<li v-for='(b,i) in bidList'>{{b.bid}}</li>
 			</ul>
 		</td>
 		<td class="va-t"><iframe ID="testIframe" Name="testIframe" FRAMEBORDER=0 SCROLLING=AUTO width=100%  height=390px SRC="product-category-add.html"></iframe></td>
@@ -48,6 +49,33 @@
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script> 
 <script type="text/javascript" src="lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script> 
+
+<script type="text/javascript">
+var v =  new Vue({
+	el:'#app',
+	data:{
+		
+	},
+	methods:{
+		
+	},
+	created(){  
+        var _this = this;
+        $.ajax({
+            type: "GET",
+            url: "/buy/getPartsBy",
+            data: null,
+            dataType: "json",
+            success: function (response) {
+            	_this.partsList = response.data.list;
+            	_this.pageInfo = response.data;
+            	console.log(_this.partsList);
+            },
+        });
+       }
+});
+
+</script>
 <script type="text/javascript">
 var setting = {
 	view: {

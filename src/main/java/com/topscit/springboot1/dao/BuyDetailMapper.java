@@ -21,7 +21,7 @@ public interface BuyDetailMapper {
 
     int updateByPrimaryKey(BuyDetail record);
     
-    BuyDetail getBuyDetailBy(@Param("bid")String id);
+    List<BuyDetail> getBuyDetailBy(@Param("bid")String id);
     
     int deleteByBid(@Param("bid")String id);
     
@@ -29,6 +29,6 @@ public interface BuyDetailMapper {
    
    public List<BuyDetail> getBuyDetailByTime(@Param("beginDate")Date beginDate,@Param("endDate")Date endDate);
     
-   int updateStateByBid(@Param("bid")String bid);
+   int updateStateByBdid(@Param("bdid")String bdid);
 
 }

@@ -6,9 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.management.MalformedObjectNameException;
 
-import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +14,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.topscit.springboot1.bean.Buy;
 import com.topscit.springboot1.bean.BuyDetail;
-import com.topscit.springboot1.bean.Goods;
 import com.topscit.springboot1.bean.Parts;
 import com.topscit.springboot1.dao.BuyDetailMapper;
 import com.topscit.springboot1.dao.BuyMapper;
 import com.topscit.springboot1.dao.PartsMapper;
 import com.topscit.springboot1.service.BuyService;
 
-import scala.annotation.meta.setter;
 
 @Service("buyService")
 public class BuyServiceImpl  implements BuyService {
@@ -62,8 +58,8 @@ public class BuyServiceImpl  implements BuyService {
 		
 	}
 	@Override
-	public BuyDetail getBuyDetailBy(String id) {
-		BuyDetail buyDetailBy = buyDetailMapper.getBuyDetailBy(id);
+	public List<BuyDetail> getBuyDetailBy(String id) {
+		List<BuyDetail> buyDetailBy = buyDetailMapper.getBuyDetailBy(id);
 		return buyDetailBy;
 	}
 	@Override
@@ -99,7 +95,7 @@ public class BuyServiceImpl  implements BuyService {
 		buyDetail.setBdid(System.currentTimeMillis() + "xixiiix");
 		Date date = new Date();
 		buyDetail.setBdupdateTime(date);
-		buyDetail.setBid(bid);
+//		buyDetail.setBid(bid);
 		buyDetail.setBdstate("0");
 		
 		int insertSelective = buyDetailMapper.insertSelective(buyDetail);
@@ -136,10 +132,7 @@ public class BuyServiceImpl  implements BuyService {
 	
 	
 	@Override
-	public PageInfo<Buy> selectBuyByTime(String beginDate, String endDate, int pn, int size) {
-		
-		BuyMapper mapper = st.getMapper(BuyMapper.class);
-		PageHelper.startPage(pn,size);
+	public List<Buy> selectBuyByTime(String beginDate, String endDate) {
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd");
 		Date endTime = null;
@@ -152,10 +145,8 @@ public class BuyServiceImpl  implements BuyService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		List<Buy> allBuy = mapper.getBuyByTime(beginTime, endTime);
-		PageInfo<Buy> pageInfo = new PageInfo<Buy>(allBuy);
-		return pageInfo;
+		List<Buy> buyByTime = buyMapper.getBuyByTime(beginTime, endTime);
+		return buyByTime;
 	}
 
 	@Override
@@ -179,6 +170,8 @@ public class BuyServiceImpl  implements BuyService {
 
 	@Override
 	public boolean updateBuyByBid(Buy buy) {
+		Date date = new Date();
+		buy.setGupdateTime(date);
 		int updateByPrimaryKeySelective = buyMapper.updateByPrimaryKeySelective(buy);
 		if(updateByPrimaryKeySelective == 1)
 		{
@@ -204,8 +197,8 @@ public class BuyServiceImpl  implements BuyService {
 
 
 	@Override
-	public boolean updateStateByBid(String bid) {
-		int updateStateByBid = buyDetailMapper.updateStateByBid(bid);
+	public boolean updateStateByBdid(String bdid) {
+		int updateStateByBid = buyDetailMapper.updateStateByBdid(bdid);
 		if(updateStateByBid == 1)
 		{
 			return true;
@@ -249,6 +242,26 @@ public class BuyServiceImpl  implements BuyService {
 	public boolean updateCount(String count, String pid) {
 		int updateCount = partsMapper.updateCount(count, pid);
 		if(updateCount == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+
+	@Override
+	public BuyDetail getBuyDetailByBdid(String bdid) {
+		BuyDetail selectByPrimaryKey = buyDetailMapper.selectByPrimaryKey(bdid);
+		return selectByPrimaryKey;
+	}
+
+
+	@Override
+	public boolean deleteBuyDetail(String bdid) {
+		int deleteByPrimaryKey = buyDetailMapper.deleteByPrimaryKey(bdid);
+		if(deleteByPrimaryKey == 1)
 		{
 			return true;
 		}

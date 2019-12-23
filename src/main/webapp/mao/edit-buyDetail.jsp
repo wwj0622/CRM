@@ -36,43 +36,36 @@
 <body>
 	<from>
 	<div  id="app">
+		
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>交货时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="date" class="input-text" v-model="buy.btime"  id="username" name="username">
-				<input type="hidden" id="box" value="${param.bid }" >
-				<input type="hidden" id="box" :value="buy.bid" >
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>交货地点：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buy.baddress" placeholder="" id="" name="mobile">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注信息：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buy.bremark" name="email" id="email">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">供应商：</label>
+			<label class="form-label col-xs-4 col-sm-3">原材料名称：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
 				<span class="select-box">
-					<select v-model="buy.sid"  class="select" >				
-                            <option v-for="(s,i) in supplier" :value="s.sid">{{s.sname}}</option>
+					<select v-model="buyDetail.pid"  class="select" >				
+                           <option v-for="(s,i) in parts" :value="s.pid">{{s.pname}}</option>
 					</select>
 				</span>
 			</div>
-			
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购数量：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="hidden" id="box" value="${param.bdid }" >
+				<input type="text" class="input-text" v-model="buyDetail.bdcount" placeholder="" id="" name="mobile">
+			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">是否付款：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购价格：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" v-model="buyDetail.bdprice" name="email" id="email">
+			</div>
+		</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">是否入库：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select v-model="buy.bstate" class="select" size="1" name="city">
-					<option :value="0" selected>未付款</option>
-					<option :value="1">已付款</option>
+				<select v-model="buyDetail.bdstate" class="select" size="1" name="city">
+					<option :value="0" selected>未入库</option>
+					<option :value="1">已入库</option>
 				</select>
 				</span>
 			</div>
@@ -105,8 +98,8 @@
 var v =  new Vue({
 	el:'#app',
 	data:{
-		supplier:[],
-		buy:{}
+		parts:[],
+		buyDetail:{}
 	},
 	methods:{
 		selectSupplier:function(){
@@ -117,7 +110,7 @@ var v =  new Vue({
 	            data: null,
 	            dataType: "json",
 	            success: function (response) {
-	            	_thiss.supplier = response.data1; 
+	            	_thiss.parts = response.data; 
 	            },
 	        }); 
 	        
@@ -127,26 +120,24 @@ var v =  new Vue({
 		},
 		a:function(){
 			var _this = this;
-	        var bid = document.getElementById("box").value;
+	        var bdid = document.getElementById("box").value;
 	        $.ajax({
 	            type: "GET",
-	            url: "/buy/getBuyByBid",
-	            data: {bid:bid},
+	            url: "/buy/getBuyDetailByBdid",
+	            data: {bdid:bdid},
 	            dataType: "json",
 	            success: function (response) {
-	            	_this.buy = response.data;
-	            	console.log(_this.buy)
+	            	_this.buyDetail = response.data;
 	            },
 	        });
 		},
 		updateBy:function(){
 			var _this = this;
-			_this.buy.supplier={};
-			_this.buy.buyDetail={};
+			_this.buyDetail.parts={};
 	        $.ajax({
 	            type: "POST",
-	            url: "/buy/updateByBid",
-	            data: _this.buy,
+	            url: "/buy/updateBuyDetail",
+	            data: _this.buyDetail,
 	            dataType: "json",
 	            success: function (response) {
 	            	layer.close(layer.index);
