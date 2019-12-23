@@ -13,14 +13,22 @@
   <sql id="Base_Column_List">
     oid, cid, oremark, osum, ostate, otime, yoid
   </sql>
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from order
     where oid = #{oid,jdbcType=VARCHAR}
   </select>
+  
+  <select id="selectAllOrderByKid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from `order`
+    where yoid = #{id}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from order
+    delete from `order`
     where oid = #{oid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.topscit.springboot1.bean.Order">
@@ -80,6 +88,9 @@
       </if>
     </trim>
   </insert>
+  <update id="updateOsumByOid">
+  	update `order` set osum = #{money} where oid = #{oid}
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Order">
     update order
     <set>

@@ -31,6 +31,13 @@
    <select id="selectListGoodsOrder" resultMap="BaseResultMap1">
   	select * from order_goods o inner join goods g on o.gid = g.gid where uid = #{uid}
   </select>
+  <select id="selectListGoodsOrderByOid" resultMap="BaseResultMap1">
+  	select * from order_goods o inner join goods g on o.gid = g.gid where o.oid = #{oid}
+  </select>
+  
+  <select id="selectOrderGoodsByYoid" resultMap="BaseResultMap">
+  	select * from order_goods where ogremark = #{id}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

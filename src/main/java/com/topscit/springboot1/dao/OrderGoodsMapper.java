@@ -30,7 +30,11 @@ public interface OrderGoodsMapper {
     int updateGtOgcount(@Param("gid")String gid , @Param("count")String count);
     
     List<OrderGoods> selectListGoodsOrder(@Param("uid")String uid);
-    
+    OrderGoods selectListGoodsOrderByOid(@Param("oid")String oid);
     int updateOgcountByOid(@Param("oid")String oid , @Param("count")String count);
+    
+    List<OrderGoods> selectOrderGoodsByYoid(@Param("id")String id);
+    
+    
     
 }

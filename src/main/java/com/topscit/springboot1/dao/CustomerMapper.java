@@ -21,4 +21,5 @@ public interface CustomerMapper {
     
     List<Customer> selectAllKehuById(@Param("smid")String smid);
     
+    List<Customer> selectAllCustomer();
 }

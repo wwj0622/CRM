@@ -23,7 +23,6 @@
 <script src="/js/axios.min.js"></script>
 <script src="/ws/js/jquery.min.js"></script>
 <script src="/ws/js/vue.js"></script>
-<script src="/ws/js/moment.js"></script>
 <!-- 引入样式 -->
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <!-- import Vue before Element -->
@@ -41,28 +40,33 @@
 		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
 		<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" v-model="content"  id="" name="">
 		<button type="submit" class="btn btn-success radius" @click="selectIf()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+		<input type="hidden" value="${oid }" id="oids">
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" @click="datadel(0)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" @click="addgoodsfunction()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加商品</a></span> <span class="r">共有数据：<strong>{{total}}</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" @click="datadel(0)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 一键支付</a></span> <span class="r">共有数据：<strong>{{total}}</strong> 条</span> </div>
 	<div class="mt-20">
 	<el-row>
           <el-col :span="24">
-              <el-table ref="multipleTable" @selection-change="selection" :data="orderlist" border>
-                  <!-- <el-table-column type="selection" width="55" ></el-table-column> -->
-                  <el-table-column type="index" ></el-table-column> 
-                  <el-table-column label="ID" prop="oid"></el-table-column>
-                  <el-table-column label="客户编号" prop="cid"></el-table-column>
-                  <el-table-column label="客户姓名" prop="cname">
+              <el-table ref="multipleTable" @selection-change="selection" :data="ordergoodslist" border>
+                  <el-table-column type="selection" width="55" ></el-table-column>
+                  <el-table-column type="index" ></el-table-column>
+                  <!-- <el-table-column label="ID" prop="gid"></el-table-column> -->
+                  <el-table-column label="产品名" prop="goods.gname"></el-table-column>
+                  <el-table-column label="头像">
+					　　<template slot-scope="scope">
+					　　　　<img :src="scope.row.goods.glogo" width="30" height="30" class="head_pic"/>
+					　　</template>
 				  </el-table-column>
-                  <el-table-column label="订单总价" prop="osum"></el-table-column>
-                  <el-table-column label="订单状态" prop="ostate" :formatter="stateFormat"></el-table-column>
-                  <el-table-column label="时间" prop="otime" :formatter="dateFormat">
-                  	
-                  </el-table-column>
-                  
+                  <el-table-column label="零售价" prop="goods.gprice"></el-table-column>
+                  <el-table-column label="购买数量">
+                  	<template slot-scope="scope">
+                  		<i @click="changenum(0,scope)" style="margin-left:30px; color:red; " class="el-icon-caret-left"></i>
+		                 <span style="margin-left:30px;">{{scope.row.ogcount}}</span>
+		                <i @click="changenum(1,scope)" style="margin-left:30px; color:red; " class="el-icon-caret-right"></i>
+					　</template>
+					</el-table-column>
                   <el-table-column label="操作">
                       <template slot-scope="scope">
-                          <el-button size="mini" @click="updategoods(scope)">查看订单</el-button>
-                          <el-button size="mini" type="danger" @click="datadel1(1,scope)">删除订单</el-button>
+                          <el-button size="mini" type="danger" @click="datadel1(1,scope)">删除</el-button>
                       </template>
                   </el-table-column>
               </el-table>
@@ -143,8 +147,8 @@ var v = new Vue({
 		glist:[],//存放多选的所有的goodsid
 		goods:[],//存放分页查到的数据
 		content:'',//条件查询的内容
-		orderlist:[],
-		AllCustomer:[],
+		oid:'',
+		ordergoodslist:[],
 		goodsinfo:{
             gid:'',
             gname:'',
@@ -173,18 +177,37 @@ var v = new Vue({
         wd:'80'
 	},
 	methods:{
-		stateFormat:function(row, column){
-			if(row.ostate==0){
-				return "未支付";
-			}else{
-				return "已支付";
+		changenum:function(i,scope)
+		{
+			var k;
+			if(i==1)
+			{
+				var j = parseInt(scope.row.ogcount)+1;
+				scope.row.ogcount = j.toString();
+				k = 1;
+			}else
+			{
+				var j = parseInt(scope.row.ogcount)-1;
+				scope.row.ogcount = j.toString();
+				k = 0;
 			}
+			
+			var _this = this;
+        	$.ajax({
+        	      type: "GET",
+        	      traditional: true,
+        	      url: "/order/updateogcount",
+        	      data:{
+        	    	  oid:scope.row.oid,
+        	    	  ogcount:scope.row.ogcount,
+        	    	  yoid:scope.row.ogremark
+        	      },
+        	      dataType: "json",
+        	      success: function (response) {
+        	    	  _this.selectOrderGoodsByYoid();
+        	      }
+        	  });
 		},
-		dateFormat:function(row,column){
-	        var date = row[column.property];
-	        if(date == undefined){return ''};
-	        return moment(date).format("YYYY-MM-DD HH:mm:ss")
-	    },
 		//修改框添加图片触发事件
 		changefile:function(file, fileList){
 			this.file = file;
@@ -289,29 +312,20 @@ var v = new Vue({
         datadel1:function(i,scope){
         	console.log(scope);
         	if(i==1){
-        		if(this.gidgoodslist.length>1)
-        		{
-        			alert("不能同时删除多条！");
-        		}
-        		else if(this.gidgoodslist.length==1)
-        		{
-        			this.glist.length = 0;
-        			this.glist.push(this.gidgoodslist[0].gid);
-        			if(this.gidgoodslist[0].gid==scope.row.gid)
-       				{
-        				this.delgoodsByGid();
-       				}
-        			else
-       				{
-        				alert("选择和要删除的信息不符！");
-       				}
-        		}
-        		else
-        		{
-        			this.glist.length = 0;
-        			this.glist.push(scope.row.gid);
-        			this.delgoodsByGid();
-        		}
+        		var _this = this;
+        		$.ajax({
+          	      type: "POST",
+          	      traditional: true,
+          	      url: "/order/delOrderGoodsByOid",
+          	      data: {
+          	    	  oid:scope.row.oid,
+          	    	  yoid:scope.row.ogremark
+          	    	  },
+          	      dataType: "json",
+          	      success: function (response) {
+          	    	_this.selectOrderGoodsByYoid();
+          	      }
+          	  });
         	}
         },
         
@@ -329,7 +343,7 @@ var v = new Vue({
         	    	  },
         	      dataType: "json",
         	      success: function (response) {
-        	    	  _this.selectAllGoods();
+        	    	  
         	      }
         	  });
         },
@@ -337,7 +351,9 @@ var v = new Vue({
         //点击修改信息时触发的事件
         updategoods:function(scope)
         {
-        	window.location.href="order/ordergoods?oid="+scope.row.oid;
+            this.updateDialogState = true;
+            this.goodsinfo = scope.row;
+            this.selectAlltid();
         },
         
         //点击确认修改，触发的修改事件
@@ -397,49 +413,28 @@ var v = new Vue({
                     _this.pageSize = response.pageSize;
                 }
             });
+        },
+        selectOrderGoodsByYoid:function(){
+        	var _this = this;
+    		$.ajax({
+                type: "POST",
+                traditional: true,
+                url: "/order/orderGoodsByYoid",
+                data: {yoid:_this.oid},
+                dataType: "json",
+                success: function (response) {
+                	_this.ordergoodslist = response;
+                }
+            });
         }
-        ,selectAllOrderByKid:function(){
-	    	  var _this = this;
-	        	$.ajax({
-	        	      type: "GET",
-	        	      traditional: true,
-	        	      url: "/order/selectAllOrderByKid",
-	        	      data: null,
-	        	      dataType: "json",
-	        	      success: function (response) {
-	        	    	  _this.orderlist = response;
-	        	    	  for(var i = 0;i<_this.orderlist.length;i++)
-        	    		  {
-        	    		  	for(var j = 0;j<_this.AllCustomer.length;j++)
-       	    		  		{
-       	    		  			if(_this.orderlist[i].cid==_this.AllCustomer[j].cid){
-       	    		  			_this.orderlist[i].cname = _this.AllCustomer[j].cname;
-       	    		  			}
-       	    		  		}
-        	    		  }
-	        	      }
-	        	  });
-	      },
-	      selectAllCustomer:function(){
-	    	  var _this = this;
-	        	$.ajax({
-	        	      type: "GET",
-	        	      traditional: true,
-	        	      url: "/customer/selectAllCustomer",
-	        	      data: null,
-	        	      dataType: "json",
-	        	      success: function (response) {
-	        	    	  _this.AllCustomer = response;
-	        	      }
-	        	  });
-	      }
 
 	},
 	
 	//钩子函数，直接调用分页查询
 	created:function(){
-		this.selectAllCustomer();
-		this.selectAllOrderByKid();
+		this.oid = $("#oids").val();
+		console.log(this.oid);
+		this.selectOrderGoodsByYoid();
 		
 	}
 });
