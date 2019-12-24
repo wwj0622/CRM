@@ -1,5 +1,7 @@
 package com.topscit.springboot1.bean;
 
+import java.util.List;
+
 public class Goods {
     private String gid;
 
@@ -11,11 +13,48 @@ public class Goods {
 
     private String ptid;
 
-    private String gcount;
+    private String gremark;
 
     private String glogo;
 
-    public String getGid() {
+    private String gcount;
+
+    private String gdanger;
+
+    private String gstate;
+    
+    private Storage storage;
+
+    private String  par[];
+    
+    private List<Parts> parts;
+    
+    
+	public List<Parts> getParts() {
+		return parts;
+	}
+
+	public void setParts(List<Parts> parts) {
+		this.parts = parts;
+	}
+
+	public String[] getPar() {
+		return par;
+	}
+
+	public void setPar(String[] par) {
+		this.par = par;
+	}
+
+	public Storage getStorage() {
+		return storage;
+	}
+
+	public void setStorage(Storage storage) {
+		this.storage = storage;
+	}
+
+	public String getGid() {
         return gid;
     }
 
@@ -55,12 +94,12 @@ public class Goods {
         this.ptid = ptid == null ? null : ptid.trim();
     }
 
-    public String getGcount() {
-        return gcount;
+    public String getGremark() {
+        return gremark;
     }
 
-    public void setGcount(String gcount) {
-        this.gcount = gcount == null ? null : gcount.trim();
+    public void setGremark(String gremark) {
+        this.gremark = gremark == null ? null : gremark.trim();
     }
 
     public String getGlogo() {
@@ -71,10 +110,27 @@ public class Goods {
         this.glogo = glogo == null ? null : glogo.trim();
     }
 
-	@Override
-	public String toString() {
-		return "Goods [gid=" + gid + ", gname=" + gname + ", goriginal=" + goriginal + ", gprice=" + gprice + ", ptid="
-				+ ptid + ", gcount=" + gcount + ", glogo=" + glogo + "]";
-	}
-    
+    public String getGcount() {
+        return gcount;
+    }
+
+    public void setGcount(String gcount) {
+        this.gcount = gcount == null ? null : gcount.trim();
+    }
+
+    public String getGdanger() {
+        return gdanger;
+    }
+
+    public void setGdanger(String gdanger) {
+        this.gdanger = gdanger == null ? null : gdanger.trim();
+    }
+
+    public String getGstate() {
+        return gstate;
+    }
+
+    public void setGstate(String gstate) {
+        this.gstate = gstate == null ? null : gstate.trim();
+    }
 }

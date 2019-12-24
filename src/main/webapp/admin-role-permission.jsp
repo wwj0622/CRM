@@ -238,7 +238,6 @@ $(function(){
   	           this_a.role.perID=[];
   	             this_a.role.id= document.getElementById('id').value;
   	  		  var m = document.getElementsByName("user-Character-1-0-0");
-  	  		 console.log(this_a.role);
 				for (let i = 0; i < m.length; i++) {
 					if(m[i].checked){
 						this_a.role.perID.push(m[i].value);
