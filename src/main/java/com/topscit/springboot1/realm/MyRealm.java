@@ -1,4 +1,4 @@
-package com.topscit.springboot1.realm;
+/*package com.topscit.springboot1.realm;
 
 import java.util.Iterator;
 import java.util.List;
@@ -73,3 +73,4 @@ public class MyRealm extends AuthorizingRealm{
 
 	
 }
+*/

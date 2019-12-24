@@ -35,21 +35,13 @@
 </head>
 <body>
 	<div id="app">
+	<div class="text-c"> 
+		<h1>添加采购单</h1>
+	</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>交货时间：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="date" class="input-text" v-model="buy.btime"  id="username" name="username">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">付款状态：</label>
-			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select  v-model="buy.bstate" class="select" size="1" name="city">
-					<option value="" selected>请选择付款状态</option>
-					<option value="1">已付款</option>
-					<option value="0">未付款</option>
-				</select>
-				</span>
 			</div>
 		</div>
 		<div class="row cl">
@@ -74,49 +66,37 @@
 				</span>
 			</div>
 		</div>
+		
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">原材料：</label>
+			<label class="form-label col-xs-4 col-sm-3">是否付款：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select v-model="buyDetail.pid" class="select" size="1" name="city" >
-					<option  value="" selected>请选择原材料</option>
-					<option v-for='(parts,i) in partsList' :value="parts.pid">{{parts.pname}}</option>
-				</select>
-				</span> </div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">是否入库：</label>
-			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select v-model="buyDetail.bdstate" class="select" size="1" name="city">
-				<option  value="" selected>请选择是否出库</option>
-					<option :value="0" selected>未入库</option>
-					<option :value="1">已入库</option>
+				<select v-model="buy.bstate" class="select" size="1" name="city">
+				<option  value="" selected>请选择是否付款</option>
+					<option :value="0" selected>未付款</option>
+					<option :value="1">已付款</option>
 				</select>
 				</span>
 			</div>
 		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>产品数量：</label>
+		
+		<div class="row cl" style="margin-top:30px;margin-bottom:30px">
+			<label class="form-label col-xs-4 col-sm-3">原材料：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buyDetail.bdcount" placeholder="" id="mobile" name="mobile">
+				<button type="button" @click="addInfo" class="btn btn-success radius">点击选择采购的原材料</button>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>产品价格：</label>
+			<label class="form-label col-xs-4 col-sm-3"></label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buyDetail.bdprice" placeholder="" id="mobile" name="mobile">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>操作人员：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buyDetail.bdman" placeholder="" id="mobile" name="mobile">
+				
 			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<button type="button" @click="addInfo" class="btn btn-primary radius" >提交</button>
+				<!-- <button type="button" @click="addInfo" class="btn btn-primary radius" >提交</button> -->
 			</div>
 		</div>
+		<button type="button" @click="cancle" class="btn btn-primary radius" >取消</button>
 	</div>
 	
 	<!--_footer 作为公共模版分离出去-->
@@ -140,13 +120,6 @@ var v =  new Vue({
 	data:{
 		partsList:[],
 		supplierList:[],
-		buyDetail:{
-			pid:'',
-			bdcount:'',
-			bdprice:'',
-			bdstate:'',
-			bdman:''
-		},
 		buy:{
 			bstate:'',
 			btime:'',
@@ -156,21 +129,19 @@ var v =  new Vue({
 		}
 	},
 	methods:{
+		cancle(){
+			location.href="mao/show-buy.jsp";
+		},
 		addInfo(){
-			this.buy.buyDetail=this.buyDetail;
 			var _this = this;
 	        $.ajax({
 	            type: "POST",
 	            url: "/buy/addInfo",
-	            data: JSON.stringify(_this.buy),
+	            data: _this.buy,
 	            dataType: "json",
-	            contentType: "application/json; charset=utf-8",
 	            success: function (response) {
-	            	console.log(_this.buy);
-	            	console.log(_this.buyDetail);
-	            	layer.close(layer.index);
-	            	window.parent.location.reload();
-	            	
+	            	var bid = response.data;
+	            	location.href="mao/select-parts.jsp?bid="+bid;
 	            },
 	        });
 		}

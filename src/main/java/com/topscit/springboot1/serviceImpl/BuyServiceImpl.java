@@ -20,6 +20,7 @@ import com.topscit.springboot1.dao.BuyMapper;
 import com.topscit.springboot1.dao.PartsMapper;
 import com.topscit.springboot1.service.BuyService;
 
+
 @Service("buyService")
 public class BuyServiceImpl  implements BuyService {
 	
@@ -35,8 +36,17 @@ public class BuyServiceImpl  implements BuyService {
 	private BuyMapper buyMapper;
 	
 	
+	
 	@Resource
 	private SqlSessionTemplate st;
+	
+	@Override
+	public Buy getBuyBybid(String bid) {
+		Buy selectByPrimaryKey = buyMapper.getBuyBy(bid);
+		return selectByPrimaryKey;
+	}
+	
+	
 	@Override
 	public PageInfo<Buy> selectBuyList(int pn, int size) {
 		
@@ -48,8 +58,8 @@ public class BuyServiceImpl  implements BuyService {
 		
 	}
 	@Override
-	public BuyDetail getBuyDetailBy(String id) {
-		BuyDetail buyDetailBy = buyDetailMapper.getBuyDetailBy(id);
+	public List<BuyDetail> getBuyDetailBy(String id) {
+		List<BuyDetail> buyDetailBy = buyDetailMapper.getBuyDetailBy(id);
 		return buyDetailBy;
 	}
 	@Override
@@ -68,6 +78,8 @@ public class BuyServiceImpl  implements BuyService {
 		Date date = new Date();
 		buy.setGupdateTime(date);
 		
+		buy.setBstate("0");
+		
 		int insertSelective = buyMapper.insertSelective(buy);
 		if(insertSelective == 1)
 		{
@@ -83,7 +95,8 @@ public class BuyServiceImpl  implements BuyService {
 		buyDetail.setBdid(System.currentTimeMillis() + "xixiiix");
 		Date date = new Date();
 		buyDetail.setBdupdateTime(date);
-		buyDetail.setBid(bid);
+//		buyDetail.setBid(bid);
+		buyDetail.setBdstate("0");
 		
 		int insertSelective = buyDetailMapper.insertSelective(buyDetail);
 		if(insertSelective == 1)
@@ -119,10 +132,25 @@ public class BuyServiceImpl  implements BuyService {
 	
 	
 	@Override
-	public PageInfo<Buy> selectBuyByTime(String beginDate, String endDate, int pn, int size) {
+	public List<Buy> selectBuyByTime(String beginDate, String endDate) {
 		
-		BuyMapper mapper = st.getMapper(BuyMapper.class);
-		PageHelper.startPage(pn,size);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd");
+		Date endTime = null;
+		Date beginTime = null;
+		
+		try {
+			endTime = simpleDateFormat.parse(endDate);
+			beginTime = simpleDateFormat.parse(beginDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<Buy> buyByTime = buyMapper.getBuyByTime(beginTime, endTime);
+		return buyByTime;
+	}
+
+	@Override
+	public List<BuyDetail> selectBuyDetailByTime(String beginDate, String endDate) {
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd");
 		Date endTime = null;
@@ -136,9 +164,114 @@ public class BuyServiceImpl  implements BuyService {
 			e.printStackTrace();
 		}
 		
-		List<Buy> allBuy = mapper.getBuyByTime(beginTime, endTime);
+		List<BuyDetail> buyDetailByTime = buyDetailMapper.getBuyDetailByTime(beginTime, endTime);
+		return buyDetailByTime;
+	}
+
+	@Override
+	public boolean updateBuyByBid(Buy buy) {
+		Date date = new Date();
+		buy.setGupdateTime(date);
+		int updateByPrimaryKeySelective = buyMapper.updateByPrimaryKeySelective(buy);
+		if(updateByPrimaryKeySelective == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+
+	@Override
+	public boolean updateBuyDetail(BuyDetail buydetail) {
+		int updateByPrimaryKeySelective = buyDetailMapper.updateByPrimaryKeySelective(buydetail);
+		if(updateByPrimaryKeySelective == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+
+	@Override
+	public boolean updateStateByBdid(String bdid) {
+		int updateStateByBid = buyDetailMapper.updateStateByBdid(bdid);
+		if(updateStateByBid == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}	}
+
+
+	@Override
+	public PageInfo<Buy> selectBuyInList(int pn, int size) {
+		BuyMapper mapper = st.getMapper(BuyMapper.class);
+		PageHelper.startPage(pn,size);
+		List<Buy> allBuy = mapper.getAllBuyIn();
 		PageInfo<Buy> pageInfo = new PageInfo<Buy>(allBuy);
 		return pageInfo;
 	}
+
+
+	@Override
+	public PageInfo<Parts> selectPartsListBy(int pn, int size) {
+		PartsMapper mapper = st.getMapper(PartsMapper.class);
+		PageHelper.startPage(pn,size);
+		List<Parts> partsBy = mapper.getPartsBy();
+		PageInfo<Parts> pageInfo = new PageInfo<Parts>(partsBy);
+		return pageInfo;
+	}
+
+
+	@Override
+	public PageInfo<BuyDetail> selectBuyDetailList(int pn, int size) {
+		BuyDetailMapper mapper = st.getMapper(BuyDetailMapper.class);
+		PageHelper.startPage(pn,size);
+		List<BuyDetail> buyDetailAll = mapper.getBuyDetailAll();
+		PageInfo<BuyDetail> pageInfo = new PageInfo<BuyDetail>(buyDetailAll);
+		return pageInfo;
+	}
+
+
+	@Override
+	public boolean updateCount(String count, String pid) {
+		int updateCount = partsMapper.updateCount(count, pid);
+		if(updateCount == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+
+	@Override
+	public BuyDetail getBuyDetailByBdid(String bdid) {
+		BuyDetail selectByPrimaryKey = buyDetailMapper.selectByPrimaryKey(bdid);
+		return selectByPrimaryKey;
+	}
+
+
+	@Override
+	public boolean deleteBuyDetail(String bdid) {
+		int deleteByPrimaryKey = buyDetailMapper.deleteByPrimaryKey(bdid);
+		if(deleteByPrimaryKey == 1)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+
+
+
 	
 }

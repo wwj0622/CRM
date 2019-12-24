@@ -34,59 +34,67 @@
 	<meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 </head>
 <body>
-<article class="page-container">
-	 <form action="/supplier/updateSupplier" id="app" method="POST" enctype="multipart/form-data" target="_parent">
+
+	<div class="page-container" id="app">
+	<div class="text-c"> 
 		<input type="hidden" id="box" value="${param.bid }" >
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购详情编号：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdid" placeholder="" id="username" name="sname">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购单编号：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bid" placeholder="" id="mobile" name="sphone">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购原材料编号：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.pid" placeholder="" id="account" name="saccount">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购数量：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdcount" placeholder="@" name="semail" id="email">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采购价格：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdprice"name="saddress" id="address">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否入库：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdstate"name="saddress" id="address">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>操作人员：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdman"name="saddress" id="address">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>最近操作时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" readonly="readonly" :value="buyDetail.bdupdateTime"name="saddress" id="address">
-			</div>
-		</div>
-		</form>
-</article>
+	</div>
+	<h1>采购单详情</h1> <a href="mao/show-buy.jsp">点击返回查看采购单</a>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+	
+		<span class="l">
+			<a href="javascript:;"  @click="delAllSupllier" class="btn btn-danger radius">
+				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
+			</a> 
+			<a href="javascript:;"  @click="updateAllBuydetail" class="btn btn-success radius">
+				<i class="Hui-iconfont"></i> 批量入库
+			</a> 
+			<a href="javascript:;" onclick="member_add('添加采购单详情','mao/add-buy.jsp','','510')" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加采购单详情
+			</a>
+		</span> 
+		<span class="r">共有数据：<strong>88</strong> 条</span> 
+	</div>
+	<div class="mt-20">
+	<table class="table table-border table-bordered table-bg table-sort">
+			<thead>
+				<tr class="text-c">
+					<th width="25"></th>
+					<th >采购订单号</th>
+					<th width="100">采购原材料名称</th>
+					<th width="100">采购数量</th>
+					<th width="100">采购价格</th>
+					<th width="50">操作人员</th>
+					<th >操作时间</th>
+					<th width="100">入库状态</th>
+					<th width="50">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			 
+			<tr class="text-c" v-for='(buyDetail,i) in buyDetailList'>
+					<td><input name=""  v-model="checkedBuy" type="checkbox" :value="buyDetail.bdid"></td>
+					<td class="text-l">{{buyDetail.bid}}</td>
+					<td>{{buyDetail.parts.pname}}</td>
+					<td>{{buyDetail.bdcount}}</td>
+					<td>{{buyDetail.bdprice}}</td>
+					<td>{{buyDetail.bdman}}</td>
+					<td>{{buyDetail.bdupdateTime}}</td>
+					<td>{{buyDetail.bdstate==1?"已入库":"未入库"}} <button @click="changeState(buyDetail.pid,buyDetail.bdcount,buyDetail.bdid)">点击入库</button> </td>
+					<td class="f-14 product-brand-manage">
+						<a style="text-decoration:none" @click="member_edit('编辑采购单详情','mao/edit-buyDetail.jsp?bdid='+buyDetail.bdid,'4','','510')" href="javascript:;" title="编辑">
+							<i class="Hui-iconfont">&#xe6df;</i>
+						</a> 
+						<a style="text-decoration:none" class="ml-5" @click="member_del(this,buyDetail.bdid)" href="javascript:;" title="删除">
+							<i class="Hui-iconfont">&#xe6e2;</i>
+						</a>
+					</td>
+				</tr>
+			 <tr>
+			</tbody>
+		</table>
+	</div>
+</div>
 
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
@@ -141,6 +149,7 @@ $(function(){
 		}
 	});
 });
+
 </script> 
 
 
@@ -154,31 +163,88 @@ $(function(){
 var v =  new Vue({
 	el:'#app',
 	data:{
-		buyDetail:{
-			bdid:'',
-			bid:'',
-			pid:'',
-			bdcount:'',
-			bdprice:'',
-			bdstate:'',
-			bman:'',
-			bdupdateTime:''
-		},
+		buyDetailList:[],
+		checkedBuy:[],
 	},
 	methods:{
-		
+		 member_edit(title,url,id,w,h){
+        	 layer_show(title,url,w,h);
+         },
+        
+         member_del(obj,bdid){
+         	var _this = this;
+    			$.ajax({
+    				type: "GET",
+    	            url: "/buy/delBuyDetail",
+    	            data: {bdid:bdid},
+    	            dataType: "json",
+    				success: function(data){
+    					$(obj).parents("tr").remove();
+    					layer.msg('已删除!',{icon:1,time:1000});
+    					window.parent.location.reload();
+    				},
+    				error:function(data) {
+    					console.log(data.msg);
+    				},
+    			});		
+          },
+          delAllSupllier(){
+         	 console.log(this.checkedBuy);
+         	 var _this = this;
+     			$.ajax({
+     				type: "GET",
+     	            url: "/buy/delBuyDetail",
+     	            data: {bdid:_this.checkedBuy},
+     	            dataType: "json",
+     	            traditional: true,
+     				success: function(data){
+     					layer.msg('已删除!',{icon:1,time:1000});
+     					window.parent.location.reload();
+     				},
+     				error:function(data) {
+     					console.log(data.msg);
+     				},
+     			});		
+          },
+          changeState(pid,bdcount,bdid){
+        	  var _this = this;
+   			$.ajax({
+   	            type: "POST",
+   	            url: "/buy/updateState",
+   	            data: {bdid:bdid},
+   	            dataType: "json",
+   	            success: function (response) {
+   	            	layer.msg('入库成功!',{icon:1,time:1000});
+					window.parent.location.reload();
+   	            },
+   	        });
+          },
+          updateAllBuydetail(){
+        	  var _this = this;
+        	  console.log(_this.checkedBuy);
+     			$.ajax({
+     	            type: "POST",
+     	            url: "/buy/updateState",
+     	            data: {bdid:_this.checkedBuy},
+     	           	traditional: true,
+     	            dataType: "json",
+     	            success: function (response) {
+     	            	layer.msg('入库成功!',{icon:1,time:1000});
+    					window.parent.location.reload();
+     	            },
+     	        });
+          }
 	},
 	created(){  
         var _this = this;
         var bid = document.getElementById("box").value;
-        console.log(bid);
         $.ajax({
             type: "GET",
             url: "/buy/getBuyDetailBybid",
             data: {bid:bid},
             dataType: "json",
             success: function (response) {
-            	_this.buyDetail = response.data;
+            	_this.buyDetailList = response.data;
             },
         });
        }

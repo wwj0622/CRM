@@ -24,21 +24,31 @@ public class Parts {
     private String pprice;
 
     private String premark;
+<<<<<<< HEAD
     
     private String gid;
      
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
+=======
+
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+>>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
     private Date pupdateTime;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date pcreateTime;
 
     private String plogo;
     
     private Storage storage;
     
+<<<<<<< HEAD
     
     
+=======
+>>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
 
+<<<<<<< HEAD
     public String getGid() {
 		return gid;
 	}
@@ -48,6 +58,9 @@ public class Parts {
 	}
 
 	public Storage getStorage() {
+=======
+    public Storage getStorage() {
+>>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
 		return storage;
 	}
 
@@ -158,4 +171,14 @@ public class Parts {
     public void setPlogo(String plogo) {
         this.plogo = plogo == null ? null : plogo.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Parts [pid=" + pid + ", pname=" + pname + ", pexplain=" + pexplain + ", punit=" + punit + ", ptid="
+				+ ptid + ", pcount=" + pcount + ", pdanger=" + pdanger + ", pstate=" + pstate + ", pprice=" + pprice
+				+ ", premark=" + premark + ", pupdateTime=" + pupdateTime + ", pcreateTime=" + pcreateTime + ", plogo="
+				+ plogo + ", storage=" + storage + "]";
+	}
+    
+    
 }

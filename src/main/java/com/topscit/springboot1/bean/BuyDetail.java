@@ -2,6 +2,8 @@ package com.topscit.springboot1.bean;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class BuyDetail {
@@ -21,10 +23,24 @@ public class BuyDetail {
 
     private String bdremark;
     
+    private String state;
+    
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bdupdateTime;
 
-    public String getBdid() {
+    private Parts parts;
+    
+
+	public Parts getParts() {
+		return parts;
+	}
+
+	public void setParts(Parts parts) {
+		this.parts = parts;
+	}
+
+	public String getBdid() {
         return bdid;
     }
 
@@ -96,12 +112,22 @@ public class BuyDetail {
         this.bdupdateTime = bdupdateTime;
     }
 
+    
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	@Override
 	public String toString() {
 		return "BuyDetail [bdid=" + bdid + ", bid=" + bid + ", pid=" + pid + ", bdcount=" + bdcount + ", bdprice="
-				+ bdprice + ", bdstate=" + bdstate + ", bdman=" + bdman + ", bdremark=" + bdremark + ", bdupdateTime="
-				+ bdupdateTime + "]";
+				+ bdprice + ", bdstate=" + bdstate + ", bdman=" + bdman + ", bdremark=" + bdremark + ", state=" + state
+				+ ", bdupdateTime=" + bdupdateTime + ", parts=" + parts + "]";
 	}
+
     
     
 }

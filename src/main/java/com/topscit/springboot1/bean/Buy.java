@@ -2,6 +2,8 @@ package com.topscit.springboot1.bean;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Buy {
@@ -9,6 +11,7 @@ public class Buy {
 
     private String bstate;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date btime;
 
@@ -19,13 +22,28 @@ public class Buy {
     private String bremark;
 
     private String sid;
+    
+    private String state;
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date gupdateTime;
     
     private BuyDetail buyDetail;
     
-    public String getBid() {
+    private Supplier supplier;
+    
+    
+    
+    public Supplier getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
+	}
+
+	public String getBid() {
         return bid;
     }
 
@@ -38,13 +56,7 @@ public class Buy {
     }
 
     public void setBstate(String bstate) {
-    	if(bstate.equals("1")){
-    		this.bstate = "已付款";
-    	}
-    	else{
-    		this.bstate = "未付款";
-    	}
-         
+    	 this.bstate = bstate == null ? null : bstate.trim();
     }
 
     public Date getBtime() {
@@ -105,12 +117,24 @@ public class Buy {
 		this.buyDetail = buyDetail;
 	}
 
+	
+	
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	@Override
 	public String toString() {
 		return "Buy [bid=" + bid + ", bstate=" + bstate + ", btime=" + btime + ", baddress=" + baddress + ", bman="
-				+ bman + ", bremark=" + bremark + ", sid=" + sid + ", gupdateTime=" + gupdateTime + ", buyDetail="
-				+ buyDetail + "]";
+				+ bman + ", bremark=" + bremark + ", sid=" + sid + ", state=" + state + ", gupdateTime=" + gupdateTime
+				+ ", buyDetail=" + buyDetail + ", supplier=" + supplier + "]";
 	}
+
 
 
     

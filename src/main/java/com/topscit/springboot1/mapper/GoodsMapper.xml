@@ -205,6 +205,7 @@
 	 </collection>
   
   </resultMap>
+<<<<<<< HEAD
   
   
   <resultMap type="com.topscit.springboot1.bean.Goods" id="GS">
@@ -328,4 +329,119 @@
       glogo = #{glogo,jdbcType=VARCHAR}
     where gid = #{gid,jdbcType=VARCHAR}
   </update> -->
+=======
+  <sql id="Base_Column_List" >
+    gid, gname, goriginal, gprice, ptid, gcount, glogo
+  </sql>
+  <select id="selectListGoods" resultType="com.topscit.springboot1.bean.Goods">
+  	select * from goods
+  </select>
+  <select id="selectListGoodsLimit" resultType="com.topscit.springboot1.bean.Goods">
+  	select * from goods where gname like concat('%',#{gname},'%')
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where gid = #{gid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from goods
+    where gid = #{gid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Goods" >
+    insert into goods (gid, gname, goriginal, 
+      gprice, ptid, gcount, 
+      glogo)
+    values (#{gid,jdbcType=VARCHAR}, #{gname,jdbcType=VARCHAR}, #{goriginal,jdbcType=VARCHAR}, 
+      #{gprice,jdbcType=VARCHAR}, #{ptid,jdbcType=VARCHAR}, #{gcount,jdbcType=VARCHAR}, 
+      #{glogo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Goods" >
+    insert into goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="gname != null" >
+        gname,
+      </if>
+      <if test="goriginal != null" >
+        goriginal,
+      </if>
+      <if test="gprice != null" >
+        gprice,
+      </if>
+      <if test="ptid != null" >
+        ptid,
+      </if>
+      <if test="gcount != null" >
+        gcount,
+      </if>
+      <if test="glogo != null" >
+        glogo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        #{gid,jdbcType=VARCHAR},
+      </if>
+      <if test="gname != null" >
+        #{gname,jdbcType=VARCHAR},
+      </if>
+      <if test="goriginal != null" >
+        #{goriginal,jdbcType=VARCHAR},
+      </if>
+      <if test="gprice != null" >
+        #{gprice,jdbcType=VARCHAR},
+      </if>
+      <if test="ptid != null" >
+        #{ptid,jdbcType=VARCHAR},
+      </if>
+      <if test="gcount != null" >
+        #{gcount,jdbcType=VARCHAR},
+      </if>
+      <if test="glogo != null" >
+        #{glogo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateGoodsByGid">
+  	update goods set gcount = cast(gcount as decimal) - #{num} where gid = #{gid}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Goods" >
+    update goods
+    <set >
+      <if test="gname != null" >
+        gname = #{gname,jdbcType=VARCHAR},
+      </if>
+      <if test="goriginal != null" >
+        goriginal = #{goriginal,jdbcType=VARCHAR},
+      </if>
+      <if test="gprice != null" >
+        gprice = #{gprice,jdbcType=VARCHAR},
+      </if>
+      <if test="ptid != null" >
+        ptid = #{ptid,jdbcType=VARCHAR},
+      </if>
+      <if test="gcount != null" >
+        gcount = #{gcount,jdbcType=VARCHAR},
+      </if>
+      <if test="glogo != null" >
+        glogo = #{glogo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where gid = #{gid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Goods" >
+    update goods
+    set gname = #{gname,jdbcType=VARCHAR},
+      goriginal = #{goriginal,jdbcType=VARCHAR},
+      gprice = #{gprice,jdbcType=VARCHAR},
+      ptid = #{ptid,jdbcType=VARCHAR},
+      gcount = #{gcount,jdbcType=VARCHAR},
+      glogo = #{glogo,jdbcType=VARCHAR}
+    where gid = #{gid,jdbcType=VARCHAR}
+  </update>
+>>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
 </mapper>

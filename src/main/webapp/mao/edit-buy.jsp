@@ -27,36 +27,27 @@
 	<script>DD_belatedPNG.fix('*');</script>
 	<![endif]-->
 	<!--/meta 作为公共模版分离出去-->
-	
+	<script src="../js/axios.min.js"></script>
 	<title>添加采购单 - H-ui.admin v3.1</title>
 	<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
 	<meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 
 </head>
 <body>
-	<div id="app">
-	<input type="hidden" id="box" value="${param.bid }" >
+	<from>
+	<div  id="app">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>交货时间：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="date" class="input-text" v-model="buy.btime"  id="username" name="username">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">付款状态：</label>
-			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select  v-model="buy.bstate" class="select" size="1" name="city">
-					<option value="" selected>请选择付款状态</option>
-					<option value="1">已付款</option>
-					<option value="0">未付款</option>
-				</select>
-				</span>
+				<input type="hidden" id="box" value="${param.bid }" >
+				<input type="hidden" id="box" :value="buy.bid" >
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>交货地点：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buy.baddress" placeholder="" id="mobile" name="mobile">
+				<input type="text" class="input-text" v-model="buy.baddress" placeholder="" id="" name="mobile">
 			</div>
 		</div>
 		<div class="row cl">
@@ -67,58 +58,32 @@
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">供应商：</label>
-			<div class="formControls col-xs-8 col-sm-9" > <span class="select-box">
-				<select v-model="buy.sid" @cilck="selectSupplier class="select" size="1" name="city">
-					<option value="" selected>请选择供应商</option>
-					<option v-for='(supplier,i) in supplierList' :value="supplier.sid">{{supplier.sname}}</option>
-				</select>
+			<div class="formControls col-xs-8 col-sm-9"> 
+				<span class="select-box">
+					<select v-model="buy.sid"  class="select" >				
+                            <option v-for="(s,i) in supplier" :value="s.sid">{{s.sname}}</option>
+					</select>
 				</span>
 			</div>
+			
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">原材料：</label>
+			<label class="form-label col-xs-4 col-sm-3">是否付款：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select v-model="buyDetail.pid" @cilck="selectParts" class="select" size="1" name="city" >
-					<option  value="" selected>请选择原材料</option>
-					<option v-for='(parts,i) in partsList' :value="parts.pid">{{parts.pname}}</option>
-				</select>
-				</span> </div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">是否入库：</label>
-			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select v-model="buyDetail.bdstate" class="select" size="1" name="city">
-				<option  value="" selected>请选择是否出库</option>
-					<option :value="0" selected>未入库</option>
-					<option :value="1">已入库</option>
+				<select v-model="buy.bstate" class="select" size="1" name="city">
+					<option :value="0" selected>未付款</option>
+					<option :value="1">已付款</option>
 				</select>
 				</span>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>产品数量：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buyDetail.bdcount" placeholder="" id="mobile" name="mobile">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>产品价格：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buyDetail.bdprice" placeholder="" id="mobile" name="mobile">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>操作人员：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buyDetail.bdman" placeholder="" id="mobile" name="mobile">
 			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<button type="button" @click="editInfo" class="btn btn-primary radius" >提交</button>
+				<button type="button" @click="updateBy" class="btn btn-primary radius" >提交</button>
 			</div>
 		</div>
-	</div>
+		</div>
+	</from>
 	
 	<!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
@@ -134,88 +99,75 @@
 
 <script src="mao/vue.js" ></script>
 <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-	
+
+
 <script type="text/javascript">
 var v =  new Vue({
 	el:'#app',
 	data:{
-		partsList:[],
-		supplierList:[],
-		buyDetail:{
-			pid:'',
-			bdcount:'',
-			bdprice:'',
-			bdstate:'',
-			bdman:''
-		},
-		buy:{
-			bstate:'',
-			btime:'',
-			baddress:'',
-			bremark:'',
-			sid:''
-		}
+		supplier:[],
+		buy:{}
 	},
 	methods:{
-		addInfo(){
-			this.buy.buyDetail=this.buyDetail;
-			var _this = this;
-	        $.ajax({
-	            type: "POST",
-	            url: "/buy/addInfo",
-	            data: JSON.stringify(_this.buy),
+		selectSupplier:function(){
+			var _thiss = this;
+			$.ajax({
+	            type: "GET",
+	            url: "/buy/getInfo",
+	            data: null,
 	            dataType: "json",
-	            contentType: "application/json; charset=utf-8",
 	            success: function (response) {
-	            	console.log(_this.buy);
-	            	console.log(_this.buyDetail);
-	            	layer.close(layer.index);
-	            	window.parent.location.reload();
-	            	
+	            	_thiss.supplier = response.data1; 
+	            },
+	        }); 
+	        
+			//this.supplier = [{sname:'111'}];
+	        
+	        
+		},
+		a:function(){
+			var _this = this;
+	        var bid = document.getElementById("box").value;
+	        $.ajax({
+	            type: "GET",
+	            url: "/buy/getBuyByBid",
+	            data: {bid:bid},
+	            dataType: "json",
+	            success: function (response) {
+	            	_this.buy = response.data;
+	            	console.log(_this.buy)
 	            },
 	        });
-	        selectSupplier(){
-	        	 var _this = this;
-	             $.ajax({
-	                 type: "GET",
-	                 url: "/buy/getInfo",
-	                 data: null,
-	                 dataType: "json",
-	                 success: function (response) {
-	                 	_this.supplierList = response.data1;
-	                 	_this.partsList = response.data;
-	                 },
-	             });
-	            }
-	        }
-	       
+		},
+		updateBy:function(){
+			var _this = this;
+			_this.buy.supplier={};
+			_this.buy.buyDetail={};
+	        $.ajax({
+	            type: "POST",
+	            url: "/buy/updateByBid",
+	            data: _this.buy,
+	            dataType: "json",
+	            success: function (response) {
+	            	layer.close(layer.index);
+	            	window.parent.location.reload();
+	            },
+	        });
 		}
 	},
-	created(){  
-        var _this = this;
-        var bid = document.getElementById("box").value;
-        $.ajax({
-            type: "GET",
-            url: "/buy/getInfo",
-            data: null,
-            dataType: "json",
-            success: function (response) {
-            	_this.buy = response.data1;
-            },
-        });
-       }
-        $.ajax({
-            type: "GET",
-            url: "/buy/getBuyByBid",
-            data: {bid:bid},
-            dataType: "json",
-            success: function (response) {
-            	_this.buy = response.data1;
-            },
-        });
-       }
+	created:function(){ 
+       this.a();
+       this.selectSupplier();
+
+     
+       
+	}
+	
 });
-</script>
+	
+
+</script>	
+
 </body>
 </html>
 

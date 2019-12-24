@@ -5,7 +5,11 @@
 <generatorConfiguration>
 	<!-- 制度MySQL驱动包的路径，别放在中文路径 -->
 	<classPathEntry
+<<<<<<< HEAD
 		location="D:\mavenPackage\mysql\mysql-connector-java\5.1.18\mysql-connector-java-5.1.18.jar" />
+=======
+		location="D:\maven.jar\mysql\mysql-connector-java\5.1.18\mysql-connector-java-5.1.18.jar" />
+>>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
 	<context id="context1">
 		<commentGenerator>
 			<!--是否取消注销 -->
@@ -44,6 +48,7 @@
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
  
+<<<<<<< HEAD
 		
 		<table tableName="parts_goods"
 			domainObjectName="partsGoods" enableCountByExample="false"
@@ -55,6 +60,16 @@
 		
 			
 		
+=======
+ 
+	    <!-- 配置表信息 -->
+		<table tableName="order"
+			domainObjectName="Order" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false" />
+		</table>
+>>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
 		
 	</context>
 </generatorConfiguration>

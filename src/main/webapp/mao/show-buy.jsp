@@ -39,6 +39,7 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container" id="app">
 	<div class="text-c"> 
+		根据交货时间查询
 		<input type="Date" v-model="beginTime"  id="datemin" class="input-text Wdate" style="width:150px;">
 		-
 		<input type="Date" v-model="endTime"  id="datemax" class="input-text Wdate" style="width:150px;">
@@ -51,7 +52,7 @@
 			<a href="javascript:;" @click="delAllSupllier" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
 			</a> 
-			<a href="javascript:;" onclick="member_add('添加采购单','mao/add-buy.jsp','','510')" class="btn btn-primary radius">
+			<a href="javascript:;" @click="member_add" class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i> 添加采购单
 			</a>
 		</span> 
@@ -63,7 +64,7 @@
 				<tr class="text-c">
 					<th width="25"></th>
 					<th width="70">采购订单号</th>
-					<th width="100">供货商ID</th>
+					<th width="100">供货商名称</th>
 					<th width="100">交货地址</th>
 					<th width="60">交货时间</th>
 					<th>备注信息</th>
@@ -77,13 +78,13 @@
 			<tr class="text-c" v-for='(buy,i) in buyList'>
 					<td><input name=""  v-model="checkedBuy" type="checkbox" :value="buy.bid"></td>
 					<td class="text-l">{{buy.bid}}</td>
-					<td>{{buy.sid}}</td>
+					<td>{{buy.supplier.sname}}</td>
 					<td>{{buy.baddress}}</td>
 					<td>{{buy.btime}}</td>
 					<td class="text-l">{{buy.bremark}}</td>
-					<td>{{buy.bstate}}</td>
+					<td>{{buy.bstate==1?"已付款":"未付款"}}</td>
 					<td>
-						<a href="javascript:void(0);" @click="member_edit('采购单详情','mao/show-buyDetail.jsp?bid='+buy.bid,'4','','510')">详情</a>
+						<a href="javascript:void(0);" @click="buyDetail(buy.bid)">点击查看详情</a>
 					</td>
 					<td class="f-14 product-brand-manage">
 						<a style="text-decoration:none" @click="member_edit('编辑采购单','mao/edit-buy.jsp?bid='+buy.bid,'4','','510')" href="javascript:;" title="编辑">
@@ -116,9 +117,16 @@ var v =  new Vue({
 		checkedBuy:[],
 		state:'',
 		beginTime:'',
-		endTime:''
+		endTime:'',
+		stateeee:''
 	},
 	methods:{
+		buyDetail(bid){
+			location.href="mao/show-buyDetail.jsp?bid="+bid;
+		},
+		member_add(){
+    		location.href="mao/add-buy.jsp";
+    	},
 		jump(page){
 		 	var _this = this;
 	        $.ajax({
@@ -143,8 +151,7 @@ var v =  new Vue({
  	            data: {beginDate:_this.beginTime,endDate:_this.endTime},
  	            dataType: "json",
  	            success: function (response) {
- 	            	_this.buyList = response.data.list;
- 	            	_this.pageInfo = response.data;
+ 	            	_this.buyList = response.data;
  	            },
  	        });
          },
@@ -186,6 +193,8 @@ var v =  new Vue({
          member_edit(title,url,id,w,h){
         	 layer_show(title,url,w,h);
          }
+        
+         
 	},
 	created(){  
         var _this = this;
@@ -220,9 +229,7 @@ var v =  new Vue({
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 /*用户-添加*/
-function member_add(title,url,w,h){
-	layer_show(title,url,w,h);
-}
+
 /*用户-查看*/
 function member_show(title,url,id,w,h){
 	layer_show(title,url,w,h);
