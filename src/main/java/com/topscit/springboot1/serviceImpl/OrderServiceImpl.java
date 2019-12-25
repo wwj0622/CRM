@@ -159,4 +159,40 @@ public class OrderServiceImpl implements OrderService{
 		return 0;
 	}
 
+	@Override
+	public Order selectOrderByOid(String yoid) {
+		Order selectByPrimaryKey = orderMapper.selectByPrimaryKey(yoid);
+		return selectByPrimaryKey;
+	}
+
+	@Override
+	public int updateOstateOid(String oid) {
+		int updateOstateOid = orderMapper.updateOstateOid(oid);
+		return updateOstateOid;
+	}
+
+	@Override
+	public int deleteOrderGoodsByYoid(String yoid) {
+		int deleteOrderGoodsByYoid = orderGoodsMapper.deleteOrderGoodsByYoid(yoid);
+		return deleteOrderGoodsByYoid;
+	}
+
+	@Override
+	public int insert(Yorder record) {
+		int insert = yorderMapper.insert(record);
+		return insert;
+	}
+
+	@Override
+	public List<Yorder> selectAllYorder() {
+		List<Yorder> selectAllYorder = yorderMapper.selectAllYorder();
+		return selectAllYorder;
+	}
+
+	@Override
+	public List<OrderGoods> selectListGoodsOrderByYoid(String yoid) {
+		List<OrderGoods> selectListGoodsOrderByYoid = orderGoodsMapper.selectListGoodsOrderByYoid(yoid);
+		return selectListGoodsOrderByYoid;
+	}
+
 }

@@ -4,10 +4,6 @@ package com.topscit.springboot1.util;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartFile;
-<<<<<<< HEAD
-
-=======
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
 import java.io.File;
 
 public class uploadFile {

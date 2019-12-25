@@ -23,12 +23,8 @@
 <script src="/js/axios.min.js"></script>
 <script src="/ws/js/jquery.min.js"></script>
 <script src="/ws/js/vue.js"></script>
-<!-- 引入样式 -->
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<!-- 引入组件库 -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="/element-ui/lib/index.js"></script>
+<link type="text/css" rel="styleSheet"  href="/element-ui/lib/theme-chalk/index.css" />
 <title>用户管理</title>
 </head>
 <body>

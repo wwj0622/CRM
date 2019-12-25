@@ -11,14 +11,35 @@
     <result column="did" property="did" jdbcType="VARCHAR" />
     <result column="wid" property="wid" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="BaseResultMap1" type="com.topscit.springboot1.bean.Salesman" >
+    <id column="smid" property="smid" jdbcType="VARCHAR" />
+    <result column="smname" property="smname" jdbcType="VARCHAR" />
+    <result column="smphone" property="smphone" jdbcType="VARCHAR" />
+    <result column="smemail" property="smemail" jdbcType="VARCHAR" />
+    <result column="smaddress" property="smaddress" jdbcType="VARCHAR" />
+    <result column="smremark" property="smremark" jdbcType="VARCHAR" />
+    <result column="did" property="did" jdbcType="VARCHAR" />
+    <result column="wid" property="wid" jdbcType="VARCHAR" />
+    	<association property="dept" javaType="com.topscit.springboot1.bean.Dept" column="did">
+    		<id column="did" property="did" jdbcType="VARCHAR" />
+		    <result column="dname" property="dname" jdbcType="VARCHAR" />
+		    <result column="dremark" property="dremark" jdbcType="VARCHAR" />
+		    <result column="dupdate_time" property="dupdateTime" jdbcType="TIMESTAMP" />
+    	</association>
+    	<association property="work" javaType="com.topscit.springboot1.bean.Work" column="wid">
+    		<id column="wid" property="wid" jdbcType="VARCHAR" />
+		    <result column="wname" property="wname" jdbcType="VARCHAR" />
+		    <result column="did" property="did" jdbcType="VARCHAR" />
+		    <result column="wremark" property="wremark" jdbcType="VARCHAR" />
+		    <result column="wupdate_time" property="wupdateTime" jdbcType="TIMESTAMP" />
+    	</association>
+  </resultMap>
   <sql id="Base_Column_List" >
     smid, smname, smphone, smemail, smaddress, smremark, did, wid
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from salesman
-    where smid = #{smid,jdbcType=VARCHAR}
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap1" parameterType="java.lang.String" >
+    select * from salesman s inner join dept d on s.did = d.did 
+inner join `work` w on s.wid = w.wid where s.smid = #{smid}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from salesman

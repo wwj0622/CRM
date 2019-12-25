@@ -12,8 +12,16 @@ public class Work {
     private String wremark;
 
     private Date wupdateTime;
+    
+    
 
-    public String getWid() {
+    @Override
+	public String toString() {
+		return "Work [wid=" + wid + ", wname=" + wname + ", did=" + did + ", wremark=" + wremark + ", wupdateTime="
+				+ wupdateTime + "]";
+	}
+
+	public String getWid() {
         return wid;
     }
 

@@ -209,7 +209,7 @@
     <select id="getAllParts" resultMap="BaseResultMap" >
   	select * from parts where pstate="1"
    </select>
-<<<<<<< HEAD
+   
    <select id="selectParts" resultMap="rs">
     SELECT p.*,s.* FROM parts p LEFT JOIN parts_goods pg
     ON p.pid=pg.pid LEFT JOIN goods g ON  pg.gid=g.gid
@@ -238,7 +238,6 @@
 	    <result column="stupdate_time" property="stupdateTime" jdbcType="TIMESTAMP" />
    </association>
   </resultMap>
-=======
    
    <select id="getPartsBy" resultMap="BaseResultMap">
    	SELECT * FROM parts INNER JOIN storage 
@@ -248,6 +247,5 @@
    <update id="updateCount" parameterType="com.topscit.springboot1.bean.Parts">
    	UPDATE parts SET parts.pcount=parts.pcount + #{count} WHERE parts.pid = #{pid}
    </update>
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
    
 </mapper>

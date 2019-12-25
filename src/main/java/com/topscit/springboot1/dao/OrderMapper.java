@@ -23,5 +23,5 @@ public interface OrderMapper {
     
     int updateOsumByOid(@Param("oid")String oid,@Param("money")String money); 
     
-    
+    int updateOstateOid(@Param("oid")String oid); 
 }

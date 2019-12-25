@@ -24,15 +24,10 @@ public class Parts {
     private String pprice;
 
     private String premark;
-<<<<<<< HEAD
     
     private String gid;
      
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
-=======
-
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
     private Date pupdateTime;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
@@ -42,13 +37,6 @@ public class Parts {
     
     private Storage storage;
     
-<<<<<<< HEAD
-    
-    
-=======
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
-
-<<<<<<< HEAD
     public String getGid() {
 		return gid;
 	}
@@ -57,10 +45,7 @@ public class Parts {
 		this.gid = gid;
 	}
 
-	public Storage getStorage() {
-=======
     public Storage getStorage() {
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
 		return storage;
 	}
 

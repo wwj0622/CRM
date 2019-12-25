@@ -16,8 +16,37 @@ public class Salesman {
     private String did;
 
     private String wid;
+    
+    private Dept dept;
+    
+    private Work work;
+    
+    
 
-    public String getSmid() {
+    @Override
+	public String toString() {
+		return "Salesman [smid=" + smid + ", smname=" + smname + ", smphone=" + smphone + ", smemail=" + smemail
+				+ ", smaddress=" + smaddress + ", smremark=" + smremark + ", did=" + did + ", wid=" + wid + ", dept="
+				+ dept + ", work=" + work + "]";
+	}
+
+	public Dept getDept() {
+		return dept;
+	}
+
+	public void setDept(Dept dept) {
+		this.dept = dept;
+	}
+
+	public Work getWork() {
+		return work;
+	}
+
+	public void setWork(Work work) {
+		this.work = work;
+	}
+
+	public String getSmid() {
         return smid;
     }
 

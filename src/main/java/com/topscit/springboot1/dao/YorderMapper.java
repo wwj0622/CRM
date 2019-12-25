@@ -1,5 +1,7 @@
 package com.topscit.springboot1.dao;
 
+import java.util.List;
+
 import com.topscit.springboot1.bean.Yorder;
 
 public interface YorderMapper {
@@ -14,4 +16,6 @@ public interface YorderMapper {
     int updateByPrimaryKeySelective(Yorder record);
 
     int updateByPrimaryKey(Yorder record);
+    
+    List<Yorder> selectAllYorder();
 }

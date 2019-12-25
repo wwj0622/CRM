@@ -17,7 +17,7 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from order
+    from `order`
     where oid = #{oid,jdbcType=VARCHAR}
   </select>
   
@@ -88,6 +88,9 @@
       </if>
     </trim>
   </insert>
+  <update id="updateOstateOid">
+  	update `order` set ostate = 1 where oid = #{oid}
+  </update>
   <update id="updateOsumByOid">
   	update `order` set osum = #{money} where oid = #{oid}
   </update>

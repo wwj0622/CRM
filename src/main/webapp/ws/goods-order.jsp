@@ -24,13 +24,8 @@
 <script src="/ws/js/jquery.min.js"></script>
 <script src="/ws/js/vue.js"></script>
 <script src="/ws/js/moment.js"></script>
-<!-- 引入样式 -->
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<!-- 引入组件库 -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<title>用户管理</title>
+<script src="/element-ui/lib/index.js"></script>
+<link type="text/css" rel="styleSheet"  href="/element-ui/lib/theme-chalk/index.css" />
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
@@ -48,7 +43,7 @@
           <el-col :span="24">
               <el-table ref="multipleTable" @selection-change="selection" :data="orderlist" border>
                   <!-- <el-table-column type="selection" width="55" ></el-table-column> -->
-                  <el-table-column type="index" ></el-table-column> 
+                  <el-table-column type="index"  label="序号"></el-table-column> 
                   <el-table-column label="ID" prop="oid"></el-table-column>
                   <el-table-column label="客户编号" prop="cid"></el-table-column>
                   <el-table-column label="客户姓名" prop="cname">
@@ -289,29 +284,20 @@ var v = new Vue({
         datadel1:function(i,scope){
         	console.log(scope);
         	if(i==1){
-        		if(this.gidgoodslist.length>1)
-        		{
-        			alert("不能同时删除多条！");
-        		}
-        		else if(this.gidgoodslist.length==1)
-        		{
-        			this.glist.length = 0;
-        			this.glist.push(this.gidgoodslist[0].gid);
-        			if(this.gidgoodslist[0].gid==scope.row.gid)
-       				{
-        				this.delgoodsByGid();
-       				}
-        			else
-       				{
-        				alert("选择和要删除的信息不符！");
-       				}
-        		}
-        		else
-        		{
-        			this.glist.length = 0;
-        			this.glist.push(scope.row.gid);
-        			this.delgoodsByGid();
-        		}
+        		var _this = this;
+        		$.ajax({
+          	      type: "POST",
+          	      traditional: true,
+          	      url: "/order/delOrderAndOrderGoods",
+          	      data: {
+          	    	  yoid:scope.row.oid
+          	    	  },
+          	      dataType: "json",
+          	      success: function (response) {
+          	    	_this.selectAllCustomer();
+          			_this.selectAllOrderByKid();
+          	      }
+          	  });
         	}
         },
         
