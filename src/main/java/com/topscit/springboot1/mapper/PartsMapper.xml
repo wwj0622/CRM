@@ -192,9 +192,52 @@
     where pid = #{pid,jdbcType=VARCHAR}
   </update>
   
+  <select id="selectPartsList" resultMap="BaseResultMap">
+      select * from parts where pstate='0'
+  </select>
+  
+  <select id="selectAllParts" resultMap="BaseResultMap">
+     select * from parts  where pstate='0'
+  </select>
+  
+  <update id="UpdataPartastate" >
+     update parts 
+     set pstate='1'
+     WHERE parts.pid=#{id}
+  </update>
+  
     <select id="getAllParts" resultMap="BaseResultMap" >
   	select * from parts where pstate="1"
    </select>
+   
+   <select id="selectParts" resultMap="rs">
+    SELECT p.*,s.* FROM parts p LEFT JOIN parts_goods pg
+    ON p.pid=pg.pid LEFT JOIN goods g ON  pg.gid=g.gid
+    INNER JOIN `storage` s ON p.ptid=s.stid
+    WHERE g.gid=#{id} and pstate='0'
+   </select>
+   
+   <resultMap type="com.topscit.springboot1.bean.Parts" id="rs">
+	    <id column="pid" property="pid" jdbcType="VARCHAR" />
+	    <result column="pname" property="pname" jdbcType="VARCHAR" />
+	    <result column="pexplain" property="pexplain" jdbcType="VARCHAR" />
+	    <result column="punit" property="punit" jdbcType="VARCHAR" />
+	    <result column="ptid" property="ptid" jdbcType="VARCHAR" />
+	    <result column="pcount" property="pcount" jdbcType="VARCHAR" />
+	    <result column="pdanger" property="pdanger" jdbcType="VARCHAR" />
+	    <result column="pstate" property="pstate" jdbcType="VARCHAR" />
+	    <result column="pprice" property="pprice" jdbcType="VARCHAR" />
+	    <result column="premark" property="premark" jdbcType="VARCHAR" />
+	    <result column="pupdate_time" property="pupdateTime" jdbcType="TIMESTAMP" />
+	    <result column="pcreate_time" property="pcreateTime" jdbcType="TIMESTAMP" />
+	    <result column="plogo" property="plogo" jdbcType="VARCHAR" />
+    <association property="storage" javaType="com.topscit.springboot1.bean.Storage" column="id">
+	    <id column="stid" property="stid" jdbcType="VARCHAR" />
+	    <result column="stname" property="stname" jdbcType="VARCHAR" />
+	    <result column="stremark" property="stremark" jdbcType="VARCHAR" />
+	    <result column="stupdate_time" property="stupdateTime" jdbcType="TIMESTAMP" />
+   </association>
+  </resultMap>
    
    <select id="getPartsBy" resultMap="BaseResultMap">
    	SELECT * FROM parts INNER JOIN storage 

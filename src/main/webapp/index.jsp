@@ -16,7 +16,6 @@
 <link rel="Bookmark" href="/favicon.ico" >
 <link rel="Shortcut Icon" href="/favicon.ico" />
 <script src="./js/axios.min.js"></script>
-
 <script src="./js/vue.js"></script>
 <!--[if lt IE 9]>
 <script type="text/javascript" src="lib/html5shiv.js"></script>
@@ -49,7 +48,7 @@
 					<a href="#" class="dropDown_A">欢迎${namecode } <i class="Hui-iconfont">&#xe6d5;</i></a>
 					<ul class="dropDown-menu menu radius box-shadow">
 						<li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
-						<li><a href="javascript:;" onclick="member_add('修改密码','updatePass.jsp','','510')">修改密码</a></li>
+						<li><a href="javascript:;" onclick="member_add('忘记密码','updatePass.jsp','','510')">忘记密码</a></li>
 						<li><a href="/Login.jsp">切换账户</a></li>
 						<li><a href="/logout">退出</a></li>
 				</ul>

@@ -23,23 +23,16 @@
 <script src="/js/axios.min.js"></script>
 <script src="/ws/js/jquery.min.js"></script>
 <script src="/ws/js/vue.js"></script>
-<!-- 引入样式 -->
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<!-- 引入组件库 -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="/element-ui/lib/index.js"></script>
+<link type="text/css" rel="styleSheet"  href="/element-ui/lib/theme-chalk/index.css" />
 <title>用户管理</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div id="app" class="page-container">
-	<div class="text-c"> 日期范围：
-		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">
-		-
-		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
-		<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" v-model="content"  id="" name="">
-		<button type="submit" class="btn btn-success radius" @click="selectIf()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+	<div class="text-c"> 
+		<input type="text" class="input-text" style="width:250px" placeholder="输入商品名" v-model="content"  id="" name="">
+		<button type="submit" class="btn btn-success radius" @click="selectIf()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索商品</button>
 	</div><!-- href="JavaScript:void(0)" -->
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a  @click="ahref()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加订单</a>
 	    <el-select popper-class = "optionsContent" default-first-option filterable v-model="customer.cname" @change="chickvalue($event)" placeholder="请选择客户">
@@ -65,9 +58,9 @@
                   <el-table-column label="仓库数量" prop="gcount"></el-table-column>
                   <el-table-column label="操作购买数量" >
                   	<template slot-scope="scope">
-                  		<i @click="changenum(1,scope)" style="margin-left:30px; color:red; " class="el-icon-plus"></i>
+                  		<i @click="changenum(0,scope)" style="margin-left:30px; color:red; " class="el-icon-caret-left"></i>
 		                 <span style="margin-left:30px;">{{inde[scope.$index]}}</span>
-		                 <i @click="changenum(0,scope)" style="margin-left:30px; color:red; " class="el-icon-minus"></i>
+		                <i @click="changenum(1,scope)" style="margin-left:30px; color:red; " class="el-icon-caret-right"></i>
 					　</template>
 		                 
                   </el-table-column>
@@ -223,6 +216,9 @@ var v = new Vue({
 		        	      data:JSON.stringify(_this.ordergoodslist),
 		        	      dataType: "json",
 		        	      success: function (response) {
+		        	    	  if(response){
+		        	    		  alert("添加成功!");
+		        	    	  }
 		        	      }
 		        	  });
 				}
@@ -237,7 +233,7 @@ var v = new Vue({
 				window.location.href="order/allorder?cid="+_this.customer.cid;
 			}else
 			{
-				alert("请选择客户！");
+				alert("请选择客户！");<String, Object>
 			} */
 		},
 		chickvalue:function(e){
@@ -377,6 +373,7 @@ var v = new Vue({
                     _this.total = response.total;
                     _this.pageSize = response.pageSize;
                     
+                    _this.inde.length = 0;
                     var i = 0;
                     for(i;i<response.list.length;i++){
                     	_this.inde.push(1);

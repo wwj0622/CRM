@@ -24,8 +24,10 @@ public class Parts {
     private String pprice;
 
     private String premark;
-
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    
+    private String gid;
+     
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
     private Date pupdateTime;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
@@ -35,6 +37,13 @@ public class Parts {
     
     private Storage storage;
     
+    public String getGid() {
+		return gid;
+	}
+
+	public void setGid(String gid) {
+		this.gid = gid;
+	}
 
     public Storage getStorage() {
 		return storage;

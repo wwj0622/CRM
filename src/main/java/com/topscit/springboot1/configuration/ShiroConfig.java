@@ -8,6 +8,7 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -16,6 +17,8 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import com.topscit.springboot1.realm.MyRealm;
@@ -74,6 +77,7 @@ public class ShiroConfig {
 		factoryBean.setUnauthorizedUrl("/unauthorized.jsp");
 
 		Map<String,String> hashMap = new HashMap<String, String>();
+     	hashMap.put("/js/**", "anon");
 		hashMap.put("/js/**", "anon");
 		hashMap.put("/lib/**", "anon");
 		hashMap.put("/static/**", "anon");
@@ -82,12 +86,20 @@ public class ShiroConfig {
 		hashMap.put("/Login.jsp", "anon");
 		hashMap.put("/logout", "logout");
 		
+		hashMap.put("/**", "anon");
 		hashMap.put("/**", "authc");
 	
 		factoryBean.setFilterChainDefinitionMap(hashMap);
 		return factoryBean;
 	}
 	
+	开启shiro注解
+	//使让权限注解生效的对象的生命周期跟controller一致
+		@Bean(name="lifecycleBeanPostProcessor")
+		public LifecycleBeanPostProcessor lifecycleBeanPostProcessor()
+		{
+			return new LifecycleBeanPostProcessor();
+		}
 	开启shiro注解
 	@Bean
     @ConditionalOnMissingBean
@@ -102,7 +114,35 @@ public class ShiroConfig {
 		AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
 		advisor.setSecurityManager(securityManager);
 		return advisor;
+
+		@Bean
+		@DependsOn(value="lifecycleBeanPostProcessor")
+		public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator()
+		{
+			DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+			defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
+			return defaultAdvisorAutoProxyCreator;
+		}
 		
+		@Bean
+		public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor()
+		{
+			AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+			advisor.setSecurityManager(securityManager());
+			return advisor;
+		}
+		
+		@Bean
+		public HandlerExceptionResolver simpleMappingExceptionResolver()
+		{
+			SimpleMappingExceptionResolver simpleMappingExceptionResolver = new SimpleMappingExceptionResolver();
+			Properties properties = new Properties();
+			properties.put("org.apache.shiro.authz.UnauthorizedException", "redirect:/unauthorized.jsp");
+			simpleMappingExceptionResolver.setExceptionMappings(properties);
+			return simpleMappingExceptionResolver;
+		}
+		
+
 	}
 	
 	    @Bean
@@ -115,6 +155,4 @@ public class ShiroConfig {
 	        return resolver;
 	    }
 	
-
-}
 */

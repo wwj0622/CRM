@@ -16,7 +16,6 @@
     <result column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="gid" property="gid" jdbcType="VARCHAR" />
     <association property="goods" column="gid" javaType="com.topscit.springboot1.bean.Goods">
-    	
 	    <result column="gname" property="gname" jdbcType="VARCHAR" />
 	    <result column="goriginal" property="goriginal" jdbcType="VARCHAR" />
 	    <result column="gprice" property="gprice" jdbcType="VARCHAR" />
@@ -30,6 +29,15 @@
   </sql>
    <select id="selectListGoodsOrder" resultMap="BaseResultMap1">
   	select * from order_goods o inner join goods g on o.gid = g.gid where uid = #{uid}
+  </select>
+  <select id="selectListGoodsOrderByOid" resultMap="BaseResultMap1">
+  	select * from order_goods o inner join goods g on o.gid = g.gid where o.oid = #{oid}
+  </select>
+  <select id="selectListGoodsOrderByYoid" resultMap="BaseResultMap1">
+  	select * from order_goods o inner join goods g on o.gid = g.gid where ogremark = #{yoid}
+  </select>
+  <select id="selectOrderGoodsByYoid" resultMap="BaseResultMap">
+  	select * from order_goods where ogremark = #{id}
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -49,6 +57,10 @@
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from order_goods
     where oid = #{oid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteOrderGoodsByYoid">
+  	delete from order_goods
+    where ogremark = #{yoid}
   </delete>
   <insert id="insert" parameterType="com.topscit.springboot1.bean.OrderGoods" >
     insert into order_goods (oid, gid, ogcount, 

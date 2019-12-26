@@ -28,6 +28,7 @@ public class UserController {
 	@Resource
 	private LoginService loginService;
 	
+	
 	@RequestMapping("/permiss")
 	public String SelectPermissiona(User user,Map<String, Object> data)
 	{
@@ -43,7 +44,6 @@ public class UserController {
 	
 	@RequestMapping("/add")
 	@RequiresPermissions("user:user")
-	@RequiresRoles("超级管理员")
 	@ResponseBody
 	public HashMap<String, Object> addUser(@RequestBody User user)
 	{
@@ -170,6 +170,7 @@ public class UserController {
 	
    
 	@RequestMapping("/stop")
+	@RequiresPermissions("user:xit")
 	@ResponseBody
 	public HashMap<String, Object> StopUser(String id)
 	{

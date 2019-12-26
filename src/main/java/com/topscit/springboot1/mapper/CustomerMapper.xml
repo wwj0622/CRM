@@ -25,6 +25,10 @@
   <select id="selectAllKehuById" resultMap="BaseResultMap">
   	select * from customer where smid = #{smid}
   </select>
+  
+  <select id="selectAllCustomer" resultMap="BaseResultMap">
+  	select * from customer
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from customer
     where cid = #{cid,jdbcType=VARCHAR}

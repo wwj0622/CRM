@@ -8,9 +8,36 @@
     <result column="ystate" property="ystate" jdbcType="VARCHAR" />
     <result column="cid" property="cid" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="BaseResultMap1" type="com.topscit.springboot1.bean.Yorder" >
+    <id column="yoid" property="yoid" jdbcType="VARCHAR" />
+    <result column="ymoney" property="ymoney" jdbcType="VARCHAR" />
+    <result column="ytime" property="ytime" jdbcType="TIMESTAMP" />
+    <result column="ystate" property="ystate" jdbcType="VARCHAR" />
+    <result column="cid" property="cid" jdbcType="VARCHAR" />
+	    <collection property="orderGoods" ofType="com.topscit.springboot1.bean.OrderGoods" column="oid">
+	    	<id column="oid" property="oid" jdbcType="VARCHAR" />
+		    <result column="ogcount" property="ogcount" jdbcType="VARCHAR" />
+		    <result column="ogremark" property="ogremark" jdbcType="VARCHAR" />
+		    <result column="uid" property="uid" jdbcType="VARCHAR" />
+		    <result column="gid" property="gid" jdbcType="VARCHAR" />
+			    <association property="goods" column="gid" javaType="com.topscit.springboot1.bean.Goods">
+				    <result column="gname" property="gname" jdbcType="VARCHAR" />
+				    <result column="goriginal" property="goriginal" jdbcType="VARCHAR" />
+				    <result column="gprice" property="gprice" jdbcType="VARCHAR" />
+				    <result column="ptid" property="ptid" jdbcType="VARCHAR" />
+				    <result column="gcount" property="gcount" jdbcType="VARCHAR" />
+				    <result column="glogo" property="glogo" jdbcType="VARCHAR" />
+			    </association>
+	    </collection>
+  </resultMap>
   <sql id="Base_Column_List" >
     yoid, ymoney, ytime, ystate, cid
   </sql>
+  <select id="selectAllYorder" resultMap="BaseResultMap">
+  SELECT * FROM yorder
+  	<!-- SELECT * FROM yorder y inner join order_goods o on y.yoid = o.ogremark
+	inner join goods g on o.gid = g.gid -->
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

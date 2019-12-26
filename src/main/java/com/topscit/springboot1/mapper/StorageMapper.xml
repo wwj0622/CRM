@@ -10,6 +10,12 @@
   <sql id="Base_Column_List" >
     stid, stname, stremark, stupdate_time
   </sql>
+  
+  <select id="selectStorage" resultMap="BaseResultMap">
+     select * from storage 
+  </select>
+  
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

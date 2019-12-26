@@ -35,10 +35,10 @@ public class GoodsController {
 	private GoodsService goodsService;
 
 	@RequestMapping("/goodslist")
-	public String selectListGoodsByPn(/*Map<String, Object> map,@RequestParam(defaultValue = "1")int pn, @RequestParam(defaultValue = "1")int size*/){
-//		PageInfo<Goods> selectListGoodsByPn = goodsService.selectListGoodsByPn(pn, size);
-//		map.put("pageinfo", selectListGoodsByPn);
-//		System.out.println(selectListGoodsByPn);System.out.println();
+	public String selectListGoodsByPn(Map<String, Object> map,@RequestParam(defaultValue = "1")int pn, @RequestParam(defaultValue = "1")int size){
+		PageInfo<Goods> selectListGoodsByPn = goodsService.selectListGoodsByPn(pn, size);
+		map.put("pageinfo", selectListGoodsByPn);
+		System.out.println(selectListGoodsByPn);System.out.println();
 		return "forward:/ws/member-list.jsp";
 	}
 	

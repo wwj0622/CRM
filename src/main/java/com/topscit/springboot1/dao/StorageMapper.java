@@ -18,4 +18,8 @@ public interface StorageMapper {
     int updateByPrimaryKey(Storage record);
     
     List<Storage> selectTid();
+    
+    List<Storage> selectStorage();
+    
+    
 }
