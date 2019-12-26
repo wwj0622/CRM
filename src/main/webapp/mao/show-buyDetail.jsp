@@ -49,6 +49,9 @@
 			<a href="javascript:;"  @click="updateAllBuydetail" class="btn btn-success radius">
 				<i class="Hui-iconfont"></i> 批量入库
 			</a> 
+			<a href="javascript:;" @click="member_add" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加采购单详情
+			</a>
 		</span> 
 	</div>
 	<div class="mt-20">
@@ -166,7 +169,10 @@ var v =  new Vue({
 		 member_edit(title,url,id,w,h){
         	 layer_show(title,url,w,h);
          },
-        
+         member_add(){
+        	var bid = document.getElementById("box").value;
+     		location.href="mao/add-buyDetail.jsp?bid="+bid;
+     	},
          member_del(obj,bdid){
          	var _this = this;
     			$.ajax({
