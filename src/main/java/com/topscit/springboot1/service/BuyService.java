@@ -15,13 +15,15 @@ public interface BuyService {
 	
 	public PageInfo<BuyDetail> selectBuyDetailList(int pn,int size);
 	
-	public PageInfo<Buy> selectBuyInList(int pn,int size);
+	public List<Buy> selectBuyInList();
 	
 	public List<Buy> selectBuyByTime(String beginDate,String endDate);
 	
 	public List<BuyDetail> selectBuyDetailByTime(String beginDate,String endDate);
 	
 	 List<BuyDetail> getBuyDetailBy(String id);
+	 
+	 List<BuyDetail> getAllBuyDetailIn(String bid);
 	 
 	 public BuyDetail  getBuyDetailByBdid(String bdid);
 	 

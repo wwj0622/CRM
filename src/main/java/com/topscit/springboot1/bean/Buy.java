@@ -1,6 +1,7 @@
 package com.topscit.springboot1.bean;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,7 +22,7 @@ public class Buy {
 
     private String bremark;
 
-    private String sid;
+    private String supplierId;
     
     private String state;
 
@@ -29,7 +30,7 @@ public class Buy {
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date gupdateTime;
     
-    private BuyDetail buyDetail;
+    private List<BuyDetail> buyDetail;
     
     private Supplier supplier;
     
@@ -91,12 +92,12 @@ public class Buy {
         this.bremark = bremark == null ? null : bremark.trim();
     }
 
-    public String getSid() {
-        return sid;
+    public String getSupplierId() {
+        return supplierId;
     }
 
-    public void setSid(String sid) {
-        this.sid = sid == null ? null : sid.trim();
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId == null ? null : supplierId.trim();
     }
 
     public Date getGupdateTime() {
@@ -109,16 +110,16 @@ public class Buy {
 
     
     
-	public BuyDetail getBuyDetail() {
+	
+	
+
+	public List<BuyDetail> getBuyDetail() {
 		return buyDetail;
 	}
 
-	public void setBuyDetail(BuyDetail buyDetail) {
+	public void setBuyDetail(List<BuyDetail> buyDetail) {
 		this.buyDetail = buyDetail;
 	}
-
-	
-	
 
 	public String getState() {
 		return state;
@@ -131,7 +132,7 @@ public class Buy {
 	@Override
 	public String toString() {
 		return "Buy [bid=" + bid + ", bstate=" + bstate + ", btime=" + btime + ", baddress=" + baddress + ", bman="
-				+ bman + ", bremark=" + bremark + ", sid=" + sid + ", state=" + state + ", gupdateTime=" + gupdateTime
+				+ bman + ", bremark=" + bremark + ", supplierId=" + supplierId + ", state=" + state + ", gupdateTime=" + gupdateTime
 				+ ", buyDetail=" + buyDetail + ", supplier=" + supplier + "]";
 	}
 

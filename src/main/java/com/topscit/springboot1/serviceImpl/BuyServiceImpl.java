@@ -209,12 +209,14 @@ public class BuyServiceImpl  implements BuyService {
 
 
 	@Override
-	public PageInfo<Buy> selectBuyInList(int pn, int size) {
-		BuyMapper mapper = st.getMapper(BuyMapper.class);
-		PageHelper.startPage(pn,size);
-		List<Buy> allBuy = mapper.getAllBuyIn();
-		PageInfo<Buy> pageInfo = new PageInfo<Buy>(allBuy);
-		return pageInfo;
+	public List<Buy> selectBuyInList() {
+//		BuyMapper mapper = st.getMapper(BuyMapper.class);
+//		PageHelper.startPage(pn,size);
+//		List<Buy> allBuy = mapper.getAllBuyIn();
+//		PageInfo<Buy> pageInfo = new PageInfo<Buy>(allBuy);
+		
+		List<Buy> allBuyIn = buyMapper.getAllBuyIn();
+		return allBuyIn;
 	}
 
 
@@ -268,6 +270,13 @@ public class BuyServiceImpl  implements BuyService {
 		else{
 			return false;
 		}
+	}
+
+
+	@Override
+	public List<BuyDetail> getAllBuyDetailIn(String bid) {
+		List<BuyDetail> allBuyDetailIn = buyDetailMapper.getAllBuyDetailIn(bid);
+		return allBuyDetailIn;
 	}
 
 

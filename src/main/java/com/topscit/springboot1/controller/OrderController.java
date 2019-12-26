@@ -23,7 +23,6 @@ import com.topscit.springboot1.bean.User;
 import com.topscit.springboot1.dao.OrderGoodsMapper;
 import com.topscit.springboot1.service.OrderService;
 
-import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping("/order")

@@ -198,7 +198,7 @@
    
    <select id="getPartsBy" resultMap="BaseResultMap">
    	SELECT * FROM parts INNER JOIN storage 
-	WHERE parts.ptid=storage.stid AND pcount+0 &lt;s pdanger+0
+	WHERE parts.ptid=storage.stid AND pcount+0 &lt; pdanger+0
    </select>
    
    <update id="updateCount" parameterType="com.topscit.springboot1.bean.Parts">

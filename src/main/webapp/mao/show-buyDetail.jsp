@@ -49,11 +49,7 @@
 			<a href="javascript:;"  @click="updateAllBuydetail" class="btn btn-success radius">
 				<i class="Hui-iconfont"></i> 批量入库
 			</a> 
-			<a href="javascript:;" onclick="member_add('添加采购单详情','mao/add-buy.jsp','','510')" class="btn btn-primary radius">
-				<i class="Hui-iconfont">&#xe600;</i> 添加采购单详情
-			</a>
 		</span> 
-		<span class="r">共有数据：<strong>88</strong> 条</span> 
 	</div>
 	<div class="mt-20">
 	<table class="table table-border table-bordered table-bg table-sort">
@@ -74,7 +70,7 @@
 			 
 			<tr class="text-c" v-for='(buyDetail,i) in buyDetailList'>
 					<td><input name=""  v-model="checkedBuy" type="checkbox" :value="buyDetail.bdid"></td>
-					<td class="text-l">{{buyDetail.bid}}</td>
+					<td class="text-l">{{buyDetail.buyId}}</td>
 					<td>{{buyDetail.parts.pname}}</td>
 					<td>{{buyDetail.bdcount}}</td>
 					<td>{{buyDetail.bdprice}}</td>

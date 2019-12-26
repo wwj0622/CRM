@@ -60,7 +60,7 @@
 			<label class="form-label col-xs-4 col-sm-3">供应商：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
 				<span class="select-box">
-					<select v-model="buy.sid"  class="select" >				
+					<select v-model="buy.supplierId"  class="select" >				
                             <option v-for="(s,i) in supplier" :value="s.sid">{{s.sname}}</option>
 					</select>
 				</span>

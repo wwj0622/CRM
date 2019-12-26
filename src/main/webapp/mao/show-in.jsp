@@ -38,22 +38,12 @@
 
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container" id="app">
-	<div class="text-c"> 
-		根据交货时间查询
-		<input type="Date" v-model="beginTime"  id="datemin" class="input-text Wdate" style="width:150px;">
-		-
-		<input type="Date" v-model="endTime"  id="datemax" class="input-text Wdate" style="width:150px;">
-		<button  @click="search" class="btn btn-success radius" id="" name="">
-		<i class="Hui-iconfont">&#xe665;</i> 搜索
-		</button>
-	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
 		<span class="l">
 			<a href="javascript:;" @click="delAllSupllier" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
 			</a> 
 		</span> 
-		<span class="r">共有数据：<strong>88</strong> 条</span> 
 	</div>
 	<div class="mt-20">
 	<table class="table table-border table-bordered table-bg table-sort">
@@ -61,45 +51,33 @@
 				<tr class="text-c">
 					<th width="25"></th>
 					<th width="70">采购订单号</th>
-					<th width="100">供货商ID</th>
-					<th width="100">交货地址</th>
+					<th width="100">供货商名称</th>
 					<th width="60">入库时间</th>
+					<th width="100">交货时间</th>
+					<th width="100">交货地址</th>
 					<th>备注信息</th>
-					<th width="60">入库状态</th>
-					<th width="40">详情</th>
 					<th width="100">操作</th>
 				</tr>
 			</thead>
 			<tbody>
 			 
-			<tr class="text-c" v-for='(buy,i) in buyList'>
+			 <tr class="text-c"  v-for='(buy,i) in buy'>
 					<td><input name=""  v-model="checkedBuy" type="checkbox" :value="buy.bid"></td>
 					<td class="text-l">{{buy.bid}}</td>
-					<td>{{buy.sid}}</td>
-					<td>{{buy.baddress}}</td>
+					<td>{{buy.supplier.sname}}</td>
 					<td>{{buy.gupdateTime}}</td>
+					<td>{{buy.btime}}</td>
+					<td>{{buy.baddress}}</td>
 					<td class="text-l">{{buy.bremark}}</td>
-					<td>{{buy.state}}</td>
-					<td>
-						<a href="javascript:void(0);" @click="member_edit('采购单详情','mao/show-buyDetail.jsp?bid='+buy.bid,'4','','510')">点击查看详情</a>
-					</td>
 					<td class="f-14 product-brand-manage">
-						<a style="text-decoration:none" @click="member_edit('编辑采购单','mao/edit-buy.jsp?bid='+buy.bid,'4','','510')" href="javascript:;" title="编辑">
-							<i class="Hui-iconfont">&#xe6df;</i>
-						</a> 
+						<a  class="ml-5"@click="member_edit('入库单详情','mao/show-inDetail.jsp?bid='+buy.bid,'4','','510')" href="javascript:;">
+							<i class="Hui-iconfont">详情</i>
+						</a>
 						<a style="text-decoration:none" class="ml-5" @click="member_del(this,buy.bid)" href="javascript:;" title="删除">
 							<i class="Hui-iconfont">&#xe6e2;</i>
 						</a>
 					</td>
-				</tr>
-			 <tr>
-		    	 <td colspan="4">
-	                <a href="javascript:;" @click="jump(1)">首页</a>
-	                <a href="javascript:;" @click="jump(pageInfo.prePage)">上页</a>
-	                <a href="javascript:;" @click="jump(pageInfo.nextPage)">下页</a>
-	                <a href="javascript:;" @click="jump(pageInfo.pages)">尾页</a>
-            	</td>
-		   	 </tr>
+				</tr> 
 			</tbody>
 		</table>
 	</div>
@@ -108,46 +86,17 @@
 var v =  new Vue({
 	el:'#app',
 	data:{
-		buyList:[],
+		buy:[],
 		pageInfo:[],
 		inputContent:'',
 		checkedBuy:[],
 		state:'',
 		beginTime:'',
 		endTime:'',
-		stateeee:''
+		stateeee:'',
+		buyDetailList:[]
 	},
 	methods:{
-		
-		jump(page){
-		 	var _this = this;
-	        $.ajax({
-	            type: "GET",
-	            url: "/buy/getAllBuy",
-	            data: {pn:page},
-	            dataType: "json",
-	            success: function (response) {
-	            	_this.buyList = response.data.list;
-	            	_this.pageInfo = response.data;
-	            },
-	        });
-         },
-         search(){
-        	 console.log(this.beginTime);
-        	 console.log(this.endTime);
-        	var _this = this;
-        	
- 	        $.ajax({
- 	            type: "GET",
- 	            url: "/buy/getBuyByTime",
- 	            data: {beginDate:_this.beginTime,endDate:_this.endTime},
- 	            dataType: "json",
- 	            success: function (response) {
- 	            	_this.buyList = response.data.list;
- 	            	_this.pageInfo = response.data;
- 	            },
- 	        });
-         },
          member_del(obj,bid){
         	var _this = this;
    			$.ajax({
@@ -158,7 +107,7 @@ var v =  new Vue({
    				success: function(data){
    					$(obj).parents("tr").remove();
    					layer.msg('已删除!',{icon:1,time:1000});
-   					location.href="mao/show-buy.jsp";
+   					location.href="mao/show-in.jsp";
    				},
    				error:function(data) {
    					console.log(data.msg);
@@ -185,20 +134,7 @@ var v =  new Vue({
          },
          member_edit(title,url,id,w,h){
         	 layer_show(title,url,w,h);
-         },
-         changeState(bid){
- 			var _this = this;
- 			$.ajax({
- 	            type: "POST",
- 	            url: "/buy/updateState",
- 	            data: {bid:bid},
- 	            dataType: "json",
- 	            success: function (response) {
- 	            	layer.close(layer.index);
- 	            	window.parent.location.reload();
- 	            },
- 	        });
- 		}
+         }
 	},
 	created(){  
         var _this = this;
@@ -208,8 +144,10 @@ var v =  new Vue({
             data: null,
             dataType: "json",
             success: function (response) {
-            	_this.buyList = response.data.list;
-            	_this.pageInfo = response.data;
+            	_this.buy = response.data;
+            	_this.buyDetailList = response.data1;
+            	console.log(_this.buyList);
+            	console.log(_this.buyDetailList);
             },
         });
        }
@@ -220,7 +158,7 @@ var v =  new Vue({
 
 
 <!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/jquzery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->

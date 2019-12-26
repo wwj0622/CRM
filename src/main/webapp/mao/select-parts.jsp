@@ -61,9 +61,10 @@
 			<tbody>
 			 
 			<tr class="text-c" v-for='(parts,i) in partsList'>
-					<td><input name=""  v-model="checkedParts" type="checkbox" :value="parts.pid"></td>
 					<td>
 						<input type="hidden" id="box" value="${param.bid }" >
+						<input name=""  v-model="checkedParts" type="checkbox" :value="parts.pid"></td>
+					<td>
 						{{parts.pid}}
 					</td>
 					<td class="text-l">
@@ -77,10 +78,10 @@
 						{{parts.punit}}
 					</td>
 					<td>
-						<input type="text" v-model="buyDetail.bdount">
+						<input type="text" v-model="count[i]">
 					</td>
 					<td>
-						<input type="text" v-model="buyDetail.bdprice">
+						<input type="text" v-model="price[i]">
 					</td>
 				</tr>
 			 <tr>
@@ -100,27 +101,31 @@ var v =  new Vue({
 	el:'#app',
 	data:{
 		pageInfo:[],
-		inputContent:'',
 		checkedParts:[],
 		partsList:[],
 		buyDetail:[],
+		count:[],
+		price:[],
+		partsId:[]
 	},
 	methods:{
 		addBuyDetail(){
 			var bid = document.getElementById("box").value;
-			this.buyDetail.pid=this.checkedParts.pid;
-			this.buyDetail.bid=bid;
+			for(var i=0;i<this.checkedParts.length;i++){
+				this.buyDetail.push(bid, this.count[i],this.price[i],this.checkedParts[i])
+			}	
 			console.log(this.buyDetail);
 			var _this = this;
-			/*  $.ajax({
-		            type: "GET",
+			 $.ajax({
+		            type: "POST",
 		            url: "/buy/addBuyDetail",
-		            data: {pid:_this.checkedParts,count:_this.count,price:_this.},
+		            data: JSON.stringify(_this.buyDetail),
+		            contentType: 'application/json',
 		            dataType: "json",
 		            success: function (response) {
-		            	
+		            	location.href="mao/show-buy.jsp"
 		            },
-		        }); */
+		        }); 
 		},
 		jump(page){
 		 	var _this = this;
@@ -146,7 +151,6 @@ var v =  new Vue({
             success: function (response) {
             	_this.partsList = response.data.list;
             	_this.pageInfo = response.data;
-            	console.log(_this.partsList);
             },
         });
        }

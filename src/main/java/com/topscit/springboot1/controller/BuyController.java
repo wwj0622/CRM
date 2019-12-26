@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,12 +54,18 @@ public class BuyController {
 	
 	@RequestMapping("/getAllBuyIn")
 	@ResponseBody
-	public ResultBean getAllBuyIn(
-			@RequestParam(defaultValue="1")int pn,
-			@RequestParam(defaultValue="5")int size,
-			Map<String, Object> data){
-		PageInfo<Buy> selectBuyList = buyservice.selectBuyInList(pn, size);
-		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectBuyList);
+	public ResultBean getAllBuyIn(){
+		List<Buy> selectBuyList = buyservice.selectBuyInList();
+		List<BuyDetail> buyDetail = selectBuyList.get(0).getBuyDetail();
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", selectBuyList,buyDetail);
+		return resultBean;
+	}
+	
+	@RequestMapping("/getAllBuyDetailIn")
+	@ResponseBody
+	public ResultBean getAllBuyDetailIn(String bid){
+		List<BuyDetail> allBuyDetailIn = buyservice.getAllBuyDetailIn(bid);
+		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", allBuyDetailIn);
 		return resultBean;
 	}
 	
@@ -71,7 +78,7 @@ public class BuyController {
 		return resultBean;
 	}
 	
-	
+		
 	@RequestMapping("/getBuyDetailByBdid")
 	@ResponseBody
 	public ResultBean getBuyDetailByBdid(String bdid){
@@ -100,7 +107,6 @@ public class BuyController {
 	@RequestMapping("/addInfo")
 	@ResponseBody
 	public ResultBean addInfo(Buy buy){
-		System.out.println(buy);
 		boolean addBuy = buyservice.addBuy(buy);
 		String bid = buy.getBid();
 		if(addBuy){
@@ -112,22 +118,46 @@ public class BuyController {
 	}
 	
 	
-//	@RequestMapping("/addBuyDetail")
-//	@ResponseBody
-//	public ResultBean addBuyDetail(List<BuyDetail> buyDetail){
-//		System.out.println(buyDetail);
-//		boolean addBuyDetail = false;
-//		for(int i =0;i < buyDetail.size();i++){
-//			addBuyDetail = buyservice.addBuyDetail(buyDetail.get(i));
-//		}
-//		
-//		if(addBuyDetail){
-//			return new ResultBean(ResultBean.STATA_SUCCESS, "添加成功");
-//		}
-//		else{
-//			return new ResultBean(ResultBean.STATA_FIAIL, "添加失败");
-//		}
-//	}
+	@RequestMapping("/addBuyDetail")
+	@ResponseBody
+	public ResultBean addBuyDetail(@RequestBody String[] buyDetail){
+		BuyDetail buyDetail2 = new BuyDetail();
+		String[] count =new String[buyDetail.length/4];
+		String[] price =new String[buyDetail.length/4];
+		String[] bid =new String[buyDetail.length/4];
+		String[] pid =new String[buyDetail.length/4];
+		for(int j=0;j<buyDetail.length/4;j++){
+			for (int i = j*4; i < (j+1)*4; i++) {
+				if(i==0){
+					bid[j]=buyDetail[i];
+				}
+				else{
+					if(i%4==0){
+						bid[j]=buyDetail[i];
+						
+					}
+					if((i+1)%4==0){
+						pid[j]=buyDetail[i];
+					}
+					if((i+2)%4==0){
+						price[j]=buyDetail[i];
+					}
+					if((i+3)%4==0){
+						count[j]=buyDetail[i];
+					}
+				}
+			}
+			
+		}
+		for(int i=0;i<buyDetail.length/4;i++){
+			buyDetail2.setBuyId(bid[i]);
+			buyDetail2.setBdcount(count[i]);
+			buyDetail2.setBdprice(price[i]);
+			buyDetail2.setPartsId(pid[i]);
+			buyservice.addBuyDetail(buyDetail2);
+		}
+		return new ResultBean(ResultBean.STATA_SUCCESS, "添加成功");
+	}
 	
 	@RequestMapping("/delBuy")
 	@ResponseBody
@@ -150,6 +180,8 @@ public class BuyController {
 			return new ResultBean(ResultBean.STATA_FIAIL, "删除失败");
 		}
 	}
+	
+	
 	
 	
 	@RequestMapping("/delBuyDetail")
@@ -219,7 +251,7 @@ public class BuyController {
 			
 			BuyDetail buyDetailByBdid = buyservice.getBuyDetailByBdid(bdid[i]);
 			String bdcount = buyDetailByBdid.getBdcount();
-			String pid = buyDetailByBdid.getPid();
+			String pid = buyDetailByBdid.getPartsId();
 			
 			updateCount = buyservice.updateCount(bdcount, pid);
 			updateStateByBdid = buyservice.updateStateByBdid(bdid[i]);

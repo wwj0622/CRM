@@ -8,9 +8,9 @@
     <result column="baddress" property="baddress" jdbcType="VARCHAR" />
     <result column="bman" property="bman" jdbcType="VARCHAR" />
     <result column="bremark" property="bremark" jdbcType="VARCHAR" />
-    <result column="sid" property="sid" jdbcType="VARCHAR" />
+    <result column="supplierId" property="supplierId" jdbcType="VARCHAR" />
     <result column="gupdate_time" property="gupdateTime" jdbcType="TIMESTAMP" />
-    <association property="supplier" column="sid" javaType="com.topscit.springboot1.bean.Supplier">
+    <association property="supplier" column="supplierId" javaType="com.topscit.springboot1.bean.Supplier">
         <id column="sid" property="sid" jdbcType="VARCHAR" />
     	<result column="sname" property="sname" jdbcType="VARCHAR" />
 	    <result column="sphone" property="sphone" jdbcType="VARCHAR" />
@@ -23,9 +23,41 @@
 	    <result column="screate_time" property="screateTime" jdbcType="TIMESTAMP" />
 	    <result column="slogo" property="slogo" jdbcType="VARCHAR" />
     </association>
+    <collection property="buyDetail" column="bdid" ofType="com.topscit.springboot1.bean.BuyDetail">
+		<id column="bdid" property="bdid" jdbcType="VARCHAR" />
+	    <result column="buyId" property="buyId" jdbcType="VARCHAR" />
+	    <result column="partsId" property="partsId" jdbcType="VARCHAR" />
+	    <result column="bdcount" property="bdcount" jdbcType="VARCHAR" />
+	    <result column="bdprice" property="bdprice" jdbcType="VARCHAR" />
+	    <result column="bdstate" property="bdstate" jdbcType="VARCHAR" />
+	    <result column="bdman" property="bdman" jdbcType="VARCHAR" />
+	    <result column="bdremark" property="bdremark" jdbcType="VARCHAR" />
+	    <result column="bdupdate_time" property="bdupdateTime" jdbcType="TIMESTAMP" />
+	     <association property="parts" column="partsId" javaType="com.topscit.springboot1.bean.Parts">
+	        <id column="pid" property="pid" jdbcType="VARCHAR" />
+		    <result column="pname" property="pname" jdbcType="VARCHAR" />
+		    <result column="pexplain" property="pexplain" jdbcType="VARCHAR" />
+		    <result column="punit" property="punit" jdbcType="VARCHAR" />
+		    <result column="ptid" property="ptid" jdbcType="VARCHAR" />
+		    <result column="pcount" property="pcount" jdbcType="VARCHAR" />
+		    <result column="pdanger" property="pdanger" jdbcType="VARCHAR" />
+		    <result column="pstate" property="pstate" jdbcType="VARCHAR" />
+		    <result column="pprice" property="pprice" jdbcType="VARCHAR" />
+		    <result column="premark" property="premark" jdbcType="VARCHAR" />
+		    <result column="pupdate_time" property="pupdateTime" jdbcType="TIMESTAMP" />
+		    <result column="pcreate_time" property="pcreateTime" jdbcType="TIMESTAMP" />
+		    <result column="plogo" property="plogo" jdbcType="VARCHAR" />
+			   <association property="storage" column="ptid" javaType="com.topscit.springboot1.bean.Storage">
+		        <id column="storage_stid" property="stid" jdbcType="VARCHAR" />
+		   		<result column="stname" property="stname" jdbcType="VARCHAR" />
+		    	<result column="stremark" property="stremark" jdbcType="VARCHAR" />
+		    	<result column="stupdate_time" property="stupdateTime" jdbcType="TIMESTAMP" />
+		     </association>
+  	     </association>
+    </collection>
   </resultMap>
   <sql id="Base_Column_List" >
-    bid, bstate, btime, baddress, bman, bremark, sid, gupdate_time
+    bid, bstate, btime, baddress, bman, bremark, supplierId, gupdate_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -40,10 +72,10 @@
   <insert id="insert" parameterType="com.topscit.springboot1.bean.Buy" >
     insert into buy (bid, bstate, btime, 
       baddress, bman, bremark, 
-      sid, gupdate_time)
+      supplierId, gupdate_time)
     values (#{bid,jdbcType=VARCHAR}, #{bstate,jdbcType=VARCHAR}, #{btime,jdbcType=TIMESTAMP}, 
       #{baddress,jdbcType=VARCHAR}, #{bman,jdbcType=VARCHAR}, #{bremark,jdbcType=VARCHAR}, 
-      #{sid,jdbcType=VARCHAR}, #{gupdateTime,jdbcType=TIMESTAMP})
+      #{supplierId,jdbcType=VARCHAR}, #{gupdateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Buy" >
     insert into buy
@@ -66,8 +98,8 @@
       <if test="bremark != null" >
         bremark,
       </if>
-      <if test="sid != null" >
-        sid,
+      <if test="supplierId != null" >
+        supplierId,
       </if>
       <if test="gupdateTime != null" >
         gupdate_time,
@@ -92,8 +124,8 @@
       <if test="bremark != null" >
         #{bremark,jdbcType=VARCHAR},
       </if>
-      <if test="sid != null" >
-        #{sid,jdbcType=VARCHAR},
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
       </if>
       <if test="gupdateTime != null" >
         #{gupdateTime,jdbcType=TIMESTAMP},
@@ -118,8 +150,8 @@
       <if test="bremark != null" >
         bremark = #{bremark,jdbcType=VARCHAR},
       </if>
-      <if test="sid != null" >
-        sid = #{sid,jdbcType=VARCHAR},
+      <if test="supplierId != null" >
+        supplierId = #{supplierId,jdbcType=VARCHAR},
       </if>
       <if test="gupdateTime != null" >
         gupdate_time = #{gupdateTime},
@@ -135,31 +167,28 @@
       baddress = #{baddress,jdbcType=VARCHAR},
       bman = #{bman,jdbcType=VARCHAR},
       bremark = #{bremark,jdbcType=VARCHAR},
-      sid = #{sid,jdbcType=VARCHAR},
+      supplierId = #{supplierId,jdbcType=VARCHAR},
       gupdate_time = #{gupdateTime,jdbcType=TIMESTAMP}
     where bid = #{bid,jdbcType=VARCHAR}
   </update>
   
   <select id="getAllBuy" resultMap="BaseResultMap" >
-  	SELECT * FROM buy inner join supplier where buy.sid=supplier.sid
+  	SELECT * FROM buy inner join supplier where buy.supplierId=supplier.sid
    </select>
    
    <select id="getBuyBy" resultMap="BaseResultMap" >
-  	SELECT * FROM buy inner join supplier where buy.sid=supplier.sid and buy.bid=#{bid}
+  	SELECT * FROM buy inner join supplier where buy.supplierId=supplier.sid and buy.bid=#{bid}
    </select>
    
    	 <select id="getAllBuyIn" resultMap="BaseResultMap" >
-  	SELECT *,CASE buy.bstate
-	WHEN "1" THEN
-		"已入库"
-	ELSE
-		"未入库"
-	END as state
-	FROM buy where bstate="1"
+	SELECT * FROM buy b inner JOIN supplier s
+	on  b.supplierId = s.sid inner join buy_detail bd on b.bid=bd.buyId
+	inner join parts p on p.pid=bd.partsId inner join `storage` ss on ss.stid=p.ptid
+	where bd.bdstate="1"
    </select>	
    	
 	 <select id="getBuyByTime" resultMap="BaseResultMap">
-	     select * FROM buy inner join supplier where buy.sid=supplier.sid 
+	     select * FROM buy inner join supplier where buy.supplierId=supplier.sid 
 	     and buy.btime &gt;= CONCAT(#{beginDate},' 00:00:00')
 	     and buy.btime &lt;= CONCAT(#{endDate},' 23:59:59')
 	</select>  

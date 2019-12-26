@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class BuyDetail {
     private String bdid;
 
-    private String bid;
+    private String buyId;
 
-    private String pid;
+    private String partsId;
 
     private String bdcount;
 
@@ -48,21 +48,6 @@ public class BuyDetail {
         this.bdid = bdid == null ? null : bdid.trim();
     }
 
-    public String getBid() {
-        return bid;
-    }
-
-    public void setBid(String bid) {
-        this.bid = bid == null ? null : bid.trim();
-    }
-
-    public String getPid() {
-        return pid;
-    }
-
-    public void setPid(String pid) {
-        this.pid = pid == null ? null : pid.trim();
-    }
 
     public String getBdcount() {
         return bdcount;
@@ -121,13 +106,28 @@ public class BuyDetail {
 		this.state = state;
 	}
 
-	@Override
-	public String toString() {
-		return "BuyDetail [bdid=" + bdid + ", bid=" + bid + ", pid=" + pid + ", bdcount=" + bdcount + ", bdprice="
-				+ bdprice + ", bdstate=" + bdstate + ", bdman=" + bdman + ", bdremark=" + bdremark + ", state=" + state
-				+ ", bdupdateTime=" + bdupdateTime + ", parts=" + parts + "]";
+	public String getBuyId() {
+		return buyId;
 	}
 
-    
+	public void setBuyId(String buyId) {
+		this.buyId = buyId;
+	}
+
+	public String getPartsId() {
+		return partsId;
+	}
+
+	public void setPartsId(String partsId) {
+		this.partsId = partsId;
+	}
+
+	@Override
+	public String toString() {
+		return "BuyDetail [bdid=" + bdid + ", buyId=" + buyId + ", partsId=" + partsId + ", bdcount=" + bdcount
+				+ ", bdprice=" + bdprice + ", bdstate=" + bdstate + ", bdman=" + bdman + ", bdremark=" + bdremark
+				+ ", state=" + state + ", bdupdateTime=" + bdupdateTime + ", parts=" + parts + "]";
+	}
+
     
 }

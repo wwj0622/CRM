@@ -31,4 +31,6 @@ public interface BuyDetailMapper {
     
    int updateStateByBdid(@Param("bdid")String bdid);
 
+   
+   public List<BuyDetail> getAllBuyDetailIn(@Param("bid")String bid);
 }
