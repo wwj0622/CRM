@@ -15,26 +15,7 @@ public class Order {
 
     private Date otime;
 
-    private String yoid;
-    
-    
-
-    public Order() {
-		super();
-	}
-
-	public Order(String oid, String cid, String oremark, String osum, String ostate, Date otime, String yoid) {
-		super();
-		this.oid = oid;
-		this.cid = cid;
-		this.oremark = oremark;
-		this.osum = osum;
-		this.ostate = ostate;
-		this.otime = otime;
-		this.yoid = yoid;
-	}
-
-	public String getOid() {
+    public String getOid() {
         return oid;
     }
 
@@ -80,13 +61,5 @@ public class Order {
 
     public void setOtime(Date otime) {
         this.otime = otime;
-    }
-
-    public String getYoid() {
-        return yoid;
-    }
-
-    public void setYoid(String yoid) {
-        this.yoid = yoid == null ? null : yoid.trim();
     }
 }

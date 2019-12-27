@@ -1,7 +1,5 @@
 package com.topscit.springboot1.serviceImpl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +23,6 @@ public class CustomerServiceImpl implements CustomerService{
 	public void updateByPrimaryKey(Customer record) {
 		customerMapper.updateByPrimaryKey(record);
 		
-	}
-
-	@Override
-	public List<Customer> selectAllCustomer() {
-		List<Customer> selectAllCustomer = customerMapper.selectAllCustomer();
-		return selectAllCustomer;
 	}
 
 }

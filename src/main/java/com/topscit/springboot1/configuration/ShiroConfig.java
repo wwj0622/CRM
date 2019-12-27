@@ -77,29 +77,21 @@ public class ShiroConfig {
 		factoryBean.setUnauthorizedUrl("/unauthorized.jsp");
 
 		Map<String,String> hashMap = new HashMap<String, String>();
-<<<<<<< HEAD
      	hashMap.put("/js/**", "anon");
-=======
-		hashMap.put("/js/**", "anon");
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
 		hashMap.put("/lib/**", "anon");
 		hashMap.put("/static/**", "anon");
 		hashMap.put("/temp/**", "anon");
 		hashMap.put("/login", "anon");
 		hashMap.put("/Login.jsp", "anon");
 		hashMap.put("/logout", "logout");
+		hashMap.put("/user/check", "anon");
 		
-<<<<<<< HEAD
-		hashMap.put("/**", "anon");
-=======
 		hashMap.put("/**", "authc");
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
 	
 		factoryBean.setFilterChainDefinitionMap(hashMap);
 		return factoryBean;
 	}
 	
-<<<<<<< HEAD
 	/*开启shiro注解*/
 	//使让权限注解生效的对象的生命周期跟controller一致
 		@Bean(name="lifecycleBeanPostProcessor")
@@ -107,22 +99,7 @@ public class ShiroConfig {
 		{
 			return new LifecycleBeanPostProcessor();
 		}
-=======
-	开启shiro注解
-	@Bean
-    @ConditionalOnMissingBean
-	public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator(){
-          DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
-		  creator.setProxyTargetClass(true);
-		  return creator;
-	}
-	
-	@Bean
-	public AuthorizationAttributeSourceAdvisor attributeSourceAdvisor(SecurityManager securityManager){
-		AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
-		advisor.setSecurityManager(securityManager);
-		return advisor;
-
+		
 		@Bean
 		@DependsOn(value="lifecycleBeanPostProcessor")
 		public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator()
@@ -151,15 +128,4 @@ public class ShiroConfig {
 		}
 		
 
-	}
-	
-	    @Bean
-	    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
-	        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
-	        Properties properties = new Properties();
-	        未授权处理页
-	        properties.setProperty("UnauthorizedException", "403.html");
-	        resolver.setExceptionMappings(properties);
-	        return resolver;
-	    }
-	
+}

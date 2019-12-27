@@ -8,13 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.topscit.springboot1.bean.Customer;
 import com.topscit.springboot1.bean.Goods;
-import com.topscit.springboot1.bean.OrderGoods;
 import com.topscit.springboot1.bean.Storage;
-import com.topscit.springboot1.dao.CustomerMapper;
 import com.topscit.springboot1.dao.GoodsMapper;
-import com.topscit.springboot1.dao.OrderGoodsMapper;
 import com.topscit.springboot1.dao.StorageMapper;
 import com.topscit.springboot1.service.GoodsService;
 
@@ -26,12 +22,6 @@ public class GoodsServiecImpl implements GoodsService{
 	
 	@Autowired
 	private StorageMapper storageMapper;
-	
-	@Autowired
-	private OrderGoodsMapper orderGoodsMapper;
-	
-	@Autowired
-	private CustomerMapper customerMapper;
 
 	@Override
 	public PageInfo<Goods> selectListGoodsByPn(int pn, int size) {
@@ -77,36 +67,6 @@ public class GoodsServiecImpl implements GoodsService{
 			list.add(selectTid.get(i).getStid());
 		}
 		return list;
-	}
-
-	@Override
-	public int insert(OrderGoods record) {
-		int insert = orderGoodsMapper.insert(record);
-		return insert;
-	}
-
-	@Override
-	public int selectAllOrderById(String id) {
-		int orderById = orderGoodsMapper.selectAllOrderById(id);
-		return orderById;
-	}
-
-	@Override
-	public List<OrderGoods> selectByGid(String uid) {
-		List<OrderGoods> selectByGid = orderGoodsMapper.selectByGid(uid);
-		return selectByGid;
-	}
-
-	@Override
-	public int updateGtOgcount(String gid, String count) {
-		int updateGtOgcount = orderGoodsMapper.updateGtOgcount(gid, count);
-		return 0;
-	}
-
-	@Override
-	public List<Customer> selectAllKehuById(String smid) {
-		List<Customer> selectAllKehuById = customerMapper.selectAllKehuById(smid);
-		return selectAllKehuById;
 	}
 
 }

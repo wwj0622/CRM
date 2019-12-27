@@ -1,5 +1,6 @@
 package com.topscit.springboot1.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -21,12 +26,14 @@ import com.topscit.springboot1.bean.Role;
 import com.topscit.springboot1.bean.User;
 import com.topscit.springboot1.bean.userRole;
 import com.topscit.springboot1.service.LoginService;
+import com.topscit.springboot1.util.ValidateCode;
 
 @Controller
 public class UserController {
 
 	@Resource
 	private LoginService loginService;
+	
 	
 	
 	@RequestMapping("/permiss")

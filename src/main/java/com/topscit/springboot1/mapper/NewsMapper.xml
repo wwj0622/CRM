@@ -3,14 +3,78 @@
 <mapper namespace="com.topscit.springboot1.dao.NewsMapper" >
   <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.News" >
     <id column="nid" property="nid" jdbcType="VARCHAR" />
-    <result column="tid" property="tid" jdbcType="VARCHAR" />
-    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="newnumber" property="newnumber" jdbcType="VARCHAR" />
+    <result column="userId" property="userid" jdbcType="VARCHAR" />
+    <result column="receiveUid" property="receiveuid" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="sendTime" property="sendtime" jdbcType="TIMESTAMP" />
+    <result column="receiveTime" property="receivetime" jdbcType="TIMESTAMP" />
     <result column="nstate" property="nstate" jdbcType="VARCHAR" />
-    <result column="ntime" property="ntime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    nid, tid, id, nstate, ntime
+    nid, newnumber, userId, receiveUid, content, sendTime, receiveTime, nstate
   </sql>
+  <select id="ReceiveNews" resultMap="NU">
+	select * from news n INNER JOIN sys_user su ON n.userId = su.id
+	WHERE n.receiveUid  = #{id} and  n.nstate!='3'
+  </select>
+  
+  <select id="NewsLookID" resultMap="NU">
+       select * from news n INNER JOIN sys_user su ON n.userId = su.id
+	   WHERE n.nid=#{id} and n.nstate!='3'
+  </select>
+  
+  <select id="SelectNewsDate" resultMap="NU">
+     select * from news n INNER JOIN sys_user su ON n.receiveUid = su.id
+     where nstate!=3 
+     <if test="name!=null">
+       and(n.newnumber like #{name} or su.usercode like #{name} or n.receiveUid like #{name} or  n.userId like #{name} or n.receiveUid like #{name} or n.content like #{name})
+     </if>   
+     <if test="parse1!=null">
+      and sendTime > #{parse1}
+     </if>
+     <if test="parse2!=null">
+      and sendTime &lt; #{parse2}
+     </if>     
+  </select>
+  
+  
+  <update id="UpdateNewsState">
+       UPDATE news SET nstate='3' WHERE nid=#{id}
+  </update>
+  
+  <select id="SelectAll" resultMap="NU">
+	select * from news n INNER JOIN sys_user su ON n.receiveUid = su.id
+	WHERE n.userId = #{id}  and n.nstate!='3'
+  </select>
+  
+  <resultMap type="com.topscit.springboot1.bean.News" id="NU">
+    <id column="nid" property="nid" jdbcType="VARCHAR" />
+    <result column="newnumber" property="newnumber" jdbcType="VARCHAR" />
+    <result column="userId" property="userid" jdbcType="VARCHAR" />
+    <result column="receiveUid" property="receiveuid" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="sendTime" property="sendtime" jdbcType="TIMESTAMP" />
+    <result column="receiveTime" property="receivetime" jdbcType="TIMESTAMP" />
+    <result column="nstate" property="nstate" jdbcType="VARCHAR" />
+    <association property="user" column="id" javaType="com.topscit.springboot1.bean.User">
+	    <id column="id" jdbcType="VARCHAR" property="id" />
+	    <result column="usercode" jdbcType="VARCHAR" property="usercode" />
+	    <result column="username" jdbcType="VARCHAR" property="username" />
+	    <result column="password" jdbcType="VARCHAR" property="password" />
+	    <result column="salt" jdbcType="VARCHAR" property="salt" />
+	    <result column="phone" jdbcType="VARCHAR" property="phone" />
+	    <result column="ulogo" jdbcType="VARCHAR" property="ulogo" />
+	    <result column="operationtime" jdbcType="TIMESTAMP" property="operationtime" />
+	    <result column="jointime" jdbcType="TIMESTAMP" property="jointime" />
+	    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+	    <result column="locked" jdbcType="VARCHAR" property="locked" />   
+    </association>
+  
+  </resultMap>
+  
+  
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -22,10 +86,12 @@
     where nid = #{nid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.topscit.springboot1.bean.News" >
-    insert into news (nid, tid, id, 
-      nstate, ntime)
-    values (#{nid,jdbcType=VARCHAR}, #{tid,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, 
-      #{nstate,jdbcType=VARCHAR}, #{ntime,jdbcType=TIMESTAMP})
+    insert into news (nid, newnumber, userId, 
+      receiveUid, content, sendTime, 
+      receiveTime, nstate)
+    values (#{nid,jdbcType=VARCHAR}, #{newnumber,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{receiveuid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{sendtime,jdbcType=TIMESTAMP}, 
+      #{receivetime,jdbcType=TIMESTAMP}, #{nstate,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.News" >
     insert into news
@@ -33,61 +99,91 @@
       <if test="nid != null" >
         nid,
       </if>
-      <if test="tid != null" >
-        tid,
+      <if test="newnumber != null" >
+        newnumber,
       </if>
-      <if test="id != null" >
-        id,
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="receiveuid != null" >
+        receiveUid,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="sendtime != null" >
+        sendTime,
+      </if>
+      <if test="receivetime != null" >
+        receiveTime,
       </if>
       <if test="nstate != null" >
         nstate,
-      </if>
-      <if test="ntime != null" >
-        ntime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="nid != null" >
         #{nid,jdbcType=VARCHAR},
       </if>
-      <if test="tid != null" >
-        #{tid,jdbcType=VARCHAR},
+      <if test="newnumber != null" >
+        #{newnumber,jdbcType=VARCHAR},
       </if>
-      <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveuid != null" >
+        #{receiveuid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtime != null" >
+        #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivetime != null" >
+        #{receivetime,jdbcType=TIMESTAMP},
       </if>
       <if test="nstate != null" >
         #{nstate,jdbcType=VARCHAR},
-      </if>
-      <if test="ntime != null" >
-        #{ntime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.News" >
     update news
     <set >
-      <if test="tid != null" >
-        tid = #{tid,jdbcType=VARCHAR},
+      <if test="newnumber != null" >
+        newnumber = #{newnumber,jdbcType=VARCHAR},
       </if>
-      <if test="id != null" >
-        id = #{id,jdbcType=VARCHAR},
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveuid != null" >
+        receiveUid = #{receiveuid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtime != null" >
+        sendTime = #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivetime != null" >
+        receiveTime = #{receivetime,jdbcType=TIMESTAMP},
       </if>
       <if test="nstate != null" >
         nstate = #{nstate,jdbcType=VARCHAR},
-      </if>
-      <if test="ntime != null" >
-        ntime = #{ntime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where nid = #{nid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.News" >
     update news
-    set tid = #{tid,jdbcType=VARCHAR},
-      id = #{id,jdbcType=VARCHAR},
-      nstate = #{nstate,jdbcType=VARCHAR},
-      ntime = #{ntime,jdbcType=TIMESTAMP}
+    set newnumber = #{newnumber,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=VARCHAR},
+      receiveUid = #{receiveuid,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      sendTime = #{sendtime,jdbcType=TIMESTAMP},
+      receiveTime = #{receivetime,jdbcType=TIMESTAMP},
+      nstate = #{nstate,jdbcType=VARCHAR}
     where nid = #{nid,jdbcType=VARCHAR}
   </update>
 </mapper>

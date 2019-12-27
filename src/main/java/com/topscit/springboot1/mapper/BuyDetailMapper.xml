@@ -11,23 +11,6 @@
     <result column="bdman" property="bdman" jdbcType="VARCHAR" />
     <result column="bdremark" property="bdremark" jdbcType="VARCHAR" />
     <result column="bdupdate_time" property="bdupdateTime" jdbcType="TIMESTAMP" />
-    <association property="parts" column="pid" javaType="com.topscit.springboot1.bean.Parts">
-        <id column="pid" property="pid" jdbcType="VARCHAR" />
-	    <result column="pname" property="pname" jdbcType="VARCHAR" />
-	    <result column="pexplain" property="pexplain" jdbcType="VARCHAR" />
-	    <result column="punit" property="punit" jdbcType="VARCHAR" />
-	    <result column="ptid" property="ptid" jdbcType="VARCHAR" />
-	    <result column="pcount" property="pcount" jdbcType="VARCHAR" />
-	    <result column="pdanger" property="pdanger" jdbcType="VARCHAR" />
-	    <result column="pstate" property="pstate" jdbcType="VARCHAR" />
-	    <result column="pprice" property="pprice" jdbcType="VARCHAR" />
-	    <result column="premark" property="premark" jdbcType="VARCHAR" />
-	    <result column="pupdate_time" property="pupdateTime" jdbcType="TIMESTAMP" />
-	    <result column="pcreate_time" property="pcreateTime" jdbcType="TIMESTAMP" />
-	    <result column="plogo" property="plogo" jdbcType="VARCHAR" />
-   </association>
-   
-   
   </resultMap>
   <sql id="Base_Column_List" >
     bdid, bid, pid, bdcount, bdprice, bdstate, bdman, bdremark, bdupdate_time
@@ -157,14 +140,12 @@
   </update>
   
   <select id="getBuyDetailBy" resultMap="BaseResultMap">
-    select * from buy_detail inner join parts 
-    where buy_detail.pid=parts.pid 
-    and buy_detail.bid = #{bid} 
-    and buy_detail.bdstate = "0"
-  </select>
-  
-   <select id="getBuyDetailAll" resultMap="BaseResultMap">
-    select * from buy_detail inner join parts where buy_detail.pid=parts.pid and buy_detail.bdstate ="0"
+    select * from buy_detail
+      <where>
+        <if test="bid!=null and bid!=''">
+           bid = #{bid}
+        </if>
+    </where>
   </select>
   
    <delete id="deleteByBid" parameterType="java.lang.String" >
@@ -173,16 +154,6 @@
   </delete>
   
   
-   <select id="getBuyDetailByTime" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
-	     select * from buy_detail
-	    where bdupdate_time <![CDATA[ >= ]]> CONCAT(#{beginDate},' 00:00:00')
-	    and bdupdate_time <![CDATA[ <= ]]> CONCAT(#{endDate},' 23:59:59') 
-	    and bdstate ="0"
-	    
-	</select>   
   
- 	<update id="updateStateByBdid" parameterType="java.lang.String">
-		UPDATE buy_detail SET buy_detail.bdstate="1" WHERE bdid = #{bdid}
-	</update>
   
 </mapper>

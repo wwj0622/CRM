@@ -16,6 +16,7 @@
 <script type="text/javascript" src="lib/html5shiv.js"></script>
 <script type="text/javascript" src="lib/respond.min.js"></script>
 <![endif]-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <link href="static/h-ui/css/H-ui.min.css" rel="stylesheet" type="text/css" />
 <link href="static/h-ui.admin/css/H-ui.login.css" rel="stylesheet" type="text/css" />
 <link href="static/h-ui.admin/css/style.css" rel="stylesheet" type="text/css" />
@@ -50,16 +51,10 @@
       </div>
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
-          <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
-          <img src=""> <a id="kanbuq" href="javascript:;">看不清，换一张</a> </div>
+          <input class="input-text size-L" v-model="judge" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:120px;">
+          <img :src="url" alt="验证码"> <a id="kanbuq" href="javascript:;" @click="genghuan" >看不清，换一张</a> </div>
       </div>
-      <div class="row cl">
-        <div class="formControls col-xs-8 col-xs-offset-3">
-          <label for="online">
-            <input type="checkbox" name="online" id="online" value="">
-            使我保持登录状态</label>
-        </div>
-      </div>
+  
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <input name="" type="button" @click="login" class="btn btn-success radius size-L" value="登录">
@@ -81,22 +76,32 @@
         return {
           uname:'',
           upass:'',
+          judge:'',
+          url:'/user/check'
           
         }
       },
       methods: {
         login(){
         this_a=this; 
-        axios.post("/login",{usercode:this_a.uname,password:this_a.upass})
+        axios.post("/login",{usercode:this_a.uname,password:this_a.upass,judge:this_a.judge})
           .then(res => {
-            console.log(res)
+            console.log(res);
             location.href="/permiss";
             
           })
           .catch(err => {
             console.error(err); 
           })
+        },
+        genghuan(){
+        	var url = "/user/check?number="+Math.random();  
+            this.url=url;
+        
+            
         }
+        
+        
         
       }
     })

@@ -1,7 +1,5 @@
 package com.topscit.springboot1.controller;
 
-import java.util.List;
-
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,13 +48,6 @@ public class CustomerController {
 	public Boolean updatecustomer(Customer customers){
 		customerService.updateByPrimaryKey(customers);
 		return true;
-	}
-	
-	@RequestMapping(value = "/selectAllCustomer")
-	@ResponseBody
-	public List<Customer> selectAllCustomer(){
-		List<Customer> selectAllCustomer = customerService.selectAllCustomer();
-		return selectAllCustomer;
 	}
 
 }

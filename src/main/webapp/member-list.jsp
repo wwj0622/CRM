@@ -270,7 +270,7 @@ new Vue({
 			layer_show(title,url,w,h);	
 		},
 		allUser(){
-			this_a=this;
+			 this_a=this;
 			 this_a.udate.start=document.getElementById('datemin').value;
 		     this_a.udate.end=document.getElementById('datemax').value;
 		

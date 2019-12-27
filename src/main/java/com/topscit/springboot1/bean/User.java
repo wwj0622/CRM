@@ -19,8 +19,18 @@ public class User {
 
     private String ulogo;
     
+    private String judge;
+    
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
+    public String getJudge() {
+		return judge;
+	}
+
+	public void setJudge(String judge) {
+		this.judge = judge;
+	}
+
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
     private Date operationtime;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")

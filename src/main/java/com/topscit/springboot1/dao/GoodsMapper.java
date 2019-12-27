@@ -17,7 +17,6 @@ public interface GoodsMapper {
     int updateByPrimaryKeySelective(Goods record);
 
     int updateByPrimaryKey(Goods record);
-<<<<<<< HEAD
 
 	List<Goods> ListGoods();
 
@@ -36,12 +35,4 @@ public interface GoodsMapper {
 	
 
 
-=======
-    
-    List<Goods> selectListGoods();
-    
-    List<Goods> selectListGoodsLimit(@Param("gname")String gname);
-    
-    int updateGoodsByGid(@Param("gid")String gid,@Param("num")int num);
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
 }

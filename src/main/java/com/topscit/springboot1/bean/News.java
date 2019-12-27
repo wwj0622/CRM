@@ -2,18 +2,40 @@ package com.topscit.springboot1.bean;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class News {
     private String nid;
 
-    private String tid;
+    private String newnumber;
 
-    private String id;
+    private String userid;
+
+    private String receiveuid;
+
+    private String content;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
+    private Date sendtime;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
+    private Date receivetime;
 
     private String nstate;
+    
+    private User user;
+    
+    
 
-    private Date ntime;
+    public User getUser() {
+		return user;
+	}
 
-    public String getNid() {
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getNid() {
         return nid;
     }
 
@@ -21,20 +43,52 @@ public class News {
         this.nid = nid == null ? null : nid.trim();
     }
 
-    public String getTid() {
-        return tid;
+    public String getNewnumber() {
+        return newnumber;
     }
 
-    public void setTid(String tid) {
-        this.tid = tid == null ? null : tid.trim();
+    public void setNewnumber(String newnumber) {
+        this.newnumber = newnumber == null ? null : newnumber.trim();
     }
 
-    public String getId() {
-        return id;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setUserid(String userid) {
+        this.userid = userid == null ? null : userid.trim();
+    }
+
+    public String getReceiveuid() {
+        return receiveuid;
+    }
+
+    public void setReceiveuid(String receiveuid) {
+        this.receiveuid = receiveuid == null ? null : receiveuid.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
+    public Date getSendtime() {
+        return sendtime;
+    }
+
+    public void setSendtime(Date sendtime) {
+        this.sendtime = sendtime;
+    }
+
+    public Date getReceivetime() {
+        return receivetime;
+    }
+
+    public void setReceivetime(Date receivetime) {
+        this.receivetime = receivetime;
     }
 
     public String getNstate() {
@@ -43,13 +97,5 @@ public class News {
 
     public void setNstate(String nstate) {
         this.nstate = nstate == null ? null : nstate.trim();
-    }
-
-    public Date getNtime() {
-        return ntime;
-    }
-
-    public void setNtime(Date ntime) {
-        this.ntime = ntime;
     }
 }

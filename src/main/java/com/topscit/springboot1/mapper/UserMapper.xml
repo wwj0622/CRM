@@ -19,6 +19,11 @@
     locked
   </sql>
   
+  <select id="NewsUser" resultMap="BaseResultMap">
+    SELECT * FROM sys_user WHERE sys_user.id!=#{id}
+  </select>
+  
+  
    <select id="selectUserRole" resultMap="ur">
 	   SELECT  su.*,sr.*,sr.id srid FROM sys_user su INNER JOIN sys_user_role sur
 	   on su.id =sur.sys_user_id INNER JOIN sys_role sr ON
@@ -59,7 +64,7 @@
       <if test="name !=null">    
         and (usercode  LIKE #{name} OR id LIKE #{name} OR phone LIKE #{name} OR idcard LIKE #{name} )
       </if>    
-     <if test="start != null">
+      <if test="start != null">
         and jointime  >  #{start}
       </if>
       <if test="end!=null">

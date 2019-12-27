@@ -35,19 +35,19 @@ public class TestControllers {
      * @param response
      * @throws IOException
      */
-    @RequestMapping("/user/check")
-    public void createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {  
-        // 通知浏览器不要缓存  
-        response.setHeader("Expires", "-1");  
-        response.setHeader("Cache-Control", "no-cache");  
-        response.setHeader("Pragma", "-1");  
-        ValidateCode vCode = new ValidateCode(160,40,5,150);
-        // 将验证码输入到session中，用来验证  
-        String code=vCode.getCode();
-        request.getSession().setAttribute("code", code);  
-        // 输出到web页面  
-        ImageIO.write(vCode.getBuffImg(), "jpg", response.getOutputStream()); 
-    }
+//    @RequestMapping("/user/check")
+//    public void createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {  
+//        // 通知浏览器不要缓存  
+//        response.setHeader("Expires", "-1");  
+//        response.setHeader("Cache-Control", "no-cache");  
+//        response.setHeader("Pragma", "-1");  
+//        ValidateCode vCode = new ValidateCode(160,40,5,150);
+//        // 将验证码输入到session中，用来验证  
+//        String code=vCode.getCode();
+//        request.getSession().setAttribute("code", code);  
+//        // 输出到web页面  
+//        ImageIO.write(vCode.getBuffImg(), "jpg", response.getOutputStream()); 
+//    }
      
     @RequestMapping("/submit")
     @ResponseBody
@@ -56,27 +56,32 @@ public class TestControllers {
     	System.out.println("进入");
     	HashMap<String, Object> data = new HashMap<String,Object>();
         if(username==null||"".equals(username)) {
-            return (HashMap<String, Object>) data.put("yhm", "请输入用户名");
+            data.put("msg", "请输入用户名");
+            return data;
         }
         if(password==null||"".equals(password)) {
-            return (HashMap<String, Object>) data.put("mm", "请输入密码");
+            data.put("msg", "请输入密码");
+            return data;
         }
         if(judge==null||"".equals(judge)) {
-        	 return (HashMap<String, Object>) data.put("yzm", "请输入验证码");
+        	data.put("msg", "请输入验证码");
+        	  return data;
         }
         Object code=session.getAttribute("code");
         if(code==null) {
-        	 return (HashMap<String, Object>) data.put("erro", "验证码错误,请刷新验证码");
+            	data.put("msg", "验证码错误,请刷新验证码");
+        	    return data;
            
         }else {
             if(!judge.equals(code.toString())) {
                 session.removeAttribute("code");
-                
-                return (HashMap<String, Object>) data.put("s","验证码错误");             
+                data.put("msg","验证码错误"); 
+                return data;
             }
         }
               session.removeAttribute("code");
-        return  (HashMap<String, Object>) data.put("String", "登录成功");
+              data.put("msg", "登录成功");
+              return data;
     }
 
 	

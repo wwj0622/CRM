@@ -10,19 +10,6 @@
     <result column="bremark" property="bremark" jdbcType="VARCHAR" />
     <result column="sid" property="sid" jdbcType="VARCHAR" />
     <result column="gupdate_time" property="gupdateTime" jdbcType="TIMESTAMP" />
-    <association property="supplier" column="sid" javaType="com.topscit.springboot1.bean.Supplier">
-        <id column="sid" property="sid" jdbcType="VARCHAR" />
-    	<result column="sname" property="sname" jdbcType="VARCHAR" />
-	    <result column="sphone" property="sphone" jdbcType="VARCHAR" />
-	    <result column="saddress" property="saddress" jdbcType="VARCHAR" />
-	    <result column="semail" property="semail" jdbcType="VARCHAR" />
-	    <result column="saccount" property="saccount" jdbcType="VARCHAR" />
-	    <result column="sstate" property="sstate" jdbcType="VARCHAR" />
-	    <result column="sremark" property="sremark" jdbcType="VARCHAR" />
-	    <result column="supdate_time" property="supdateTime" jdbcType="TIMESTAMP" />
-	    <result column="screate_time" property="screateTime" jdbcType="TIMESTAMP" />
-	    <result column="slogo" property="slogo" jdbcType="VARCHAR" />
-    </association>
   </resultMap>
   <sql id="Base_Column_List" >
     bid, bstate, btime, baddress, bman, bremark, sid, gupdate_time
@@ -122,9 +109,8 @@
         sid = #{sid,jdbcType=VARCHAR},
       </if>
       <if test="gupdateTime != null" >
-        gupdate_time = #{gupdateTime},
+        gupdate_time = #{gupdateTime,jdbcType=TIMESTAMP},
       </if>
-      
     </set>
     where bid = #{bid,jdbcType=VARCHAR}
   </update>
@@ -141,27 +127,14 @@
   </update>
   
   <select id="getAllBuy" resultMap="BaseResultMap" >
-  	SELECT * FROM buy inner join supplier where buy.sid=supplier.sid
+  	select * from buy
    </select>
-   
-   <select id="getBuyBy" resultMap="BaseResultMap" >
-  	SELECT * FROM buy inner join supplier where buy.sid=supplier.sid and buy.bid=#{bid}
-   </select>
-   
-   	 <select id="getAllBuyIn" resultMap="BaseResultMap" >
-  	SELECT *,CASE buy.bstate
-	WHEN "1" THEN
-		"已入库"
-	ELSE
-		"未入库"
-	END as state
-	FROM buy where bstate="1"
-   </select>	
    	
-	 <select id="getBuyByTime" resultMap="BaseResultMap">
-	     select * FROM buy inner join supplier where buy.sid=supplier.sid 
-	     and buy.btime &gt;= CONCAT(#{beginDate},' 00:00:00')
-	     and buy.btime &lt;= CONCAT(#{endDate},' 23:59:59')
-	</select>  
+	 <select id="getBuyByTime" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+	     select * from buy
+	    where btime <![CDATA[ >= ]]> CONCAT(#{beginDate},' 00:00:00')
+	    and btime <![CDATA[ <= ]]> CONCAT(#{endDate},' 23:59:59')
+	    
+	</select>   
 	
 </mapper>

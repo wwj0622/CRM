@@ -12,16 +12,11 @@ spring:
       force: true
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/shiro?characterEncoding=UTF-8  
-<<<<<<< HEAD
+    url: jdbc:mysql://127.0.0.1:3306/shiro
     username: root
     password: root
 
-=======
-    username: root
-    password: "root"
- 
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
+
 server:
   address: 127.0.0.1
   port: 80

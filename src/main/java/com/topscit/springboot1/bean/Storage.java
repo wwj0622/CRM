@@ -2,8 +2,6 @@ package com.topscit.springboot1.bean;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class Storage {
     private String stid;
 
@@ -11,7 +9,6 @@ public class Storage {
 
     private String stremark;
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date stupdateTime;
 
     public String getStid() {
@@ -45,11 +42,4 @@ public class Storage {
     public void setStupdateTime(Date stupdateTime) {
         this.stupdateTime = stupdateTime;
     }
-
-	@Override
-	public String toString() {
-		return "Storage [stid=" + stid + ", stname=" + stname + ", stremark=" + stremark + ", stupdateTime="
-				+ stupdateTime + "]";
-	}
-    
 }

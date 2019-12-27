@@ -4,12 +4,8 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 	<!-- 制度MySQL驱动包的路径，别放在中文路径 -->
-	<classPathEntry
-<<<<<<< HEAD
-		location="D:\mavenPackage\mysql\mysql-connector-java\5.1.18\mysql-connector-java-5.1.18.jar" />
-=======
-		location="D:\maven.jar\mysql\mysql-connector-java\5.1.18\mysql-connector-java-5.1.18.jar" />
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
+	<classPathEntry	location="D:\mavenPackage\mysql\mysql-connector-java\5.1.18\mysql-connector-java-5.1.18.jar" />
+
 	<context id="context1">
 		<commentGenerator>
 			<!--是否取消注销 -->
@@ -47,11 +43,9 @@
 			<!-- 是否在当前路径下新加一层schema,eg：fase路径com.st.eleventh.user.model， true:com.st.eleventh.user.model.[schemaName] -->
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
- 
-<<<<<<< HEAD
-		
-		<table tableName="parts_goods"
-			domainObjectName="partsGoods" enableCountByExample="false"
+
+		<table tableName="news"
+			domainObjectName="News" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 			<property name="useActualColumnNames" value="false" />
@@ -60,16 +54,10 @@
 		
 			
 		
-=======
+
  
-	    <!-- 配置表信息 -->
-		<table tableName="order"
-			domainObjectName="Order" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-			<property name="useActualColumnNames" value="false" />
-		</table>
->>>>>>> branch 'master' of https://github.com/wwj0622/CRM.git
+
+
 		
 	</context>
 </generatorConfiguration>
