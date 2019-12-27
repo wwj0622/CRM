@@ -1,106 +1,132 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.topscit.springboot1.dao.OrderMapper" >
-  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Order" >
-    <id column="oid" property="oid" jdbcType="VARCHAR" />
-    <result column="cid" property="cid" jdbcType="VARCHAR" />
-    <result column="oremark" property="oremark" jdbcType="VARCHAR" />
-    <result column="osum" property="osum" jdbcType="VARCHAR" />
-    <result column="ostate" property="ostate" jdbcType="VARCHAR" />
-    <result column="otime" property="otime" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.topscit.springboot1.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.Order">
+    <id column="oid" jdbcType="VARCHAR" property="oid" />
+    <result column="cid" jdbcType="VARCHAR" property="cid" />
+    <result column="oremark" jdbcType="VARCHAR" property="oremark" />
+    <result column="osum" jdbcType="VARCHAR" property="osum" />
+    <result column="ostate" jdbcType="VARCHAR" property="ostate" />
+    <result column="otime" jdbcType="TIMESTAMP" property="otime" />
+    <result column="yoid" jdbcType="VARCHAR" property="yoid" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    oid, cid, oremark, osum, ostate, otime
+  <sql id="Base_Column_List">
+    oid, cid, oremark, osum, ostate, otime, yoid
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from order
+    from `order`
     where oid = #{oid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from order
+  
+  <select id="selectAllOrderByKid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from `order`
+    where yoid = #{id}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from `order`
     where oid = #{oid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.topscit.springboot1.bean.Order" >
-    insert into order (oid, cid, oremark, 
-      osum, ostate, otime
-      )
+  <insert id="insert" parameterType="com.topscit.springboot1.bean.Order">
+    insert into `order` (oid, cid, oremark, 
+      osum, ostate, otime, 
+      yoid)
     values (#{oid,jdbcType=VARCHAR}, #{cid,jdbcType=VARCHAR}, #{oremark,jdbcType=VARCHAR}, 
-      #{osum,jdbcType=VARCHAR}, #{ostate,jdbcType=VARCHAR}, #{otime,jdbcType=TIMESTAMP}
-      )
+      #{osum,jdbcType=VARCHAR}, #{ostate,jdbcType=VARCHAR}, now(), 
+      #{yoid,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Order" >
+  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Order">
     insert into order
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="oid != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
         oid,
       </if>
-      <if test="cid != null" >
+      <if test="cid != null">
         cid,
       </if>
-      <if test="oremark != null" >
+      <if test="oremark != null">
         oremark,
       </if>
-      <if test="osum != null" >
+      <if test="osum != null">
         osum,
       </if>
-      <if test="ostate != null" >
+      <if test="ostate != null">
         ostate,
       </if>
-      <if test="otime != null" >
+      <if test="otime != null">
         otime,
       </if>
+      <if test="yoid != null">
+        yoid,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="oid != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
         #{oid,jdbcType=VARCHAR},
       </if>
-      <if test="cid != null" >
+      <if test="cid != null">
         #{cid,jdbcType=VARCHAR},
       </if>
-      <if test="oremark != null" >
+      <if test="oremark != null">
         #{oremark,jdbcType=VARCHAR},
       </if>
-      <if test="osum != null" >
+      <if test="osum != null">
         #{osum,jdbcType=VARCHAR},
       </if>
-      <if test="ostate != null" >
+      <if test="ostate != null">
         #{ostate,jdbcType=VARCHAR},
       </if>
-      <if test="otime != null" >
+      <if test="otime != null">
         #{otime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yoid != null">
+        #{yoid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Order" >
+  <update id="updateOstateOid">
+  	update `order` set ostate = 1 where oid = #{oid}
+  </update>
+  <update id="updateOsumByOid">
+  	update `order` set osum = #{money} where oid = #{oid}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Order">
     update order
-    <set >
-      <if test="cid != null" >
+    <set>
+      <if test="cid != null">
         cid = #{cid,jdbcType=VARCHAR},
       </if>
-      <if test="oremark != null" >
+      <if test="oremark != null">
         oremark = #{oremark,jdbcType=VARCHAR},
       </if>
-      <if test="osum != null" >
+      <if test="osum != null">
         osum = #{osum,jdbcType=VARCHAR},
       </if>
-      <if test="ostate != null" >
+      <if test="ostate != null">
         ostate = #{ostate,jdbcType=VARCHAR},
       </if>
-      <if test="otime != null" >
+      <if test="otime != null">
         otime = #{otime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yoid != null">
+        yoid = #{yoid,jdbcType=VARCHAR},
       </if>
     </set>
     where oid = #{oid,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Order" >
+  <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.Order">
     update order
     set cid = #{cid,jdbcType=VARCHAR},
       oremark = #{oremark,jdbcType=VARCHAR},
       osum = #{osum,jdbcType=VARCHAR},
       ostate = #{ostate,jdbcType=VARCHAR},
-      otime = #{otime,jdbcType=TIMESTAMP}
+      otime = #{otime,jdbcType=TIMESTAMP},
+      yoid = #{yoid,jdbcType=VARCHAR}
     where oid = #{oid,jdbcType=VARCHAR}
   </update>
+  
 </mapper>

@@ -41,25 +41,25 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>交货时间：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="date" class="input-text" v-model="buy.btime"  id="username" name="username">
+				<input type="date" style="width:500px" class="input-text" v-model="buy.btime"  id="username" name="username">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>交货地点：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buy.baddress" placeholder="" id="mobile" name="mobile">
+				<input type="text"  style="width:500px" class="input-text" v-model="buy.baddress" placeholder="" id="mobile" name="mobile">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注信息：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" v-model="buy.bremark" name="email" id="email">
+				<input type="text"  style="width:500px" class="input-text" v-model="buy.bremark" name="email" id="email">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">供应商：</label>
-			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select v-model="buy.sid" class="select" size="1" name="city">
+			<div class="formControls col-xs-8 col-sm-9"  style="width:500px"> <span class="select-box">
+				<select v-model="buy.supplierId"  class="select" size="1" name="city">
 					<option value="" selected>请选择供应商</option>
 					<option v-for='(supplier,i) in supplierList' :value="supplier.sid">{{supplier.sname}}</option>
 				</select>
@@ -69,7 +69,7 @@
 		
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">是否付款：</label>
-			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+			<div class="formControls col-xs-8 col-sm-9"  style="width:500px"> <span class="select-box">
 				<select v-model="buy.bstate" class="select" size="1" name="city">
 				<option  value="" selected>请选择是否付款</option>
 					<option :value="0" selected>未付款</option>

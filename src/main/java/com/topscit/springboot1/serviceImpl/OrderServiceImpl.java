@@ -74,10 +74,10 @@ public class OrderServiceImpl implements OrderService{
 		int money = 0;
 		for (int i = 0; i < list.length; i++) {
 			OrderGoods orderGoods = orderGoodsMapper.selectOrderGoodsByPrimaryKey(list[i]);
-//			goodsMapper.updateGoodsByGid(orderGoods.getGid(), Integer.valueOf(orderGoods.getOgcount()));
+			goodsMapper.updateGoodsByGid(orderGoods.getGid(), Integer.valueOf(orderGoods.getOgcount()));
 			Order order = new Order();
 			order.setCid(cid);
-//			order.setYoid(yoid);
+			order.setYoid(yoid);
 			order.setOid(orderGoods.getOid());
 			order.setOremark(orderGoods.getOgremark());
 			order.setOstate("1");
@@ -120,16 +120,16 @@ public class OrderServiceImpl implements OrderService{
 		}
 		
 //		Order order = new Order(yoid,list[0].getUid(),null,String.valueOf(money),"0",null,user.getId());
-//		Order order = new Order(yoid,list[0].getUid(),null,String.valueOf(money),"0",null,"1");
-//		orderMapper.insert(order);
+		Order order = new Order(yoid,list[0].getUid(),null,String.valueOf(money),"0",null,"1");
+		orderMapper.insert(order);
 	}
 
-//	@Override
-//	public List<Order> selectAllOrderByKid() {
-////		User user = (User)SecurityUtils.getSubject().getPrincipal();
-//		List<Order> selectAllOrderByKid = orderMapper.selectAllOrderByKid("1");
-//		return selectAllOrderByKid;
-//	}
+	@Override
+	public List<Order> selectAllOrderByKid() {
+//		User user = (User)SecurityUtils.getSubject().getPrincipal();
+		List<Order> selectAllOrderByKid = orderMapper.selectAllOrderByKid("1");
+		return selectAllOrderByKid;
+	}
 
 	@Override
 	public List<OrderGoods> selectOrderGoodsByYoid(String id) {
@@ -155,14 +155,44 @@ public class OrderServiceImpl implements OrderService{
 		}
 		System.out.println(oid);
 		System.out.println(money);
-//		orderMapper.updateOsumByOid(yoid, String.valueOf(money));
+		orderMapper.updateOsumByOid(yoid, String.valueOf(money));
 		return 0;
 	}
 
 	@Override
-	public List<Order> selectAllOrderByKid() {
-		// TODO Auto-generated method stub
-		return null;
+	public Order selectOrderByOid(String yoid) {
+		Order selectByPrimaryKey = orderMapper.selectByPrimaryKey(yoid);
+		return selectByPrimaryKey;
+	}
+
+	@Override
+	public int updateOstateOid(String oid) {
+		int updateOstateOid = orderMapper.updateOstateOid(oid);
+		return updateOstateOid;
+	}
+
+	@Override
+	public int deleteOrderGoodsByYoid(String yoid) {
+		int deleteOrderGoodsByYoid = orderGoodsMapper.deleteOrderGoodsByYoid(yoid);
+		return deleteOrderGoodsByYoid;
+	}
+
+	@Override
+	public int insert(Yorder record) {
+		int insert = yorderMapper.insert(record);
+		return insert;
+	}
+
+	@Override
+	public List<Yorder> selectAllYorder() {
+		List<Yorder> selectAllYorder = yorderMapper.selectAllYorder();
+		return selectAllYorder;
+	}
+
+	@Override
+	public List<OrderGoods> selectListGoodsOrderByYoid(String yoid) {
+		List<OrderGoods> selectListGoodsOrderByYoid = orderGoodsMapper.selectListGoodsOrderByYoid(yoid);
+		return selectListGoodsOrderByYoid;
 	}
 
 }

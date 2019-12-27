@@ -2,14 +2,16 @@ package com.topscit.springboot1.bean;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class BuyDetail {
     private String bdid;
 
-    private String bid;
+    private String buyId;
 
-    private String pid;
+    private String partsId;
 
     private String bdcount;
 
@@ -21,10 +23,24 @@ public class BuyDetail {
 
     private String bdremark;
     
+    private String state;
+    
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bdupdateTime;
 
-    public String getBdid() {
+    private Parts parts;
+    
+
+	public Parts getParts() {
+		return parts;
+	}
+
+	public void setParts(Parts parts) {
+		this.parts = parts;
+	}
+
+	public String getBdid() {
         return bdid;
     }
 
@@ -32,21 +48,6 @@ public class BuyDetail {
         this.bdid = bdid == null ? null : bdid.trim();
     }
 
-    public String getBid() {
-        return bid;
-    }
-
-    public void setBid(String bid) {
-        this.bid = bid == null ? null : bid.trim();
-    }
-
-    public String getPid() {
-        return pid;
-    }
-
-    public void setPid(String pid) {
-        this.pid = pid == null ? null : pid.trim();
-    }
 
     public String getBdcount() {
         return bdcount;
@@ -96,12 +97,37 @@ public class BuyDetail {
         this.bdupdateTime = bdupdateTime;
     }
 
+    
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getBuyId() {
+		return buyId;
+	}
+
+	public void setBuyId(String buyId) {
+		this.buyId = buyId;
+	}
+
+	public String getPartsId() {
+		return partsId;
+	}
+
+	public void setPartsId(String partsId) {
+		this.partsId = partsId;
+	}
+
 	@Override
 	public String toString() {
-		return "BuyDetail [bdid=" + bdid + ", bid=" + bid + ", pid=" + pid + ", bdcount=" + bdcount + ", bdprice="
-				+ bdprice + ", bdstate=" + bdstate + ", bdman=" + bdman + ", bdremark=" + bdremark + ", bdupdateTime="
-				+ bdupdateTime + "]";
+		return "BuyDetail [bdid=" + bdid + ", buyId=" + buyId + ", partsId=" + partsId + ", bdcount=" + bdcount
+				+ ", bdprice=" + bdprice + ", bdstate=" + bdstate + ", bdman=" + bdman + ", bdremark=" + bdremark
+				+ ", state=" + state + ", bdupdateTime=" + bdupdateTime + ", parts=" + parts + "]";
 	}
-    
+
     
 }

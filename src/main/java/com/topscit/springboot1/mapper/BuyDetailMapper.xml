@@ -3,17 +3,40 @@
 <mapper namespace="com.topscit.springboot1.dao.BuyDetailMapper" >
   <resultMap id="BaseResultMap" type="com.topscit.springboot1.bean.BuyDetail" >
     <id column="bdid" property="bdid" jdbcType="VARCHAR" />
-    <result column="bid" property="bid" jdbcType="VARCHAR" />
-    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="buyId" property="buyId" jdbcType="VARCHAR" />
+    <result column="partsId" property="partsId" jdbcType="VARCHAR" />
     <result column="bdcount" property="bdcount" jdbcType="VARCHAR" />
     <result column="bdprice" property="bdprice" jdbcType="VARCHAR" />
     <result column="bdstate" property="bdstate" jdbcType="VARCHAR" />
     <result column="bdman" property="bdman" jdbcType="VARCHAR" />
     <result column="bdremark" property="bdremark" jdbcType="VARCHAR" />
     <result column="bdupdate_time" property="bdupdateTime" jdbcType="TIMESTAMP" />
+    <association property="parts" column="partsId" javaType="com.topscit.springboot1.bean.Parts">
+        <id column="pid" property="pid" jdbcType="VARCHAR" />
+	    <result column="pname" property="pname" jdbcType="VARCHAR" />
+	    <result column="pexplain" property="pexplain" jdbcType="VARCHAR" />
+	    <result column="punit" property="punit" jdbcType="VARCHAR" />
+	    <result column="ptid" property="ptid" jdbcType="VARCHAR" />
+	    <result column="pcount" property="pcount" jdbcType="VARCHAR" />
+	    <result column="pdanger" property="pdanger" jdbcType="VARCHAR" />
+	    <result column="pstate" property="pstate" jdbcType="VARCHAR" />
+	    <result column="pprice" property="pprice" jdbcType="VARCHAR" />
+	    <result column="premark" property="premark" jdbcType="VARCHAR" />
+	    <result column="pupdate_time" property="pupdateTime" jdbcType="TIMESTAMP" />
+	    <result column="pcreate_time" property="pcreateTime" jdbcType="TIMESTAMP" />
+	    <result column="plogo" property="plogo" jdbcType="VARCHAR" />
+	     <association property="storage" column="ptid" javaType="com.topscit.springboot1.bean.Storage">
+		        <id column="storage_stid" property="stid" jdbcType="VARCHAR" />
+		   		<result column="stname" property="stname" jdbcType="VARCHAR" />
+		    	<result column="stremark" property="stremark" jdbcType="VARCHAR" />
+		    	<result column="stupdate_time" property="stupdateTime" jdbcType="TIMESTAMP" />
+		     </association>
+   </association>
+   
+   
   </resultMap>
   <sql id="Base_Column_List" >
-    bdid, bid, pid, bdcount, bdprice, bdstate, bdman, bdremark, bdupdate_time
+    bdid, buyId, partsId, bdcount, bdprice, bdstate, bdman, bdremark, bdupdate_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -26,11 +49,11 @@
     where bdid = #{bdid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.topscit.springboot1.bean.BuyDetail" >
-    insert into buy_detail (bdid, bid, pid, 
+    insert into buy_detail (bdid, buyId, partsId, 
       bdcount, bdprice, bdstate, 
       bdman, bdremark, bdupdate_time
       )
-    values (#{bdid,jdbcType=VARCHAR}, #{bid,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, 
+    values (#{bdid,jdbcType=VARCHAR}, #{buyId,jdbcType=VARCHAR}, #{partsId,jdbcType=VARCHAR}, 
       #{bdcount,jdbcType=VARCHAR}, #{bdprice,jdbcType=VARCHAR}, #{bdstate,jdbcType=VARCHAR}, 
       #{bdman,jdbcType=VARCHAR}, #{bdremark,jdbcType=VARCHAR}, #{bdupdateTime,jdbcType=TIMESTAMP}
       )
@@ -41,11 +64,11 @@
       <if test="bdid != null" >
         bdid,
       </if>
-      <if test="bid != null" >
-        bid,
+      <if test="buyId != null" >
+        buyId,
       </if>
-      <if test="pid != null" >
-        pid,
+      <if test="partsId != null" >
+        partsId,
       </if>
       <if test="bdcount != null" >
         bdcount,
@@ -70,11 +93,11 @@
       <if test="bdid != null" >
         #{bdid,jdbcType=VARCHAR},
       </if>
-      <if test="bid != null" >
-        #{bid,jdbcType=VARCHAR},
+      <if test="buyId != null" >
+        #{buyId,jdbcType=VARCHAR},
       </if>
-      <if test="pid != null" >
-        #{pid,jdbcType=VARCHAR},
+      <if test="partsId != null" >
+        #{partsId,jdbcType=VARCHAR},
       </if>
       <if test="bdcount != null" >
         #{bdcount,jdbcType=VARCHAR},
@@ -99,11 +122,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.BuyDetail" >
     update buy_detail
     <set >
-      <if test="bid != null" >
-        bid = #{bid,jdbcType=VARCHAR},
+      <if test="buyId != null" >
+        buyId = #{buyId,jdbcType=VARCHAR},
       </if>
-      <if test="pid != null" >
-        pid = #{pid,jdbcType=VARCHAR},
+      <if test="partsId != null" >
+        partsId = #{partsId,jdbcType=VARCHAR},
       </if>
       <if test="bdcount != null" >
         bdcount = #{bdcount,jdbcType=VARCHAR},
@@ -128,8 +151,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.topscit.springboot1.bean.BuyDetail" >
     update buy_detail
-    set bid = #{bid,jdbcType=VARCHAR},
-      pid = #{pid,jdbcType=VARCHAR},
+    set buyId = #{buyId,jdbcType=VARCHAR},
+      partsId = #{partsId,jdbcType=VARCHAR},
       bdcount = #{bdcount,jdbcType=VARCHAR},
       bdprice = #{bdprice,jdbcType=VARCHAR},
       bdstate = #{bdstate,jdbcType=VARCHAR},
@@ -140,20 +163,39 @@
   </update>
   
   <select id="getBuyDetailBy" resultMap="BaseResultMap">
-    select * from buy_detail
-      <where>
-        <if test="bid!=null and bid!=''">
-           bid = #{bid}
-        </if>
-    </where>
+    select * from buy_detail inner join parts 
+    where buy_detail.partsId=parts.pid 
+    and buy_detail.buyId = #{bid} 
+    and buy_detail.bdstate = "0"
+  </select>
+  
+   <select id="getBuyDetailAll" resultMap="BaseResultMap">
+    select * from buy_detail inner join parts where buy_detail.partsId=parts.pid and buy_detail.bdstate ="0"
+  </select>
+  
+   <select id="getAllBuyDetailIn" resultMap="BaseResultMap">
+    SELECT * FROM  buy_detail,parts,storage 
+	where buy_detail.partsId=parts.pid and parts.ptid=storage.stid
+	and buy_detail.bdstate="1" and buy_detail.buyId=#{bid};
   </select>
   
    <delete id="deleteByBid" parameterType="java.lang.String" >
     delete from buy_detail
-    where bid = #{bid}
+    where buyId = #{bid}
   </delete>
   
   
+   <select id="getBuyDetailByTime" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+	     select * from buy_detail
+	    where bdupdate_time <![CDATA[ >= ]]> CONCAT(#{beginDate},' 00:00:00')
+	    and bdupdate_time <![CDATA[ <= ]]> CONCAT(#{endDate},' 23:59:59') 
+	    and bdstate ="0"
+	    
+	</select>  
+	 
   
+ 	<update id="updateStateByBdid" parameterType="java.lang.String">
+		UPDATE buy_detail SET buy_detail.bdstate="1" WHERE bdid = #{bdid}
+	</update>
   
 </mapper>

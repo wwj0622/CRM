@@ -23,12 +23,8 @@
 <script src="/js/axios.min.js"></script>
 <script src="/ws/js/jquery.min.js"></script>
 <script src="/ws/js/vue.js"></script>
-<!-- 引入样式 -->
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<!-- 引入组件库 -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="/element-ui/lib/index.js"></script>
+<link type="text/css" rel="styleSheet"  href="/element-ui/lib/theme-chalk/index.css" />
 <title>用户管理</title>
 </head>
 <body>
@@ -42,13 +38,13 @@
 		<button type="submit" class="btn btn-success radius" @click="selectIf()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
 		<input type="hidden" value="${oid }" id="oids">
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" @click="datadel(0)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 一键支付</a></span> <span class="r">共有数据：<strong>{{total}}</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" @click="datadel(0)" class="btn btn-danger radius"><i class="el-icon-shopping-cart-ful"></i> 一键支付</a>  <a href="order/allorder" class="btn btn-primary radius"><i class="el-icon-back"></i> 返回订单</a></span> <span class="r">共有数据：<strong>{{total}}</strong> 条</span> </div>
 	<div class="mt-20">
 	<el-row>
           <el-col :span="24">
               <el-table ref="multipleTable" @selection-change="selection" :data="ordergoodslist" border>
                   <el-table-column type="selection" width="55" ></el-table-column>
-                  <el-table-column type="index" ></el-table-column>
+                  <el-table-column type="index" label="序号"  ></el-table-column>
                   <!-- <el-table-column label="ID" prop="gid"></el-table-column> -->
                   <el-table-column label="产品名" prop="goods.gname"></el-table-column>
                   <el-table-column label="头像">
@@ -295,16 +291,25 @@ var v = new Vue({
         //删除多条goods信息时的事件
         datadel:function(i){
         	if(i==0){
-        		if(this.gidgoodslist.length==0)
-       			{
-        			alert("请选择要删除的信息！");
-       			}else{
-       				this.glist.length = 0;
-            		for(var j = 0;j<this.gidgoodslist.length;j++){
-                		this.glist.push(this.gidgoodslist[j].gid);
-                	}
-            		this.delgoodsByGid();
-       			}
+        		var _this = this;
+        		$.ajax({
+          	      type: "POST",
+          	      traditional: true,
+          	      url: "/order/payOrder",
+          	      data: {
+          	    	  yoid:_this.ordergoodslist[0].ogremark
+          	    	  },
+          	      dataType: "json",
+          	      success: function (response) {
+          	    	  	if(response)
+          	    		{
+          	    	  		alert("支付成功！");
+          	    		}else{
+          	    			alert("不能重复支付！");
+          	    		}
+          	    	
+          	      }
+          	  });
         	}
         },
         

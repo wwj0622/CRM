@@ -11,7 +11,17 @@ public class OrderGoods {
 
     private String uid;
     
+    private Customer customer;
+    
     private Goods goods;
+    
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
 	public String getOid() {
 		return oid;

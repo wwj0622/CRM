@@ -36,9 +36,6 @@ public class Parts {
     
     private Storage storage;
     
-    
-    
-
     public String getGid() {
 		return gid;
 	}
@@ -47,7 +44,7 @@ public class Parts {
 		this.gid = gid;
 	}
 
-	public Storage getStorage() {
+    public Storage getStorage() {
 		return storage;
 	}
 

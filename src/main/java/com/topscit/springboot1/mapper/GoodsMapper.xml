@@ -36,73 +36,6 @@
       #{glogo,jdbcType=VARCHAR}, #{gcount,jdbcType=VARCHAR}, #{gdanger,jdbcType=VARCHAR}, 
       #{gstate,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.topscit.springboot1.bean.Goods">
-    insert into goods
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="gid != null">
-        gid,
-      </if>
-      <if test="gname != null">
-        gname,
-      </if>
-      <if test="goriginal != null">
-        goriginal,
-      </if>
-      <if test="gprice != null">
-        gprice,
-      </if>
-      <if test="ptid != null">
-        ptid,
-      </if>
-      <if test="gremark != null">
-        gremark,
-      </if>
-      <if test="glogo != null">
-        glogo,
-      </if>
-      <if test="gcount != null">
-        gcount,
-      </if>
-      <if test="gdanger != null">
-        gdanger,
-      </if>
-      <if test="gstate != null">
-        gstate,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="gid != null">
-        #{gid,jdbcType=VARCHAR},
-      </if>
-      <if test="gname != null">
-        #{gname,jdbcType=VARCHAR},
-      </if>
-      <if test="goriginal != null">
-        #{goriginal,jdbcType=VARCHAR},
-      </if>
-      <if test="gprice != null">
-        #{gprice,jdbcType=VARCHAR},
-      </if>
-      <if test="ptid != null">
-        #{ptid,jdbcType=VARCHAR},
-      </if>
-      <if test="gremark != null">
-        #{gremark,jdbcType=VARCHAR},
-      </if>
-      <if test="glogo != null">
-        #{glogo,jdbcType=VARCHAR},
-      </if>
-      <if test="gcount != null">
-        #{gcount,jdbcType=VARCHAR},
-      </if>
-      <if test="gdanger != null">
-        #{gdanger,jdbcType=VARCHAR},
-      </if>
-      <if test="gstate != null">
-        #{gstate,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.topscit.springboot1.bean.Goods">
     update goods
     <set>
@@ -187,6 +120,7 @@
 	    <id column="stid" property="stid" jdbcType="VARCHAR" />
 	    <result column="stname" property="stname" jdbcType="VARCHAR" />
 	 </association>
+	 
 	 
 	 <collection property="parts" ofType="com.topscit.springboot1.bean.Parts" column="pid">
 	        <id column="pid" property="pid" jdbcType="VARCHAR" />
@@ -328,4 +262,13 @@
       glogo = #{glogo,jdbcType=VARCHAR}
     where gid = #{gid,jdbcType=VARCHAR}
   </update> -->
+  <select id="selectListGoods" resultType="com.topscit.springboot1.bean.Goods">
+  	select * from goods
+  </select>
+  <select id="selectListGoodsLimit" resultType="com.topscit.springboot1.bean.Goods">
+  	select * from goods where gname like concat('%',#{gname},'%')
+  </select>
+  <update id="updateGoodsByGid">
+  	update goods set gcount = cast(gcount as decimal) - #{num} where gid = #{gid}
+  </update>
 </mapper>

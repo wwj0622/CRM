@@ -10,8 +10,15 @@ public class Dept {
     private String dremark;
 
     private Date dupdateTime;
+    
+    
 
-    public String getDid() {
+    @Override
+	public String toString() {
+		return "Dept [did=" + did + ", dname=" + dname + ", dremark=" + dremark + ", dupdateTime=" + dupdateTime + "]";
+	}
+
+	public String getDid() {
         return did;
     }
 

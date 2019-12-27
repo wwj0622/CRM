@@ -1,6 +1,7 @@
 package com.topscit.springboot1.bean;
 
 import java.util.Date;
+import java.util.List;
 
 public class Yorder {
     private String yoid;
@@ -12,8 +13,18 @@ public class Yorder {
     private String ystate;
 
     private String cid;
+    
+    private List<OrderGoods> orderGoods;
 
-    public String getYoid() {
+    public List<OrderGoods> getOrderGoods() {
+		return orderGoods;
+	}
+
+	public void setOrderGoods(List<OrderGoods> orderGoods) {
+		this.orderGoods = orderGoods;
+	}
+
+	public String getYoid() {
         return yoid;
     }
 

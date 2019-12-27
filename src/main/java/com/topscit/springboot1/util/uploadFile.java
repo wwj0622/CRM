@@ -4,7 +4,6 @@ package com.topscit.springboot1.util;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 
 public class uploadFile {

@@ -1,6 +1,9 @@
 package com.topscit.springboot1.bean;
 
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -9,6 +12,7 @@ public class Buy {
 
     private String bstate;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date btime;
 
@@ -18,14 +22,29 @@ public class Buy {
 
     private String bremark;
 
-    private String sid;
+    private String supplierId;
+    
+    private String state;
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date gupdateTime;
     
-    private BuyDetail buyDetail;
+    private List<BuyDetail> buyDetail;
     
-    public String getBid() {
+    private Supplier supplier;
+    
+    
+    
+    public Supplier getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
+	}
+
+	public String getBid() {
         return bid;
     }
 
@@ -38,13 +57,7 @@ public class Buy {
     }
 
     public void setBstate(String bstate) {
-    	if(bstate.equals("1")){
-    		this.bstate = "已付款";
-    	}
-    	else{
-    		this.bstate = "未付款";
-    	}
-         
+    	 this.bstate = bstate == null ? null : bstate.trim();
     }
 
     public Date getBtime() {
@@ -79,12 +92,12 @@ public class Buy {
         this.bremark = bremark == null ? null : bremark.trim();
     }
 
-    public String getSid() {
-        return sid;
+    public String getSupplierId() {
+        return supplierId;
     }
 
-    public void setSid(String sid) {
-        this.sid = sid == null ? null : sid.trim();
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId == null ? null : supplierId.trim();
     }
 
     public Date getGupdateTime() {
@@ -97,20 +110,32 @@ public class Buy {
 
     
     
-	public BuyDetail getBuyDetail() {
+	
+	
+
+	public List<BuyDetail> getBuyDetail() {
 		return buyDetail;
 	}
 
-	public void setBuyDetail(BuyDetail buyDetail) {
+	public void setBuyDetail(List<BuyDetail> buyDetail) {
 		this.buyDetail = buyDetail;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	@Override
 	public String toString() {
 		return "Buy [bid=" + bid + ", bstate=" + bstate + ", btime=" + btime + ", baddress=" + baddress + ", bman="
-				+ bman + ", bremark=" + bremark + ", sid=" + sid + ", gupdateTime=" + gupdateTime + ", buyDetail="
-				+ buyDetail + "]";
+				+ bman + ", bremark=" + bremark + ", supplierId=" + supplierId + ", state=" + state + ", gupdateTime=" + gupdateTime
+				+ ", buyDetail=" + buyDetail + ", supplier=" + supplier + "]";
 	}
+
 
 
     
