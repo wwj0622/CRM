@@ -159,6 +159,7 @@ $(function(){
 				{
 					alert('身份证错误');
 					document.getElementById('form').reset();
+					
 				}
 				if(m.state==2)
 				{
@@ -172,6 +173,9 @@ $(function(){
 					layer.close(layer.index);
 					window.parent.location.reload();
 				}
+				this_a.user.password='';
+				this_a.user.phone='';
+				this_a.user.idcard='';
 
 			})
 			.catch(err => {

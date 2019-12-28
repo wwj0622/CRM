@@ -100,6 +100,7 @@ public class BuyController {
 	public ResultBean getInfo(){
 		List<Parts> parts = buyservice.getParts();
 		List<Supplier> allSupplier = supplierMapper.getAllSupplier();
+		System.out.println(parts);
 		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", parts,allSupplier);
 		return resultBean;
 	}

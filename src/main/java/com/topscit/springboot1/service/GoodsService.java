@@ -2,8 +2,12 @@ package com.topscit.springboot1.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.github.pagehelper.PageInfo;
+import com.topscit.springboot1.bean.Customer;
 import com.topscit.springboot1.bean.Goods;
+import com.topscit.springboot1.bean.OrderGoods;
 import com.topscit.springboot1.bean.Storage;
 
 public interface GoodsService {
@@ -27,4 +31,18 @@ public interface GoodsService {
 	
 	//查询所有的仓库编号
 	List<String> selectTid();
+	
+	//添加orderGoods订单
+	int insert(OrderGoods record);
+	
+	//根据客户id查共有多少条订单
+	int selectAllOrderById(String id);
+	
+	//查出所有的以购买的商品id
+	List<OrderGoods> selectByGid(String uid);
+	
+	//订单里已有该商品，就添加数量
+	int updateGtOgcount(String gid , String count);
+	
+	List<Customer> selectAllKehuById(String smid);
 }

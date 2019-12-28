@@ -34,7 +34,7 @@
 		<input type="text" class="input-text" style="width:250px" placeholder="" id="" name="">
 		<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜原材料</button>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" @click="member_add('添加原材料','/stock/partadd?id='+id ,'','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加原材料</a></span>  </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><!-- <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> --> <a href="javascript:;" @click="member_add('添加原材料','/stock/partadd?id='+id ,'','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加原材料</a></span>  </div>
 		<div ><h3 style="text-align: center;">{{goods.gname}}原材料详情</h3><h5 style="text-align: center;">所在仓库：{{storage.stid}}号仓库<span style="margin-left: 10px;">{{storage.stname}}</span></h5></div>
 	<div class="mt-20">
 	<table class="table table-border table-bordered table-hover table-bg table-sort">

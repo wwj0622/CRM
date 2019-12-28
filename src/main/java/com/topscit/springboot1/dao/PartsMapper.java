@@ -31,6 +31,8 @@ public interface PartsMapper {
     
     List<Parts> selectAllParts();
     
+    List<Parts> getParts();
+    
     List<Parts> getPartsBy();
     
     int updateCount(@Param("count")String count,@Param("pid")String pid);

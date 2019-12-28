@@ -1,6 +1,7 @@
 package com.topscit.springboot1.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageInfo;
+import com.topscit.springboot1.bean.Customer;
 import com.topscit.springboot1.bean.Goods;
+import com.topscit.springboot1.bean.User;
+import com.topscit.springboot1.bean.OrderGoods;
 import com.topscit.springboot1.service.GoodsService;
 import com.topscit.springboot1.util.uploadFile;
 
@@ -127,5 +131,69 @@ public class GoodsController {
 	public List<String> selecttid(){
 		List<String> selectTid = goodsService.selectTid();
 		return selectTid;
+	}
+	
+	
+	//购买goods时的controller
+	@RequestMapping("/shopping")
+	public String goodsShopping(){
+		return "forward:/ws/goods-shopping.jsp";
+	}
+	
+	@RequestMapping("/addorder")
+	@ResponseBody
+	public int addOrderGoods(OrderGoods order_goods){
+		order_goods.setOid(UUID.randomUUID().toString().replace("-", "").substring(0,30));
+		System.out.println(order_goods);
+		List<OrderGoods> selectByGid = goodsService.selectByGid(order_goods.getUid());
+		Boolean istrue = true;
+		for(int i = 0;i<selectByGid.size();i++)
+		{
+			if(order_goods.getGid().equals(selectByGid.get(i).getGid()))
+			{
+				String count = String.valueOf(Integer.valueOf(selectByGid.get(i).getOgcount())+Integer.valueOf(order_goods.getGid())); 
+				System.out.println(count);
+				goodsService.updateGtOgcount(order_goods.getGid(), count);
+				istrue = false;
+				break;
+			}
+		}
+		if(istrue)
+		{
+			int insert = goodsService.insert(order_goods);
+		}
+		return 0;
+	}
+	
+	@RequestMapping("/selectAllOrderById")
+	@ResponseBody
+	public int selectAllOrderById(){
+//		User user = (User)SecurityUtils.getSubject().getPrincipal();
+		User user = new User();
+		int orderById;
+		if(user.getId()!=null)
+		{
+			 orderById = goodsService.selectAllOrderById(user.getId());
+		}else
+		{
+			 orderById = goodsService.selectAllOrderById("1");
+		}
+		return orderById;
+	}
+	
+	@RequestMapping("/selectAllKehuById")
+	@ResponseBody
+	public List<Customer> selectAllKehuById(){
+//		User user = (User)SecurityUtils.getSubject().getPrincipal();
+		User user = new User();
+		List<Customer> selectAllKehuById = new ArrayList<Customer>();
+		if(user.getId()!=null)
+		{
+			 selectAllKehuById = goodsService.selectAllKehuById(user.getId());
+		}else
+		{
+			selectAllKehuById = goodsService.selectAllKehuById("1");
+		}
+		return selectAllKehuById;
 	}
 }

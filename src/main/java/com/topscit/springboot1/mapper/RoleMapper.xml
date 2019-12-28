@@ -129,6 +129,9 @@
       <if test="available != null" >
         available,
       </if>
+       <if test="state != null" >
+        state,
+        </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -140,6 +143,9 @@
       <if test="available != null" >
         #{available,jdbcType=CHAR},
       </if>
+       <if test="state != null" >
+        #{state,jdbcType=CHAR},
+       </if>
     </trim>
   </insert>
   <update id="updateRoleState">

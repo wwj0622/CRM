@@ -107,7 +107,7 @@ var v =  new Vue({
    				success: function(data){
    					$(obj).parents("tr").remove();
    					layer.msg('已删除!',{icon:1,time:1000});
-   					location.href="mao/show-in.jsp";
+   					location.reload();
    				},
    				error:function(data) {
    					console.log(data.msg);
@@ -125,7 +125,7 @@ var v =  new Vue({
     	            traditional: true,
     				success: function(data){
     					layer.msg('已删除!',{icon:1,time:1000});
-    					window.parent.location.reload();
+    					location.reload();
     				},
     				error:function(data) {
     					console.log(data.msg);
@@ -146,8 +146,6 @@ var v =  new Vue({
             success: function (response) {
             	_this.buy = response.data;
             	_this.buyDetailList = response.data1;
-            	console.log(_this.buyList);
-            	console.log(_this.buyDetailList);
             },
         });
        }

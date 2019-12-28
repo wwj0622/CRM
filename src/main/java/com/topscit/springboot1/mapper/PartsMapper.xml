@@ -210,6 +210,10 @@
   	select * from parts where pstate="1"
    </select>
    
+     <select id="getParts" resultMap="BaseResultMap" >
+  	select * from parts
+   </select>
+   
    <select id="selectParts" resultMap="BaseResultMap">
     SELECT p.*,s.* FROM parts p LEFT JOIN parts_goods pg
     ON p.pid=pg.pid LEFT JOIN goods g ON  pg.gid=g.gid

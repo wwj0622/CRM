@@ -246,7 +246,7 @@ var v = new Vue({
 	        	    	  for(var key in _this.addcustomer){
 	        	              	_this.addcustomer[key]  = '';
 	        	              }
-	        	    	  this.allCustomerBySmid();
+	        	    	  _this.allCustomerBySmids();
 	        	      }
 	        	  });
 			}
@@ -297,7 +297,7 @@ var v = new Vue({
 	        	      dataType: "json",
 	        	      success: function (response) {
 	        	    	  
-	        	    	  _this.allCustomerBySmid();
+	        	    	  _this.allCustomerBySmids();
 	        	      }
 	        	  });
         	}
@@ -336,11 +336,12 @@ var v = new Vue({
             var _this = this;
             $.ajax({
                 type: "POST",
-                url: "/customer/updateCustomer",
+                url: "/customer/updatecustomer",
                 data: _this.customer,
                 dataType: "json",
                 success: function (response) {
-                	_this.allCustomerBySmid();   
+                	//_this.allCustomerBySmids();   
+                	_this.allCustomerBySmids();
                 }
             });
         },
@@ -374,7 +375,7 @@ var v = new Vue({
                 }
             });
         },
-        allCustomerBySmid:function(){
+        allCustomerBySmids:function(){
         	var _this = this;
     		$.ajax({
                 type: "GET",
@@ -391,8 +392,7 @@ var v = new Vue({
 	
 	//钩子函数，直接调用分页查询
 	created:function(){
-		this.allCustomerBySmid();
-		
+		this.allCustomerBySmids();
 	}
 });
 </script>

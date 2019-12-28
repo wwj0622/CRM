@@ -15,11 +15,21 @@ public class Role {
     
     private String  PerID[];
     
+    private String state;
+    
     
     
 
     
-    public User getUser() {
+    public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public User getUser() {
 		return user;
 	}
 

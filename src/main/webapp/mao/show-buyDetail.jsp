@@ -201,7 +201,7 @@ var v =  new Vue({
      	            traditional: true,
      				success: function(data){
      					layer.msg('已删除!',{icon:1,time:1000});
-     					window.parent.location.reload();
+     					location.reload();
      				},
      				error:function(data) {
      					console.log(data.msg);
@@ -217,7 +217,7 @@ var v =  new Vue({
    	            dataType: "json",
    	            success: function (response) {
    	            	layer.msg('入库成功!',{icon:1,time:1000});
-					window.parent.location.reload();
+					location.reload();
    	            },
    	        });
           },
@@ -232,7 +232,7 @@ var v =  new Vue({
      	            dataType: "json",
      	            success: function (response) {
      	            	layer.msg('入库成功!',{icon:1,time:1000});
-    					window.parent.location.reload();
+     	            	location.reload();
      	            },
      	        });
           }

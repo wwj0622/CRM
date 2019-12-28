@@ -45,7 +45,6 @@
 	<table class="table table-border table-bordered table-bg table-sort">
 			<thead>
 				<tr class="text-c">
-					<th width="25"></th>
 					<th width="70">原材料编号</th>
 					<th width="100">原材料名称</th>
 					<th width="100">说明</th>
@@ -60,7 +59,6 @@
 			<tbody>
 			 
 			<tr class="text-c" v-for='(parts,i) in partsList'>
-					<td><input name=""  v-model="checkedSupplier" type="checkbox" :value="parts.pid"></td>
 					<td>{{parts.pid}}</td>
 					<td class="text-l"><img width="30" height="30" :src="parts.plogo"> {{parts.pname}}</td>
 					<td>{{parts.pexplain}}</td>

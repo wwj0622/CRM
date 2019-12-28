@@ -33,7 +33,7 @@
 			<input type="text" name="" id="" placeholder="材料名称" style="width:250px" class="input-text">
 			<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜材料</button>
 		</div>
-		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" onclick="product_add('添加材料','Parts_All_add.jsp')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加材料</a></span></div>
+		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><!-- <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> --> <a class="btn btn-primary radius" onclick="product_add('添加材料','Parts_All_add.jsp')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加材料</a></span></div>
 		<div class="mt-20">
 			<table class="table table-border table-bordered table-bg table-hover table-sort">
 				<thead>

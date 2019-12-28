@@ -64,7 +64,7 @@ public class BuyServiceImpl  implements BuyService {
 	}
 	@Override
 	public List<Parts> getParts() {
-		List<Parts> allParts = partsMapper.getAllParts();
+		List<Parts> allParts = partsMapper.getParts();
 		return allParts;
 	}
 	

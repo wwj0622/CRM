@@ -1,8 +1,10 @@
 package com.topscit.springboot1.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -26,7 +28,7 @@ import com.topscit.springboot1.bean.Role;
 import com.topscit.springboot1.bean.User;
 import com.topscit.springboot1.bean.userRole;
 import com.topscit.springboot1.service.LoginService;
-import com.topscit.springboot1.util.ValidateCode;
+
 
 @Controller
 public class UserController {
@@ -43,14 +45,36 @@ public class UserController {
 		User user2 = (User) subject.getPrincipal();
 		User u = loginService.selectUser(user2.getId());
 	    List<Permission> select = loginService.select(user2.getId());
-	    data.put("select", select);
+	   
+	    ArrayList<Permission> yi = new  ArrayList<Permission>();
+	    for (Permission permission : select) {
+			 if(permission.getType().equals("menu"))
+			 {
+				 yi.add(permission);
+			 }
+		}
+	    
+	    
+	    for (Permission y : yi) {
+			ArrayList<Permission> er = new ArrayList<Permission>();
+			for (Permission permission : select) {
+				if(permission.getParentid() == y.getId())
+				{
+					er.add(permission);
+				}
+			}
+			y.setMiss(er);
+		}
+	    
+	    data.put("select", yi);
+	    
+	    
 	    data.put("name", u.getUsername());
 	    data.put("namecode", u.getUsercode());
 		return "forward:/index.jsp";
 	}
 	
 	@RequestMapping("/add")
-	@RequiresPermissions("user:user")
 	@ResponseBody
 	public HashMap<String, Object> addUser(@RequestBody User user)
 	{
@@ -177,7 +201,6 @@ public class UserController {
 	
    
 	@RequestMapping("/stop")
-	@RequiresPermissions("user:xit")
 	@ResponseBody
 	public HashMap<String, Object> StopUser(String id)
 	{

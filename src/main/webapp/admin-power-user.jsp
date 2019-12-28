@@ -43,13 +43,13 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" v-model="p2.name" placeholder="" id="roleName" name="roleName">
+				<input type="text" class="input-text" disabled value="" v-model="p2.name" placeholder="" id="roleName" name="roleName">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">备注：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" v-model="p2.available" placeholder="" id="" name="">
+				<input type="text" class="input-text" disabled value="" v-model="p2.available" placeholder="" id="" name="">
 			</div>
 		</div>
 		<div class="row cl">
@@ -60,7 +60,7 @@
 				<dl class="permission-list" v-for="(p,i) in p1" >
 					<dt>
 						<label>
-							<input type="checkbox"  @click="dj" :value="p.id"  name="user-Character-1-0-0" :id="'a'+p.id">
+							<input type="checkbox" disabled  @click="dj" :value="p.id"  name="user-Character-1-0-0" :id="'a'+p.id">
 							{{p.name}}
 						</label>
 					</dt>
@@ -73,7 +73,7 @@
 							</dt> -->
 							<dd>
 								<label class="" v-for="(pm,i) in p.miss" >
-									<input :class="'a'+p.id" type="checkbox" @click="ddj"  :value="pm.id" name="user-Character-1-0-0" v-model="permission" id="user-Character-1-0-0">
+									<input :class="'a'+p.id" type="checkbox"  disabled @click="ddj"  :value="pm.id" name="user-Character-1-0-0" v-model="permission" id="user-Character-1-0-0">
 									{{pm.name}}
 								</label>
 							
@@ -202,7 +202,7 @@ $(function(){
   			  ddj(){
   				  
   				var id = $(event.target).attr("class");
-  				alert(id);
+ 
   				var m=$("#"+id);
 
   				var k=$("."+id);

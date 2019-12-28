@@ -85,6 +85,8 @@ public class ShiroConfig {
 		hashMap.put("/Login.jsp", "anon");
 		hashMap.put("/logout", "logout");
 		hashMap.put("/user/check", "anon");
+		hashMap.put("ws/*", "anon");
+		hashMap.put("mao/*", "anon");
 		
 		hashMap.put("/**", "authc");
 	

@@ -27,7 +27,7 @@
     <select id="selectall" resultMap="allP">
        SELECT sp.*,syp.*,syp.id spid,syp.`name` sypname  FROM  sys_permission sp LEFT JOIN 
 	   sys_permission syp ON sp.id=syp.parentid
-	   WHERE sp.parentid='1' ORDER BY sp.sortstring
+	   WHERE sp.parentid='1' and state='0' ORDER BY sp.sortstring
     </select>
     
     <resultMap type="com.topscit.springboot1.bean.Permission" id="allP">
@@ -65,15 +65,12 @@
     </resultMap>
    
   
-  <select id="select" resultMap="pp">
-  
-    SELECT sp.*,spp.*,spp.`name` sppname,spp.url sppurl FROM sys_user_role sur
-	INNER JOIN sys_role sr ON sur.sys_role_id = sr.id 
-	INNER JOIN sys_role_permission srp on sr.id = srp.sys_role_id 
-	INNER JOIN sys_permission sp ON sp.id = srp.sys_permission_id
-    LEFT JOIN  sys_permission spp ON sp.id = spp.parentid
-	WHERE sp.parentid = 1 AND sur.sys_user_id =#{id} ORDER BY sp.sortstring;
-  
+  <select id="select" resultMap="BaseResultMap"> 
+	  SELECT sp.* FROM sys_user_role sur INNER JOIN sys_role sr
+	  ON sur.sys_role_id=sr.id INNER JOIN sys_role_permission 
+	  srp ON srp.sys_role_id =sr.id INNER JOIN sys_permission sp
+	  ON sp.id=srp.sys_permission_id 
+	  WHERE sur.sys_user_id=#{id} ORDER BY sp.sortstring
   </select>
   
   <resultMap type="com.topscit.springboot1.bean.Permission" id="pp">

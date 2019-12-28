@@ -49,7 +49,7 @@
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
 		<span class="l">
-			<a href="javascript:;" @click="delAllSupllier" class="btn btn-danger radius">
+			<a href="javascript:void(0);" @click="delAllSupllier" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
 			</a> 
 			<a href="javascript:;" @click="member_add" class="btn btn-primary radius">
@@ -162,9 +162,10 @@ var v =  new Vue({
    	            data: {bid:bid},
    	            dataType: "json",
    				success: function(data){
-   					$(obj).parents("tr").remove();
+   					
    					layer.msg('已删除!',{icon:1,time:1000});
-   					location.href="mao/show-buy.jsp";
+   					/* location.href="mao/show-buy.jsp"; */
+   					_this.a();	
    				},
    				error:function(data) {
    					console.log(data.msg);
@@ -182,7 +183,8 @@ var v =  new Vue({
     	            traditional: true,
     				success: function(data){
     					layer.msg('已删除!',{icon:1,time:1000});
-    					window.parent.location.reload();
+    					/* location.href="mao/show-buy.jsp"; */
+    					_this.a();
     				},
     				error:function(data) {
     					console.log(data.msg);
@@ -191,22 +193,25 @@ var v =  new Vue({
          },
          member_edit(title,url,id,w,h){
         	 layer_show(title,url,w,h);
+         },
+         a(){
+        	   var _this = this;
+               $.ajax({
+                   type: "GET",
+                   url: "/buy/getAllBuy",
+                   data: null,
+                   dataType: "json",
+                   success: function (response) {
+                   	_this.buyList = response.data.list;
+                   	_this.pageInfo = response.data;
+                   },
+               });
          }
         
          
 	},
 	created(){  
-        var _this = this;
-        $.ajax({
-            type: "GET",
-            url: "/buy/getAllBuy",
-            data: null,
-            dataType: "json",
-            success: function (response) {
-            	_this.buyList = response.data.list;
-            	_this.pageInfo = response.data;
-            },
-        });
+             this.a();
        }
 
 });

@@ -29,7 +29,8 @@ public class Parts {
      
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
     private Date pupdateTime;
-
+    
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
     private Date pcreateTime;
 
     private String plogo;

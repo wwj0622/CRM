@@ -50,7 +50,7 @@
 				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
 			</a> 
 			<a href="javascript:;" onclick="member_add('添加用户','mao/member-add.jsp','','510')" class="btn btn-primary radius">
-				<i class="Hui-iconfont">&#xe600;</i> 添加用户
+				<i class="Hui-iconfont">&#xe600;</i> 添加供应商
 			</a>
 		</span> 
 		<span class="r">共有数据：<strong>88</strong> 条</span> 
@@ -159,7 +159,7 @@ var v =  new Vue({
          delAllSupllier(){
         	 console.log(this.checkedSupplier);
         	 var _this = this;
-    			$.ajax({
+    		 $.ajax({
     				type: "GET",
     	            url: "/supplier/delSupplier",
     	            data: {sids:_this.checkedSupplier},
@@ -167,12 +167,13 @@ var v =  new Vue({
     	            traditional: true,
     				success: function(data){
     					layer.msg('已删除!',{icon:1,time:1000});
-    					window.parent.location.reload();
+    					//window.parent.location.reload();
+    					location.href="mao/product-brand.jsp";
     				},
     				error:function(data) {
     					console.log(data.msg);
     				},
-    			});		
+    			});		 
          },
          member_edit(title,url,id,w,h){
         	 layer_show(title,url,w,h);

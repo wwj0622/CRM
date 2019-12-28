@@ -417,7 +417,10 @@ public class LoginServiceImpl implements LoginService{
          
 		String string = UUID.randomUUID().toString();
 		role.setId(string);
+		role.setState("0");
+		
 		int r = roleMapper.insertSelective(role);
+		
 		
 		String[] perID = role.getPerID();
 		RolePermission record = new RolePermission();

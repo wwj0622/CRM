@@ -55,9 +55,7 @@ public class SupplierController {
 	@ResponseBody
 	public ResultBean getSupplierByName(String name)
 	{
-		System.out.println(name);
 		List<Supplier> supplierBy = supplierService.getSupplierBy(name);
-		System.out.println(supplierBy);
 		ResultBean resultBean = new ResultBean(ResultBean.STATA_SUCCESS, "查询成功", supplierBy);
 		return resultBean;
 	}

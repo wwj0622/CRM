@@ -1,5 +1,9 @@
 package com.topscit.springboot1.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.topscit.springboot1.bean.Customer;
 
 public interface CustomerMapper {
@@ -15,4 +19,7 @@ public interface CustomerMapper {
 
     int updateByPrimaryKey(Customer record);
     
+    List<Customer> selectAllKehuById(@Param("smid")String smid);
+    
+    List<Customer> selectAllCustomer();
 }

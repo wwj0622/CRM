@@ -36,12 +36,11 @@
 <body>
 	<from>
 	<div  id="app">
-		
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">原材料名称：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
 				<span class="select-box">
-					<select v-model="buyDetail.pid"  class="select" >				
+					<select v-model="buyDetail.partsId"  class="select" >				
                            <option v-for="(s,i) in parts" :value="s.pid">{{s.pname}}</option>
 					</select>
 				</span>
@@ -111,6 +110,7 @@ var v =  new Vue({
 	            dataType: "json",
 	            success: function (response) {
 	            	_thiss.parts = response.data; 
+	            	consloe.log(_thiss.parts);
 	            },
 	        }); 
 	        
